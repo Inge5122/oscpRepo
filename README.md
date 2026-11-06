@@ -1,7 +1,8 @@
 # OSCPRepo
 
 > [!NOTE]
-> Consulta la **[Caja de Herramientas de Ciberseguridad (CAJA_DE_HERRAMIENTAS.md)](./CAJA_DE_HERRAMIENTAS.md)** para acceder a la guía de instalación en Ubuntu/Debian, herramientas organizadas por fases de auditoría y comandos de uso rápido.
+> - Consulta la **[Caja de Herramientas de Ciberseguridad (CAJA_DE_HERRAMIENTAS.md)](./CAJA_DE_HERRAMIENTAS.md)** para acceder al arsenal de utilidades organizadas por fase y su instalación en Ubuntu/Debian.
+> - Consulta el **[Plan de Estudio y Guía de Laboratorios (PLAN_DE_ESTUDIO_Y_LABORATORIOS.md)](./PLAN_DE_ESTUDIO_Y_LABORATORIOS.md)** para seguir la progresión por niveles ("subiendo los voltios"), preparación en Ubuntu, lista recomendada de máquinas y plantilla de reportes.
 
 Esta es una lista de recursos y scripts que he estado recopilando (y continúo recopilando) en preparación para el OSCP. Ahora que lo he obtenido, este repositorio seguirá ampliando sus recursos para futuras certificaciones. Todos estos son recursos gratuitos en Internet, así que siéntete libre de usarlos como quieras para ayudarte en tus estudios o como material de referencia. Si he tomado información tuya o de tu trabajo, por favor házmelo saber para poder darte el crédito correspondiente.
 

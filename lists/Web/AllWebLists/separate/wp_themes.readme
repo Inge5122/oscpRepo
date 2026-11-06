@@ -1,12 +1,12 @@
-Themes usually live in a directory called wp-content.
+Los temas (themes) suelen encontrarse en un directorio llamado `wp-content`.
 
-Determine how the server handles directories which aren't present vs files which aren't present in a path that exists in order to tell which themes are installed.  
+Determina cómo maneja el servidor los directorios que no están presentes frente a los archivos que no están presentes dentro de una ruta que sí existe, para poder identificar qué temas están instalados.
 
-use wp_common_theme_files.fuzz.php inside the identified theme dirs 
+Usa `wp_common_theme_files.fuzz.php` dentro de los directorios de temas identificados.
 
-Often you can tell the current theme by viewing source.
+A menudo puedes identificar el tema actual viendo el código fuente de la página.
 
-Theme list generated last on Sept 6 2013
+Lista de temas generada por última vez el 6 de septiembre de 2013
 
-from: http://themes.svn.wordpress.org   
+desde: http://themes.svn.wordpress.org   
 

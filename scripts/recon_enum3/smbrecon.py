@@ -8,59 +8,59 @@ from multiprocessing import Process
 import argparse
 import pathlib
 
-# TODO add ability for password authentication
-# TODO some of these functions can be replaced with CME or smbmap or something else, reduce total number of dependencies,
-#    External dependencies are nullinux and nbtscan-unixwiz
+# POR HACER (TODO): añadir soporte para autenticación con contraseña
+# POR HACER (TODO): algunas funciones pueden reemplazarse con CME, smbmap u otra herramienta para reducir dependencias externas.
+#    Las dependencias externas actuales son nullinux y nbtscan-unixwiz
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
 
-#NSE Documentation
-#Running
-#smb-double-pulsar-backdoor: check if target is running Double Pulsar SMB backdoor
-#smb-enum-domains: attempt to enum domains on a system with policies. generally requires creds.
-#smb-enum-groups: obtain a list of grous from remote system as well as a list of groups users. Works similar to 'enum.exe /g'
-#smb-enum-processes: pull list of processes from remote server over SMB. Done by query remote registry service. disabled by default on Vista. Requires Admin on others.
-#smb-enum-sessions: enumerate users logged in locally or through share. reading remote registry (Vista disabled by default). Requires higher than 'anonymous'
-#smb-enum-shares: attempt to list shares using srvsvc.NetShareEnumAll MSRPC and NetShareGetInfo. NetShareGetInfo requires Admin
-#mb-enum-users: attempt to enum users on remote system through MSRPC over 445 or 139. SAMR enum and LSA brute.
-#smb-ls: attempts to retrieve useful information about files shared on SMB volumes. Resemble output of 'ls' command
-#smb-os-discovery: attempt to determine OS, computer name, domain, workgroup, and current time over SMB. anonymous.
-#smb-protocols: attempts to initiate a connection using each version of SMB. if SMBv1 is found, it will mark it as insecure.
-#smb-security-mode: returns information about the SMB security level determined by SMB, ie signing, challenge-response, etc
-#smb-system-info: pulls info from registry. Requires Admin, though auth user should get some info.
-#smb-vuln-cve-2017-7494: check if vuln to Arbitrary Shared Library Load vuln CVE-2017-7494. Unpatched Samba from 3.5.0-4.4.13 and prior to 4.5.10 and 4.6.4 are affected by RCE.
-#smb-vuln-ms17-010: check if vuln to MS17-010 aka EternalBlue. Connects to $IPC tree, executes transaction and checks if error. SMBv1 vuln.
-#smb-vuln-ms10-061: check if vuln to ms10-061 Printer Spooler impersonation. used in Stuxnet. Checks for vuln in safe way without crashing. Needs access to at least one shared printer.
-#smb2-security-mode: determines mesage signing config in SMBv2 servers for all supported dialects.
-#smb2-vuln-uptime: attempt to detect missing patches in windows sytems by checking the uptime returned during the SMB2 protocol negotiation
-#samba-vuln-cve-2012-1182: RCE as root from anonymous connection
-#nbstat: retrieve target's NetBIOS names and MAC
+# Documentación de Scripts NSE
+# En ejecución:
+# smb-double-pulsar-backdoor: comprueba si el objetivo tiene activa la puerta trasera Double Pulsar SMB
+# smb-enum-domains: intenta enumerar dominios en el sistema con sus políticas (suele requerir credenciales)
+# smb-enum-groups: obtiene lista de grupos remotos y usuarios asociados (similar a 'enum.exe /g')
+# smb-enum-processes: obtiene lista de procesos remotos vía SMB consultando el registro remoto (requiere Admin)
+# smb-enum-sessions: enumera usuarios conectados localmente o mediante recurso compartido
+# smb-enum-shares: enumera recursos compartidos mediante srvsvc.NetShareEnumAll y NetShareGetInfo
+# smb-enum-users: enumera usuarios en sistema remoto mediante MSRPC por puertos 445 o 139 (SAMR y LSA)
+# smb-ls: obtiene información detallada sobre archivos en volúmenes compartidos SMB (similar a 'ls')
+# smb-os-discovery: determina SO, nombre del equipo, dominio, grupo de trabajo y hora actual vía SMB (anónimo)
+# smb-protocols: comprueba versiones soportadas de SMB; si detecta SMBv1 lo marca como inseguro
+# smb-security-mode: muestra información de seguridad de SMB (firmado, challenge-response, etc.)
+# smb-system-info: extrae información del registro remoto
+# smb-vuln-cve-2017-7494: comprueba vulnerabilidad de carga de librerías arbitrarias en Samba (CVE-2017-7494 / SambaCry)
+# smb-vuln-ms17-010: comprueba vulnerabilidad MS17-010 (EternalBlue) conectándose al árbol $IPC
+# smb-vuln-ms10-061: comprueba vulnerabilidad MS10-061 de suplantación en Printer Spooler
+# smb2-security-mode: determina configuración de firma de mensajes en servidores SMBv2
+# smb2-vuln-uptime: detecta parches faltantes comprobando el tiempo de actividad devuelto en la negociación SMB2
+# samba-vuln-cve-2012-1182: comprueba ejecución remota como root desde conexión anónima en Samba
+# nbstat: obtiene nombres NetBIOS y dirección MAC del objetivo
 
-#Not running
-#smb-brute: Attempt to guess login over SMB
-#smb-enum-services: retries list of services running. Requires Admin. No longer default available.
-#smb-flood: exhausts a remote SMB server's connection limit by opening as many as possible.
-#smb-mbenum: queries information managed by the Windows Master Browser
-#smb-print-text: attempt to print test on a shared printer by calling Printer Spooler Service RPC functions
-#smb-psexec: arguably most powerful module. requires configuration. config places in /nselib/data/psexec. Read documentation. https://github.com/nmap/nmap/blob/master/scripts/smb-psexec.nse
-#smb-server-stats: requires Admin. grab server stats.
-#smb-vuln-conficker: Detects systems infected by conficker worm. dangerous check and may crash systems.
-#smb-vuln-cve2009-3103: detects if vuln to DoS CVE-2009-3103. Will crash the service if it is vulnerable
-#smb-vuln-ms06-025: check if vuln to MS06-025 RasRPCSubmitRequest RPC method
-#smb-vuln-ms07-029: check if vuln to MS07-029 DNS RPC vulnerability. Will crash the service if vulnerable
-#smb-vuln-ms08-067: check if vuln to MS08-067. Dangerous and may crash systems
-#smb-vuln-ms10-054: check if vuln to MS10-054. Dangerous and will BSOD system
-#smb-vuln-regsvc-dos: check if vuln to null pointer dereference in regsvc. Will crash service if vuln.
-#smb2-capabilities: attempt to list supported cabilities in a SMBv2 server for each enabled dialect.
-#smb2-time: attempt to obtain the current system date and start date of a SMB2 server
+# No en ejecución:
+# smb-brute: fuerza bruta de credenciales sobre SMB
+# smb-enum-services: lista servicios en ejecución (requiere Admin)
+# smb-flood: agota el límite de conexiones del servidor SMB remoto
+# smb-mbenum: consulta información gestionada por el Windows Master Browser
+# smb-print-text: prueba impresión en impresoras compartidas vía RPC
+# smb-psexec: módulo de ejecución remota psexec (requiere configuración previa)
+# smb-server-stats: estadísticas del servidor SMB (requiere Admin)
+# smb-vuln-conficker: detecta infección por gusano Conficker (puede desestabilizar el host)
+# smb-vuln-cve2009-3103: vulnerabilidad de denegación de servicio (bloquea el servicio)
+# smb-vuln-ms06-025: vulnerabilidad en RasRPCSubmitRequest RPC
+# smb-vuln-ms07-029: vulnerabilidad DNS RPC (puede bloquear el servicio)
+# smb-vuln-ms08-067: vulnerabilidad crítica MS08-067
+# smb-vuln-ms10-054: vulnerabilidad MS10-054 (genera pantallazo azul BSOD)
+# smb-vuln-regsvc-dos: desreferencia a puntero nulo en regsvc
+# smb2-capabilities: lista capacidades de dialectos soportados en SMBv2
+# smb2-time: obtiene fecha y hora de inicio de servidores SMB2
 def doNmap():
-    print("INFO: Performing nmap SMB script scan for %s:%s" % (ip_address, port))
+    print("INFO: Realizando escaneo de scripts SMB con nmap para %s:%s" % (ip_address, port))
     subprocess.check_output(['nmap','-n','-sV','-Pn','-vv','-p',port,'--script=smb-double-pulsar-backdoor,smb-enum-domains,smb-enum-groups,smb-enum-processes,smb-enum-sessions,smb-enum-shares,smb-enum-users,smb-ls,smb-os-discovery,smb-protocols,smb-security-mode,smb-system-info,smb-vuln-cve-2017-7494,smb-vuln-ms10-061,smb-vuln-ms17-010,smb2-security-mode,smb2-vuln-uptime,samba-vuln-cve-2012-1182,nbstat,vulners','-oA',nmap_outfile,ip_address],encoding='utf8')
 
 def doSAMR():
-    print("INFO: Attempting unauthenticated samrdump scan for %s:%s" % (ip_address, port))
+    print("INFO: Intentando escaneo samrdump no autenticado para %s:%s" % (ip_address, port))
     try:
         results = subprocess.check_output(['samrdump.py',ip_address],encoding='utf8').split("\n")
         f = open(samr_outfile,'w')
@@ -71,24 +71,24 @@ def doSAMR():
         f.close()
     except Exception as e:
         print(type(e))
-        print("Unexpected issue in doSAMR in smbrecon")
+        print("Problema inesperado en doSAMR en smbrecon")
 
-#-va:   run verbosely and try all commands
-#-U:    get userlist
-#-M:    get machine list
-#-S:    get sharelist
-#-P:    get password policy information
-#-G:    get group and member list
-#-d:    be detailed, applies to -U and -S
+#-va:   ejecutar en modo detallado y probar todos los comandos
+#-U:    obtener lista de usuarios
+#-M:    obtener lista de máquinas
+#-S:    obtener lista de recursos compartidos (shares)
+#-P:    obtener información de directiva de contraseñas
+#-G:    obtener grupos y miembros
+#-d:    modo detallado, aplica a -U y -S
 #-a:    -USGProni
-#-r:    RID cycle
-#-l:    get limited info via LDAP 389 (DCs only)
-#-o:    get OS information
-#-i:    get printer information
-#-n:    do an nmblookup
-#-v:    Be verbose
+#-r:    recorrido de RID (RID cycling)
+#-l:    información limitada vía LDAP 389 (solo controladores de dominio)
+#-o:    obtener información del SO
+#-i:    obtener información de impresoras
+#-n:    realizar nmblookup
+#-v:    modo detallado (verbose)
 def doEnum4Linux():
-    print("INFO: Performing enum4linux scan for %s:%s" % (ip_address, port))
+    print("INFO: Realizando escaneo enum4linux para %s:%s" % (ip_address, port))
     try:
         results = subprocess.check_output(['enum4linux','-va',ip_address],encoding='utf8').split("\n")
         if results:
@@ -99,25 +99,19 @@ def doEnum4Linux():
                     f.write("\n")
             f.close()
     except subprocess.CalledProcessError:
-        print("WARN: SMBrecon non-0 exit for %s, but should still write output" % (ip_address))
+        print("ADVERTENCIA: enum4linux finalizó con código distinto de 0 para %s, pero la salida se registrará" % (ip_address))
 
-# usage: nbtscan-unixwiz [options] target [targets...]
-# Targets are lists of IP addresses, DNS names, or address
-# ranges. Ranges can be in /nbits notation ("192.168.12.0/24")
-# or with a range in the last octet ("192.168.12.64-97")
-# -V        show Version information
-# -f        show Full NBT resource record responses (recommended)
-# -H        generate HTTP headers
-# -v        turn on more Verbose debugging
-# -n        No looking up inverse names of IP addresses responding
-# -p <n>    bind to UDP Port <n> (default=0)
-# -m        include MAC address in response (implied by '-f')
-# -T <n>    Timeout the no-responses in <n> seconds (default=2 secs)
-# -w <n>    Wait <n> msecs after each write (default=10 ms)
-# -t <n>    Try each address <n> tries (default=1)
-# -P        generate results in perl hashref format
+# Opciones de nbtscan-unixwiz:
+# -V        mostrar información de versión
+# -f        mostrar respuestas completas de registros NBT (recomendado)
+# -H        generar cabeceras HTTP
+# -v        modo de depuración detallado
+# -n        no buscar nombres inversos
+# -p <n>    vincular al puerto UDP <n> (por defecto 0)
+# -m        incluir dirección MAC en la respuesta (implícito con -f)
+# -T <n>    tiempo de espera en segundos (por defecto 2s)
 def doNbtscanUnixWiz():
-    print("INFO: Performing nbtscan-unixwiz scan for %s:%s" % (ip_address, port))
+    print("INFO: Realizando escaneo nbtscan-unixwiz para %s:%s" % (ip_address, port))
     try:
         results = subprocess.check_output(['nbtscan-unixwiz','-f',ip_address],encoding='utf8').split("\n")
         f = open(nbtscanunixwiz_outfile,'w')
@@ -128,18 +122,17 @@ def doNbtscanUnixWiz():
         f.close()
     except Exception as e:
         print(type(e))
-        print("Unexpected issue in doNbtscanUnixWiz in smbrecon")
+        print("Problema inesperado en doNbtscanUnixWiz en smbrecon")
 
-# -shares             Dynamically Enumerate all possible shares. (formally: --enumshares)
-# -users              Enumerate users through a variety of techniques. (formally: --enumusers)
-# -quick              Quickly enumerate users, leaving out brute (used with: -users, or -all)
-# -U                  Set username (optional)
-# -P                  Set password (optional)
-# -v                  Verbose Output
-# -h                  Help menu
-#https://github.com/m8r0wn/nullinux
+# Opciones de nullinux:
+# -shares   enumerar dinámicamente recursos compartidos
+# -users    enumerar usuarios mediante diversas técnicas
+# -quick    enumeración rápida sin fuerza bruta
+# -U        especificar usuario (opcional)
+# -P        especificar contraseña (opcional)
+# -v        salida detallada
 def doNullLinux():
-    print("INFO: Performing nullinux scan for %s:%s" % (ip_address, port))
+    print("INFO: Realizando escaneo nullinux para %s:%s" % (ip_address, port))
     if os.path.isfile('/usr/local/bin/nullinux'):
         try:
             results = subprocess.check_output(['nullinux','-v',ip_address],encoding='utf8').split("\n")
@@ -150,11 +143,11 @@ def doNullLinux():
             f.close()
         except Exception as e:
             print(type(e))
-            print("Unexpected issue in doNullLinux in smbrecon")
+            print("Problema inesperado en doNullLinux en smbrecon")
 
 def doSMBVer():
-    #This is relevant for 'some' linux versions of smb. There are better ways to enumerate windows machines.
-    print("INFO: Performing smbver check for %s" % (ip_address))
+    # Relevante para ciertas versiones de SMB en Linux
+    print("INFO: Comprobando versión de SMB para %s" % (ip_address))
     results = subprocess.check_output(['./smbver.sh',ip_address],encoding='utf8')
     f = open(smbver_outfile,'w')
     for res in results:
@@ -164,9 +157,9 @@ def doSMBVer():
 
 
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description='Rough script to handle checking SMB endpoints and available shares. Usage: smbrecon.py <ip address> <port>')
-    parser.add_argument('ip_address', help="Ip address of target windows machine")
-    parser.add_argument('port', help="Specific port to enumerate")
+    parser = argparse.ArgumentParser(description='Script para verificar endpoints SMB y recursos compartidos disponibles. Uso: smbrecon.py <dirección_ip> <puerto>')
+    parser.add_argument('ip_address', help="Dirección IP de la máquina Windows/Linux objetivo")
+    parser.add_argument('port', help="Puerto específico a enumerar")
     args = parser.parse_args()
 
     BASE = "/root/scripts/recon_enum/results/exam/smb"

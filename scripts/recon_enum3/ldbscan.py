@@ -8,7 +8,7 @@ import time
 
 def lbd(domain):
    domain = domain.strip()
-   print("INFO: Running general ldb scans for " + domain)
+   print("INFO: Ejecutando escaneos generales de ldb para " + domain)
    # lbdSCAN = "lbd %s"  % (domain)
    # results = subprocess.check_output(lbdSCAN, shell=True)
    # lines = results.split("\n")
@@ -24,8 +24,8 @@ def lbd(domain):
    return
 
 if __name__=='__main__':
-   f = open('/root/scripts/recon_enum/results/exam/targets.txt', 'r') # CHANGE THIS!! grab the alive hosts from the discovery scan for enum
-					     # Also check Nmap user-agent string, should be set to Firefox
+   f = open('/root/scripts/recon_enum/results/exam/targets.txt', 'r') # ¡MODIFICAR ESTO! Tomar los hosts activos del escaneo de descubrimiento para enumerar
+					     # Verificar también el User-Agent de Nmap, se recomienda configurarlo como Firefox
    for domain in f:
        jobs = []
        p = multiprocessing.Process(target=lbd, args=(domain,))

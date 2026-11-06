@@ -1,21 +1,21 @@
-current tags
-OS
+Etiquetas actuales
+SO
 [Linux]
 [Android]
 [Windows]
 [Docker]
 
-Programming
+Programación
 [Framework]
 
-Exploit Dev
+Desarrollo de Exploits
 [Debug]
 [Exploitdev]
 [Exploits]
 [Bypass]
 [Fuzz]
 
-Penetration Testing
+Pruebas de Penetración (Penetration Testing)
 [PenTest:Web]
 [PenTest:Brute]
 [PenTest:Scan]
@@ -31,7 +31,7 @@ Penetration Testing
 [Audit]
 [TheHunt]
 
-Education
+Educación
 [Learning]
 [Bookmarks]
 [Video]
@@ -40,10 +40,10 @@ Personal
 [Personal]
 [Alt]
 
-Ranking system
-[1] - Best, probably should use
+Sistema de clasificación (Ranking system)
+[1] - Lo mejor, muy recomendable usar
 [2]
-[3] - Average, could come in handy
+[3] - Promedio, puede resultar útil
 [4]
-[5] - Meh or too niche, but worth watching
-[?] - Unranked
+[5] - Regular o muy específico de nicho, pero vale la pena seguir
+[?] - Sin clasificar

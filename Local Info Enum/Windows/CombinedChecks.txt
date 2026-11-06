@@ -1,75 +1,75 @@
-Recommend to use SeatBelt.exe
-Secondary: HostEnum (either standalone or in Empire)
-Tertiary: Get-HostProfile
+Se recomienda usar SeatBelt.exe
+Secundario: HostEnum (ya sea independiente o en Empire)
+Terciario: Get-HostProfile
 
 ###################
 SeatBelt.exe
 ###################
-SeatBelt.exe system collects the following system data:
+SeatBelt.exe system recopila los siguientes datos del sistema:
 
-BasicOSInfo – Basic OS info (i.e. architecture, OS version, etc.)
-RebootSchedule – Reboot schedule (last 15 days) based on event IDs 12 and 13
-TokenGroupPrivs – Current process/token privileges (e.g. SeDebugPrivilege/etc.)
-UACSystemPolicies – UAC system policies via the registry
-PowerShellSettings – PowerShell versions and security settings via the registry
-AuditSettings – Audit settings via the registry
-WEFSettings – Windows Event Forwarding (WEF) settings via the registry
-LSASettings – LSA settings (including auth packages)
-UserEnvVariables – Current user environment variables
-SystemEnvVariables – Current system environment variables
-UserFolders – Folders in C:\Users\
-NonstandardServices – Services with binary paths not in C:\Windows\
-InternetSettings – Internet settings, including proxy configs
-LapsSettings – LAPS settings, if installed
-LocalGroupMembers – Members of local admins, RDP, and remote DCOM groups
-MappedDrives – Currently mapped drives
-RDPSessions – Current incoming RDP sessions
-WMIMappedDrives – Mapped drives via WMI
-NetworkShares – Network shares
-FirewallRules – Deny firewall rules, “full” dumps all
-AntiVirusWMI – Registered antivirus (via WMI)
-InterestingProcesses – “Interesting” processes- defensive products and admin tools
-RegistryAutoLogon – Registry autologon information
-RegistryAutoRuns – Registry autoruns
-DNSCache – DNS cache entries (via WMI)
-ARPTable – Lists the current ARP table and adapter information (equivalent to arp -a)
-AllTcpConnections – Lists current TCP connections and associated processes
-AllUdpConnections – Lists current UDP connections and associated processes
-NonstandardProcesses – Processes with binary paths not in C:\Windows\
-If the user is in high integrity the following additional actions are run:
+BasicOSInfo – Información básica del SO (es decir, arquitectura, versión del SO, etc.)
+RebootSchedule – Programación de reinicios (últimos 15 días) basada en los IDs de evento 12 y 13
+TokenGroupPrivs – Privilegios actuales del proceso/token (ej. SeDebugPrivilege/etc.)
+UACSystemPolicies – Políticas del sistema UAC a través del registro
+PowerShellSettings – Versiones de PowerShell y ajustes de seguridad a través del registro
+AuditSettings – Ajustes de auditoría a través del registro
+WEFSettings – Ajustes de Reenvío de Eventos de Windows (WEF) a través del registro
+LSASettings – Ajustes de LSA (incluyendo paquetes de autenticación)
+UserEnvVariables – Variables de entorno del usuario actual
+SystemEnvVariables – Variables de entorno del sistema actual
+UserFolders – Carpetas en C:\Users\
+NonstandardServices – Servicios con rutas de binarios fuera de C:\Windows\
+InternetSettings – Ajustes de Internet, incluyendo configuraciones de proxy
+LapsSettings – Ajustes de LAPS, si está instalado
+LocalGroupMembers – Miembros de grupos locales de administradores, RDP y DCOM remoto
+MappedDrives – Unidades mapeadas actualmente
+RDPSessions – Sesiones RDP entrantes actuales
+WMIMappedDrives – Unidades mapeadas a través de WMI
+NetworkShares – Recursos compartidos de red
+FirewallRules – Reglas de firewall de denegación (Deny), “full” vuelca todas
+AntiVirusWMI – Antivirus registrados (a través de WMI)
+InterestingProcesses – Procesos “interesantes”: productos defensivos y herramientas de administración
+RegistryAutoLogon – Información de inicio de sesión automático (autologon) en el registro
+RegistryAutoRuns – Ejecuciones automáticas (autoruns) en el registro
+DNSCache – Entradas de caché DNS (a través de WMI)
+ARPTable – Lista la tabla ARP actual e información del adaptador (equivalente a arp -a)
+AllTcpConnections – Lista las conexiones TCP actuales y los procesos asociados
+AllUdpConnections – Lista las conexiones UDP actuales y los procesos asociados
+NonstandardProcesses – Procesos con rutas de binarios fuera de C:\Windows\
+Si el usuario está en integridad alta (high integrity), se ejecutan las siguientes acciones adicionales:
 
-SysmonConfig – Sysmon configuration from the registry
-SeatBelt.exe user collects the following user data:
+SysmonConfig – Configuración de Sysmon desde el registro
+SeatBelt.exe user recopila los siguientes datos del usuario:
 
-Checks if Firefox has history files
-Checks if Chrome has history files
-TriageIE – Internet Explorer bookmarks and history, last 7 days
-SavedRDPConnections – Saved RDP connections, including username hints
-RecentRunCommands – Recent “run” commands
-PuttySessions – Interesting settings from any saved Putty configurations
-PuttySSHHostKeys – Saved putty SSH host keys
-RecentFiles – Parsed “recent files” shortcuts, last 7 days
-If the user is in high integrity, these checks are run for ALL users instead of just the current user.
+Comprueba si Firefox tiene archivos de historial
+Comprueba si Chrome tiene archivos de historial
+TriageIE – Marcadores e historial de Internet Explorer, últimos 7 días
+SavedRDPConnections – Conexiones RDP guardadas, incluyendo pistas de nombres de usuario
+RecentRunCommands – Comandos “ejecutar” (run) recientes
+PuttySessions – Ajustes interesantes de cualquier configuración guardada de PuTTY
+PuttySSHHostKeys – Claves de host SSH de PuTTY guardadas
+RecentFiles – Accesos directos analizados de “archivos recientes”, últimos 7 días
+Si el usuario está en integridad alta, estas comprobaciones se ejecutan para TODOS los usuarios en lugar de solo para el usuario actual.
 
-Miscellaneous checks:
+Comprobaciones varias (Miscellaneous checks):
 
-CurrentDomainGroups – The current user’s local and domain groups
-Patches – Installed patches via WMI (takes a bit on some systems)
-LogonSessions – User logon session data
-KerberosTGTData – ALL TEH TGTZ!
-InterestingFiles – “Interesting” files matching various patterns in the user’s folder
-IETabs – Open Internet Explorer tabs
-TriageChrome – Chrome bookmarks and history
-TriageFirefox – Firefox history (no bookmarks)
-RecycleBin – Items in the Recycle Bin deleted in the last 30 days – only works from a user context!
-KerberosTickets – List Kerberos tickets. If elevated, list all grouped by all logon sessions.
-4624Events – 4624 logon events from the security event log
-4648Events – 4648 explicit logon events from the security event log
-SeatBelt.exe all will run ALL enumeration checks, can be combined with full.
+CurrentDomainGroups – Grupos locales y de dominio del usuario actual
+Patches – Parches instalados vía WMI (toma algo de tiempo en algunos sistemas)
+LogonSessions – Datos de sesiones de inicio de sesión de usuario
+KerberosTGTData – ¡TODOS LOS TGTs!
+InterestingFiles – Archivos “interesantes” que coinciden con varios patrones en la carpeta del usuario
+IETabs – Pestañas abiertas de Internet Explorer
+TriageChrome – Marcadores e historial de Chrome
+TriageFirefox – Historial de Firefox (sin marcadores)
+RecycleBin – Elementos en la Papelera de Reciclaje eliminados en los últimos 30 días – ¡solo funciona desde un contexto de usuario!
+KerberosTickets – Lista tickets Kerberos. Si tiene privilegios elevados, lista todos agrupados por todas las sesiones de inicio.
+4624Events – Eventos de inicio de sesión 4624 del registro de eventos de seguridad
+4648Events – Eventos de inicio de sesión explícito 4648 del registro de eventos de seguridad
+SeatBelt.exe all ejecutará TODAS las comprobaciones de enumeración, se puede combinar con full.
 
-SeatBelt.exe [CheckName] [CheckName2] … will run one or more specified checks only (case-sensitive naming!)
+SeatBelt.exe [CheckName] [CheckName2] … ejecutará solo una o más comprobaciones especificadas (¡sensible a mayúsculas y minúsculas!).
 
-SeatBelt.exe [system/user/all/CheckName] full will prevent any filtering and will return complete results. By default, certain checks are filtered (e.g. services NOT in C:\Windows\, etc.)
+SeatBelt.exe [system/user/all/CheckName] full evitará cualquier filtrado y devolverá resultados completos. Por defecto, ciertas comprobaciones están filtradas (ej. servicios que NO están en C:\Windows\, etc.).
 
 
 ###################
@@ -243,7 +243,7 @@ JAWS
 ###################
 HOSTRECON
 ###################
-Also includes PortScan functionality
+También incluye funcionalidad de escaneo de puertos (PortScan)
 
     $Computer = $env:COMPUTERNAME
     $Computer
@@ -671,8 +671,8 @@ Disable the random delay between connection attempts.
 ###################
 Sn0wfall win_enum
 ###################
-Requires accesschk.exe in same folder
-Puts various info into multiple separate files
+Requiere accesschk.exe en la misma carpeta
+Coloca diversa información en múltiples archivos separados
 systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
 hostname
 echo %username%
@@ -819,41 +819,41 @@ def wmic_check():
 ###################
 HostEnum.ps1
 ###################
-Too many lines of code!
-A compilation of multiple system enumeration / situational awareness techniques collected over time. 
+¡Demasiadas líneas de código!
+Una recopilación de múltiples técnicas de enumeración del sistema / conocimiento situacional reunidas a lo largo del tiempo. 
 
-    If system is a member of a domain, it can perform additional enumeration. However, the included domain enumeration is limited with the intention that PowerView, BoodHound, etc will be also be used.
+    Si el sistema es miembro de un dominio, puede realizar enumeración adicional. Sin embargo, la enumeración de dominio incluida es limitada con la intención de que también se utilicen PowerView, BloodHound, etc.
     
-    Report HTML file is written in the format of YYYYMMDD_HHMMSS_HOSTNAME.html in the current working directory.  
+    El archivo de informe HTML se escribe con el formato YYYYMMDD_HHMMSS_HOSTNAME.html en el directorio de trabajo actual.  
 
-    Invoke-HostEnum is Powershell 2.0 compatible to ensure it functions on the widest variety of Windows targets
+    Invoke-HostEnum es compatible con PowerShell 2.0 para asegurar que funcione en la más amplia variedad de objetivos Windows.
 
-    Enumerated Information:
+    Información Enumerada:
     
-    - OS Details, Hostname, Uptime, Installdate
-    - Installed Applications and Patches
-    - Network Adapter Configuration, Network Shares, Listening Ports, Connections, Routing Table, DNS Cache, Firewall Status
-    - Running Processes and Installed Services
-    - Interesting Registry Entries
-    - Local Users, Groups, Administrators 
-    - Personal Security Product Status, AV Processes
-    - Interesting file locations and keyword searches via file indexing
-    - Interesting Windows Logs (User logins)
-    - Basic Domain enumeration (users, groups, trusts, domain controllers, account policy, SPNs)
+    - Detalles del SO, Nombre de host, Tiempo de actividad (Uptime), Fecha de instalación
+    - Aplicaciones y parches instalados
+    - Configuración de adaptadores de red, Recursos compartidos de red, Puertos en escucha, Conexiones, Tabla de enrutamiento, Caché DNS, Estado del firewall
+    - Procesos en ejecución y Servicios instalados
+    - Entradas de registro interesantes
+    - Usuarios locales, Grupos, Administradores 
+    - Estado de productos de seguridad personal, Procesos de Antivirus (AV)
+    - Ubicaciones de archivos interesantes y búsquedas por palabras clave mediante indexación de archivos
+    - Registros (Logs) interesantes de Windows (Inicios de sesión de usuarios)
+    - Enumeración básica de dominio (usuarios, grupos, relaciones de confianza, controladores de dominio, política de cuentas, SPNs)
 
-Functions that you'll use:
+Funciones que usarás:
 Invoke-HostEnum
 .PARAMETER All
-    Executes Local, Domain, and Privesc functions
+    Ejecuta las funciones Local, Domain y Privesc
 .PARAMETER Local
-    Executes the local enumeration functions
+    Ejecuta las funciones de enumeración local
 .PARAMETER Domain
-    Executes the domain enumeration functions
+    Ejecuta las funciones de enumeración de dominio
 .PARAMETER Privesc
-    Executes modified version of PowerUp privilege escalation enumeration (Invoke-AllChecks)
+    Ejecuta una versión modificada de la enumeración de escalada de privilegios de PowerUp (Invoke-AllChecks)
 .PARAMETER Quick
-    Executes a brief initial survey that may be useful when initially accessing a host
-    Only enumerates basic system info, processes, av, network adapters, firewall state, network connections, users, and groups
+    Ejecuta un breve reconocimiento inicial que puede ser útil al acceder inicialmente a un host
+    Solo enumera información básica del sistema, procesos, antivirus, adaptadores de red, estado del firewall, conexiones de red, usuarios y grupos
 Get-SysInfo
 Get-ProcessInfo
 Get-GroupMembership

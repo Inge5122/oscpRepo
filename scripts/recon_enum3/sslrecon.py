@@ -10,75 +10,74 @@ import time
 import argparse
 import pathlib
 
-#See more: https://github.com/nmap/nmap/tree/master/scripts
+# Más información: https://github.com/nmap/nmap/tree/master/scripts
 
-#NSE Documentation
-#Running
-#ssl-cert-intaddr: Reports private IPv4 address found in cert
-#ssl-cert: Retrieves servers SSL cert. Output depends verbosity, -v or -vv
-#ssl-heartbleed: Detection for OpenSSL Heartbleed (CVE-2014-0160) based on ssltest.py
-#ssl-poodle: Checks for SSLv3 CBC ciphers (POODLE CVE-2014-3566)
-#sslv2-drown: Checks for SSLv2, CVE-2015-3197, CVE-2016-0703, CVE-2016-0800 (DROWN)
-#tls-nextprotoneg: Enumerates a TLS servers supported protocols
-#tls-alpn: Enumerates a TLS servers supported application-layer protocols using ALPN
+# Documentación de Scripts NSE
+# En ejecución:
+# ssl-cert-intaddr: Reporta direcciones IPv4 privadas encontradas en el certificado
+# ssl-cert: Obtiene el certificado SSL del servidor. El nivel de detalle depende de -v o -vv
+# ssl-heartbleed: Detección de OpenSSL Heartbleed (CVE-2014-0160) basada en ssltest.py
+# ssl-poodle: Comprueba cifrados CBC en SSLv3 (POODLE CVE-2014-3566)
+# sslv2-drown: Comprueba SSLv2, CVE-2015-3197, CVE-2016-0703, CVE-2016-0800 (DROWN)
+# tls-nextprotoneg: Enumera los protocolos compatibles en un servidor TLS
+# tls-alpn: Enumera protocolos de capa de aplicación compatibles mediante ALPN
 
-#Not Running
-#ssl-ccs-injection: Requires tls.lua. Check if vuln to CCS vulnerability CVE-2014-0224, MitM
-#ssl-date: Retrieves target hosts time and date from TLS ServerHello Response
-#ssl-dh-params: Weak Diffie-Hellman param detection.
-#ssl-enum-ciphers: Repeatedly initiates SSLv3/TLS connection, trying new ciphers
-#ssl-known-key: Checks if SSL cert has fingerprint in db of problematic keys
-#sslv2: Checks for SSLv2 and which ciphers
-#sstp-discover: Check if Secure Socket Tunneling Protocol is supported
+# No en ejecución:
+# ssl-ccs-injection: Requiere tls.lua. Comprueba vulnerabilidad CCS CVE-2014-0224 (MitM)
+# ssl-date: Obtiene fecha y hora del host objetivo mediante TLS ServerHello
+# ssl-dh-params: Detección de parámetros Diffie-Hellman débiles
+# ssl-enum-ciphers: Inicia repetidamente conexiones SSLv3/TLS probando diferentes suites de cifrado
+# ssl-known-key: Comprueba si la huella del certificado figura en listas de claves comprometidas
+# sslv2: Comprueba si soporta SSLv2 y qué cifrados
+# sstp-discover: Comprueba si soporta Secure Socket Tunneling Protocol
 
 def doNmap():
-    print("INFO: Starting nmap sslrecon for %s:%s" % (ip_address, port))
+    print("INFO: Iniciando sslrecon con nmap para %s:%s" % (ip_address, port))
     subprocess.check_output(['nmap','-n','-sV','-Pn','-vv','-p',port,'--script','banner,ssl-cert-intaddr,ssl-cert,ssl-heartbleed,ssl-poodle,sslv2-drown,tls-nextprotoneg,tls-alpn','-oA','%s/%s_%s_ssl' % (BASE, ip_address, port),ip_address],encoding='utf8')
-    print("INFO: Finished nmap sslecon for %s:%s" % (ip_address, port))
+    print("INFO: Finalizado sslrecon con nmap para %s:%s" % (ip_address, port))
     return
 
-# --xml_out=XML_FILE        writes results to XML document
-# --targets_in=TARGETS_IN   reals a list of targets. host:port per line
-# --https_tunnel            tunnel through proxy. http://USER:PW@HOST:PORT
-# --starttls                performs StartTLS. should be smtp, xmpp, xmpp_server, pop3, ftp, imap, ldap, rdp, postgres, auto
-# --quiet                   hide standard outputs
-# --regular                 shortcut for --slv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --regen --resum --certinfo=basic --http_get --hide_rejected_ciphers --compression -heartbleed
-# --certinfo                no longer takes a value
+# --xml_out=XML_FILE        escribe resultados en documento XML
+# --targets_in=TARGETS_IN   lee lista de objetivos: host:puerto por línea
+# --https_tunnel            túnel a través de proxy: http://USER:PW@HOST:PORT
+# --starttls                ejecuta StartTLS: smtp, xmpp, xmpp_server, pop3, ftp, imap, ldap, rdp, postgres, auto
+# --quiet                   oculta salida estándar
+# --regular                 atajo para --slv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --regen --resum --certinfo=basic --http_get --hide_rejected_ciphers --compression -heartbleed
+# --certinfo                no requiere valor
 def doSslyze():
-    print("INFO: Starting sslyze for %s:%s" % (ip_address, port))
+    print("INFO: Iniciando sslyze para %s:%s" % (ip_address, port))
     sslyze_outfile = "%s/%s_%s_sslyze" % (BASE,ip_address,port)
     try:
         subprocess.run(['sslyze','--regular','--certinfo','%s:%s' % (ip_address,port)],encoding='utf8',stdout=sslyze_outfile)
     except Exception as e:
         print(type(e))
-        print("Unexpected error in doSslyze in SSLrecon")
-    print("INFO: Finished sslyze for %s:%s" % (ip_address, port))
+        print("Error inesperado en doSslyze en SSLrecon")
+    print("INFO: Finalizado sslyze para %s:%s" % (ip_address, port))
     return
 
-# --targets=<file>
-#--show-certificate
+# --targets=<archivo>
+# --show-certificate
 def doSslscan():
-    print("INFO: Starting sslcan for %s:%s" % (ip_address, port))
+    print("INFO: Iniciando sslscan para %s:%s" % (ip_address, port))
     sslscan_outfile = "%s/%s_%s_sslscan" % (BASE,ip_address,port)
     try:
         subprocess.run(['sslscan','--show-certificate','--no-color','%s:%s' % (ip_address,port)],encoding='utf8',stdout=sslscan_outfile)
     except Exception as e:
         print(type(e))
-        print("Unexpected error in doSslscan in SSLRecon")
-    print("INFO: Finished sslscan for %s:%s" % (ip_address, port))
+        print("Error inesperado en doSslscan en SSLRecon")
+    print("INFO: Finalizado sslscan para %s:%s" % (ip_address, port))
     return
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
 
-
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description='Rough script to handle ssl enumeration, cert grab, cipher enum, etc. Usage: sslrecon.py {--nosslyze} ip_address port')
-    parser.add_argument('ip_address', help="Target IP")
-    parser.add_argument('port', help="Port to run scripts against")
-    parser.add_argument('--nosslyze', default=False, help="Pass --nosslyze True to NOT run sslyze. It will run by default")
-    parser.add_argument('--nosslscan', default=False, help="Pass --nosslscan True to NOT run sslscan. It will run by default")
+    parser = argparse.ArgumentParser(description='Script para gestionar enumeración SSL, obtención de certificados, cifrados, etc. Uso: sslrecon.py {--nosslyze} ip_address port')
+    parser.add_argument('ip_address', help="IP objetivo")
+    parser.add_argument('port', help="Puerto contra el cual ejecutar los scripts")
+    parser.add_argument('--nosslyze', default=False, help="Pasar --nosslyze True para NO ejecutar sslyze. Se ejecuta por defecto")
+    parser.add_argument('--nosslscan', default=False, help="Pasar --nosslscan True para NO ejecutar sslscan. Se ejecuta por defecto")
 
     args = parser.parse_args()
     ip_address = args.ip_address
@@ -86,7 +85,7 @@ if __name__=='__main__':
 
     BASE = "/root/scripts/recon_enum/results/exam/ssl"
 
-    #make sure path is created
+    # Asegurar que la ruta esté creada
     mkdir_p(BASE)
 
     doNmap()

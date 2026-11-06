@@ -9,76 +9,75 @@ import multiprocessing
 from multiprocessing import Process
 import argparse
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
 
-#NSE Documentation
-#Running
-#http-adobe-coldfusion-apsa1301: Exploit an auth bypass in Coldfusion
-#http-awstatstotals-exec: Exploits RCE in Awstats Totals 1-1.14
-#http-axis2-dir-traversal: Exploits a dirTrav vuln in Apache Axis2 version 1.4.1
-#http-barracuda-dir-traversal: Attempts to retrieve conf from Barracuda Networks Spam & Virus Firewall using DirTrav
-#http-coldfusion-subzero: Retrieve version, abs path of admin panel from vulnerable ColdFusion 9 and 10
-#http-csrf: Detects CSRF (possibly unreliable)
-#http-dombased-xss: Looks where attacker-controlled info in DOM may be used to affect JavaScript
-#http-drupal-enum-users: Enumerates Drual users by exploiting information disclosure vuln
-#http-frontpage-login: Checks whether target machiens are vuln to anonymous Frontpage login
-#http-iis-webdav-vuln: IIS vuln 5.1/6.0 access to secured WebDAV folders
-#http-litespeed-sourcecode-download: Exploits null-byte poisoning in Litespeed 4-4.0.15
-#http-majordomo2-dir-traversal: Exploits dirTrav in Majordomo2
-#http-open-redirect: Spiders and attempts to identify open redirects
-#http-phpmyadmin-dir-traversal: Exploits dirTrav in phpMyAdmin 2.6.4
-#http-shellshock: Attempt to exploit CVE-2014-6271 and CVE-2014-7169 Shellshock vulnerability in web applications http-shellshock.uri=/
-#http-sql-injection: Very basic attempt to show SQL errors in forms.
-#http-vmware-path-vuln: Checks for dirTrav in VMWare ESX, ESXi, and Server (2009)
-#http-vuln-cve2006-3392: Webmin before 1.290 and Usermin before 1.220 file disclosure using %01
-#http-vuln-cve2009-3960: Adobe XML External Entity Injection. Read local files in BlazeDS <3.2, LiveCycle 8.0.1 8.2.1 and 9, LiveCycleData Services 2.5.1 2.6.1 and 3, Flex Data Service 2.0.1 and ColdFusion 7.0.2 8.0 8.0.1 and 9.0
-#http-vuln-cve2010-0738: JBoss target is vulnerable to JMX console auth bypass via HEAD request
-#http-vuln-cve2010-2861: Dir trav against ColdFusion to grab password hash for admin, use hidden salt to crate SHA1 hash and authenticate as admin (ColdFusion pass the hash)
-#http-vuln-cve2011-3368: Reverse Proxy Bypass vuln in Apache. Loopback test, internal hosts test,  external website test
-#http-vuln-cve2012-1823: PHP-CGI installations that are vuln to this cve. Retrieve source code and execute code. append multiple ?
-#http-vuln-cve2013-0156: Ruby on Rails object injection, remote command exec, and DoS. All Ruby < 2.3.15, 3.0.x - 3.0.19, 3.1.x - 3.1.10, and 3.2.x - 3.2.11 are vuln. If 500 response, likely vulnerable
-#http-vuln-cve2013-7091: Zimbra 7.2.6 local file inclusion
-#http-vuln-cve2014-2126: Cisco ASA ASDM Priv Esc
-#http-vuln-cve2014-2127: Cisco ASA ASDM Priv Esc
-#http-vuln-cve2014-2128: Cisco ASA SSL VPN Auth bypass
-#http-vuln-cve2014-3704: Drupalgeddon < 7.32, injects new admin and attempt to log in
-#http-vuln-cve2014-8877: Wordpress CM Download Manager plugin <= 2.0.0 remote code injection
-#http-vuln-cve2015-1427: Elasticsearch 1.3.0-1.3.7 1.4.0-1.4.2 RCE in groovy
-#http-vuln-cve2015-1635: RCE in Windows Systems. HTTP request with no impact on the system to detect. Win 7,8,8.1 and server 2012,2012R2
-#http-vuln-cve2017-1001000: Wordpress 4.7.0 4.7.1 priv esc
-#http-vuln-cve2017-5638: Apache Struts RCE
-#http-vuln-cve2017-5689: Intel AMT priv esc
-#http-vuln-cve2017-8917: Joomla 3.7 - 3.7.1 SQLi
-#http-vuln-misfortune-cookie: RomPager 4.07 Misfortune Cookie RCE
-#http-vuln-wnr1000-creds: WNR admin creds 1.0.260_60-0.86 and 1.0.2.54_60.0.82
+# Documentación de Scripts NSE
+# En ejecución:
+# http-adobe-coldfusion-apsa1301: Omisión de autenticación en Coldfusion
+# http-awstatstotals-exec: Ejecución remota de comandos en Awstats Totals 1-1.14
+# http-axis2-dir-traversal: Vulnerabilidad de directory traversal en Apache Axis2 versión 1.4.1
+# http-barracuda-dir-traversal: Intenta obtener archivos de configuración de Barracuda Networks Spam & Virus Firewall
+# http-coldfusion-subzero: Obtiene versión y ruta absoluta del panel de administración en ColdFusion 9 y 10 vulnerables
+# http-csrf: Detección de CSRF
+# http-dombased-xss: Busca dónde la entrada en el DOM puede ser manipulada para inyectar JavaScript
+# http-drupal-enum-users: Enumera usuarios de Drupal mediante divulgación de información
+# http-frontpage-login: Comprueba acceso anónimo en Frontpage
+# http-iis-webdav-vuln: Vulnerabilidad en IIS 5.1/6.0 con acceso a carpetas WebDAV protegidas
+# http-litespeed-sourcecode-download: Explota envenenamiento por byte nulo en Litespeed 4-4.0.15
+# http-majordomo2-dir-traversal: Explota directory traversal en Majordomo2
+# http-open-redirect: Rastrea e intenta identificar redirecciones abiertas
+# http-phpmyadmin-dir-traversal: Explota directory traversal en phpMyAdmin 2.6.4
+# http-shellshock: Intenta explotar Shellshock (CVE-2014-6271 y CVE-2014-7169) en aplicaciones web http-shellshock.uri=/
+# http-sql-injection: Comprobación básica para provocar errores SQL en formularios
+# http-vmware-path-vuln: Comprueba directory traversal en VMWare ESX, ESXi y Server (2009)
+# http-vuln-cve2006-3392: Divulgación de archivos en Webmin < 1.290 y Usermin < 1.220 usando %01
+# http-vuln-cve2009-3960: Inyección XXE en Adobe. Lee archivos locales en BlazeDS <3.2, LiveCycle y ColdFusion
+# http-vuln-cve2010-0738: Omisión de autenticación en consola JMX de JBoss mediante petición HEAD
+# http-vuln-cve2010-2861: Directory traversal en ColdFusion para obtener hash de contraseña de admin
+# http-vuln-cve2011-3368: Omisión de Proxy Reverso en Apache. Prueba de loopback, hosts internos y sitio externo
+# http-vuln-cve2012-1823: Instalaciones PHP-CGI vulnerables para obtener código fuente y ejecutar comandos
+# http-vuln-cve2013-0156: Inyección de objetos en Ruby on Rails, ejecución de comandos remotos y DoS
+# http-vuln-cve2013-7091: Inclusión local de archivos (LFI) en Zimbra 7.2.6
+# http-vuln-cve2014-2126: Escalada de privilegios en Cisco ASA ASDM
+# http-vuln-cve2014-2127: Escalada de privilegios en Cisco ASA ASDM
+# http-vuln-cve2014-2128: Omisión de autenticación en Cisco ASA SSL VPN
+# http-vuln-cve2014-3704: Drupalgeddon < 7.32, inyecta nuevo usuario administrador e intenta inicio de sesión
+# http-vuln-cve2014-8877: Inyección remota de código en plugin CM Download Manager <= 2.0.0 de Wordpress
+# http-vuln-cve2015-1427: RCE en Elasticsearch 1.3.0-1.3.7 y 1.4.0-1.4.2 mediante motor Groovy
+# http-vuln-cve2015-1635: RCE en sistemas Windows mediante HTTP.sys (Win 7, 8, 8.1 y Server 2012, 2012R2)
+# http-vuln-cve2017-1001000: Escalada de privilegios en Wordpress 4.7.0 y 4.7.1
+# http-vuln-cve2017-5638: RCE en Apache Struts
+# http-vuln-cve2017-5689: Escalada de privilegios en Intel AMT
+# http-vuln-cve2017-8917: SQLi en Joomla 3.7 - 3.7.1
+# http-vuln-misfortune-cookie: RCE Misfortune Cookie en RomPager 4.07
+# http-vuln-wnr1000-creds: Obtención de credenciales de admin en Netgear WNR1000
 
-
-#Not running
-#http-dlink-backdoor: Detects firmware backdoor on some D-Link routers via User-Agent
-#http-domino-enum-passwords: Enum hashed Domino Internet Passwords (authenticated only)
-#http-huawei-hg5xx-vuln: Detects Huawei modem models vulnerable to information disclosure vulnerabilities
-#http-iis-short-name-brute: (DoS) brute force short names of files and dirs in the root folder of vulnerable IIS servers
-#http-phpself-xss: Crawls for php and texts XSS via
-#http-slowloris-check: (DoS) Checks if vulnerable to Slowloris
-#http-slowloris: (DoS) Execute a slowloris attack
-#http-stored-xss: Spiders forms, posts, and searches for stored XSS
-#http-tplink-dir-traversal: Exploit dirTrav in TP-Link wireless routers
-#http-vuln-cve2011-3192: Denial of service against Apache handling multiple overlapping/simple ranges of a page
-#http-vuln-cve2013-6786: URL redirection and reflected XSS vuln in Allegro RomPager
-#http-vuln-cve2014-2129: Cisco ASA DoS
-#tls-ticketbleed: Detects vulnerable to F5 Ticketbleed (CVE-2016-9244)
+# No en ejecución:
+# http-dlink-backdoor: Detección de puerta trasera en routers D-Link mediante User-Agent
+# http-domino-enum-passwords: Enumera contraseñas hash de Domino (requiere autenticación previa)
+# http-huawei-hg5xx-vuln: Detecta módems Huawei con divulgación de información
+# http-iis-short-name-brute: (DoS) Fuerza bruta de nombres cortos 8.3 de archivos y directorios en IIS
+# http-phpself-xss: Rastrea PHP y prueba XSS mediante PHP_SELF
+# http-slowloris-check: (DoS) Comprueba vulnerabilidad ante Slowloris
+# http-slowloris: (DoS) Ejecuta ataque Slowloris
+# http-stored-xss: Rastrea formularios y prueba XSS almacenado
+# http-tplink-dir-traversal: Directory traversal en routers inalámbricos TP-Link
+# http-vuln-cve2011-3192: Denegación de servicio en Apache por manejo de rangos solapados
+# http-vuln-cve2013-6786: Redirección y XSS reflejado en Allegro RomPager
+# http-vuln-cve2014-2129: Denegación de servicio en Cisco ASA
+# tls-ticketbleed: Detección de Ticketbleed en F5 (CVE-2016-9244)
 
 def standardNmapHTTP(ip_address, port):
-    print("INFO: Performing nmapHttpVulns script scans for %s:%s" % (ip_address, port))
+    print("INFO: Realizando escaneos de script nmapHttpVulns para %s:%s" % (ip_address, port))
     subprocess.run(['nmap','-n','-sV','-Pn','-p',port,'--script=http-adobe-coldfusion-apsa1301,http-awstatstotals-exec,http-axis2-dir-traversal,http-barracuda-dir-traversal,http-coldfusion-subzero,http-csrf,http-dombased-xss,http-drupal-enum-users,http-frontpage-login,http-iis-webdav-vuln,http-litespeed-sourcecode-download,http-majordomo2-dir-traversal,http-open-redirect,http-phpmyadmin-dir-traversal,http-vmware-path-vuln,http-vuln-cve2006-3392,http-vuln-cve2009-3960,http-vuln-cve2010-0738,http-vuln-cve2010-2861,http-vuln-cve2011-3368,http-vuln-cve2012-1823,http-vuln-cve2013-0156,http-vuln-cve2013-7091,http-vuln-cve2014-2126,http-vuln-cve2014-2127,http-vuln-cve2014-2128,http-vuln-cve2014-3704,http-vuln-cve2014-8877,http-vuln-cve2015-1427,http-vuln-cve2015-1635,http-vuln-cve2017-1001000,http-vuln-cve2017-5638,http-vuln-cve2017-5689,http-vuln-cve2017-8917,http-vuln-misfortune-cookie,http-vuln-wnr1000-creds,vulners',ip_address,'-oA',outfile],encoding='utf8')
     return
 
-#running
-#http-shellshock.nse: Attempt to exploit CVE-2014-6271 and CVE-2014-7169 Shellshock vulnerability in web applications http-shellshock.uri=/
-#http-sql-injection.nse: Very basic attempt to show SQL errors in forms. http-sql-injection.url=URLs relative to the scanned host ie /default.html
-#for status 200 in urls if the file exists
+# En ejecución:
+# http-shellshock.nse: Comprueba Shellshock (CVE-2014-6271 y CVE-2014-7169) en endpoints http-shellshock.uri=/
+# http-sql-injection.nse: Detección básica de errores SQL en formularios
+# Para cada URL con estado 200 si el archivo existe
 def shellshockSQL(ip_address, port):
     f = open(outfile2,'w')
     try:
@@ -86,17 +85,17 @@ def shellshockSQL(ip_address, port):
             g = open(STAT_200,'r')
     except Exception as e:
         print(type(e))
-        print('shellshockSQL in nmapHttpVulns')
+        print('shellshockSQL en nmapHttpVulns')
     for item in g:
-        item = item.split(" ")[0] #line is url [status ] etc, need to split
+        item = item.split(" ")[0] # la línea contiene URL [status ], dividimos
         if "\n" in item:
             item = item[:-1]
         nmapArg = item.split(port)[1]
         if nmapArg[0] != "/":
             nmapArg = "/" + nmapArg
         if '"' or "'" in nmapArg:
-            continue #arg will/could break out and error script
-        results = subprocess.check_output(['nmap','-n','-sV','-Pn','-p',port,'--script=http-shellshock,http-sql-injection','--script-args',"http-sql-injection.url='%s',http-shellsock.uri='%s'" % (nmapArg,nmapArg),ip_address],encoding='utf8') #'-oA',outfile2
+            continue # evitar caracteres que rompan el argumento del script
+        results = subprocess.check_output(['nmap','-n','-sV','-Pn','-p',port,'--script=http-shellshock,http-sql-injection','--script-args',"http-sql-injection.url='%s',http-shellsock.uri='%s'" % (nmapArg,nmapArg),ip_address],encoding='utf8')
         f.write("URL " + nmapArg + "\n")
         f.write(results)
     g.close()
@@ -105,24 +104,24 @@ def shellshockSQL(ip_address, port):
 
 if __name__=='__main__':
 
-    parser = argparse.ArgumentParser(description='Rough script to handle enumeration of specific web vulnerabilities. A list of (valid) URLs should be used. Usage: webRecon.py URL_List <http(s)://target_url:port>')
-    parser.add_argument('URL_List',help='This should be a file of valid (preferably status 200) URLs')
-    parser.add_argument('url', help='This should be the target URL in http(s)://URL:PORT format')
+    parser = argparse.ArgumentParser(description='Script para gestionar la enumeración de vulnerabilidades web específicas. Se recomienda usar una lista de URLs válidas. Uso: nmapHttpVulns.py Lista_URLs <http(s)://url_objetivo:puerto>')
+    parser.add_argument('URL_List',help='Archivo con URLs válidas (preferiblemente con código de respuesta 200)')
+    parser.add_argument('url', help='URL objetivo en formato http(s)://URL:PUERTO')
 
     args=parser.parse_args()
 
-    #Fix URL if "http(s)" is not pased in
+    # Validar formato URL:PUERTO
     if len(args.url.split(":")) == 0 or len(args.url.split(":")) == 1:
-        print("Need to specify URL:PORT")
+        print("Se requiere especificar URL:PUERTO")
         sys.exit(1)
     elif ("https" in args.url):
         tmp = args.url.split("https://")
-        if len(tmp) == 2: #https:// and IP:port
+        if len(tmp) == 2:
             if len(tmp[1].split(":")) == 2:
                 ip_address = tmp[1].split(":")[0]
                 port = tmp[1].split(":")[1]
             else:
-                print("Need to specify URL:PORT")
+                print("Se requiere especificar URL:PUERTO")
                 sys.exit(1)
     elif ("http" in args.url):
         tmp = args.url.split("http://")
@@ -131,7 +130,7 @@ if __name__=='__main__':
                 ip_address = tmp[1].split(":")[0]
                 port = tmp[1].split(":")[1]
             else:
-                print("Need to specify URL:PORT")
+                print("Se requiere especificar URL:PUERTO")
                 sys.exit(1)
     else:
         tmp = args.url.split(":")
@@ -140,17 +139,10 @@ if __name__=='__main__':
             port = tmp[1]
 
     BASE = "/root/scripts/recon_enum/results/exam/http"
-    DIRB_BASE = "/root/scripts/recon_enum/results/exam/dirb/%s" % (port) #WARNING THIS CHANGES AFTER dirbustEVERYTHING SORTS INTO FOLDER
+    DIRB_BASE = "/root/scripts/recon_enum/results/exam/dirb/%s" % (port)
     STAT_200 = args.URL_List
-    #STAT_200 = "%s/stat200_%s_%s" % (DIRB_BASE, ip_address, port) #ip_address is typically used (by defaut), but a user can specify
-    #STAT_200_SORTED = "%s/%s/stat200_%s_%s" % (DIRB_BASE,ip_address,ip_address,port)
     outfile = "%s/%s_%s_nmap_HttpVulns.txt" % (BASE, ip_address, port)
     outfile2 = "%s/%s_%s_nmap_HttpVulns_SS_SQL.txt" % (BASE, ip_address, port)
 
     standardNmapHTTP(ip_address, port)
     shellshockSQL(ip_address, port)
-    # while not os.path.isfile(STAT_200) and not os.path.isfile(STAT_200_SORTED):
-        # time.sleep(5)
-    # else:
-        # shellshockSQL(ip_address, port)
-        # print "INFO: nmapHttpVulns complete"

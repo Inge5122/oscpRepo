@@ -4,61 +4,58 @@ import sys
 import argparse
 import pathlib
 
-#NSE Documentation
-#Running
-#ms-sql-dac: queries for the DAC (admin) port of an instance
-#ms-sql-dump-hashes: dump hashes in format for john. requires admin.
-#ms-sql-empty-password: attempts to auth using empty password for the 'sa' account.
-#ms-sql-info: query browser server (UDP 1434) for info. no auth required.
-#ms-sql-ntlm-info: enum info from services with NTLM auth enabled
+# Documentación de Scripts NSE
+# En ejecución:
+# ms-sql-dac: consulta el puerto DAC (administración) de una instancia
+# ms-sql-dump-hashes: extrae hashes en formato para John the Ripper (requiere admin)
+# ms-sql-empty-password: intenta autenticación con contraseña vacía para la cuenta 'sa'
+# ms-sql-info: consulta al servidor de búsqueda (UDP 1434) para información (sin autenticación)
+# ms-sql-ntlm-info: enumera información de servicios con autenticación NTLM habilitada
 
-#Not Running
-#ms-sql-brute: brute
-#ms-sql-config: queries for databases, linked servers, settings. auth required.
-#ms-sql-hasdbaccess: queries for list of databases a user has access to. auth required.
-#ms-sql-query: runs a query against server. auth required.
-#ms-sql-tables: queries for a list of tables per database. auth required.
-#ms-sql-xp-cmdshell: runs a command. requires admin. args 'username''password''cmd'
+# No en ejecución:
+# ms-sql-brute: fuerza bruta de credenciales
+# ms-sql-config: consulta bases de datos, servidores vinculados y configuraciones (requiere autenticación)
+# ms-sql-hasdbaccess: lista de bases de datos a las que tiene acceso el usuario (requiere autenticación)
+# ms-sql-query: ejecuta consulta contra el servidor (requiere autenticación)
+# ms-sql-tables: lista tablas por base de datos (requiere autenticación)
+# ms-sql-xp-cmdshell: ejecución de comandos en el sistema (requiere admin)
 def doNmap():
-    print("INFO: Performing nmap MSSQL script scan for %s:%s" % (ip_address, port))
-    #MSSQLSCAN = "nmap -n -sV -Pn -vv -p %s --script=banner,ms-sql-empty-password,ms-sql-dac,ms-sql-dump-hashes,ms-sql-info,ms-sql-ntlm-info,vulners -oA '/root/scripts/recon_enum/results/exam/mssql/%s_mssql.nmap' %s" % (port, ip_address, ip_address)
-    #results = subprocess.check_output(MSSQLSCAN, shell=True)
+    print("INFO: Realizando escaneo de scripts MSSQL con nmap para %s:%s" % (ip_address, port))
     try:
         subprocess.check_output(['nmap','-n','-sV','-Pn','-vv','-p',port,'--script=banner,ms-sql-empty-password,ms-sql-dac,ms-sql-dump-hashes,ms-sql-info,ms-sql-ntlm-info,vulners','-oA',"%s/%s_%s_mssql" % (BASE,ip_address,port),ip_address],encoding='utf8')
     except Exception as e:
         print(type(e))
-        print("Unknown error in doNmap in mssqlrecon")
+        print("Error desconocido en doNmap en mssqlrecon")
 
-#Hydra meant to do weak brute/spray, not extensive
-#run manually for extensive brute
+# Hydra configurado para spray rápido
 def doHydra():
-    print("INFO: Performing hydra mssql scan against %s" % (ip_address))
+    print("INFO: Realizando escaneo MSSQL con Hydra contra %s" % (ip_address))
     try:
         hydra_outfile = '%s/%s_%s_mssqlhydra.txt' % (BASE,ip_address,port)
         subprocess.check_output(['hydra','-L','/root/lists/userlist_sqlbrute.txt','-P','/root/lists/quick_password_spray.txt','-f','-o',hydra_outfile,'-u',ip_address,'-s',port,'mssql'])
         with open(hydra_outfile,'r') as h:
             for result in h:
                 if "login:" in result:
-                    print("[*] Valid mssql credentials found: %s" % (result))
+                    print("[*] Credenciales MSSQL válidas encontradas: %s" % (result))
     except subprocess.CalledProcessError as hydrerr:
         if hydrerr.returncode == 255:
-            print("Hydra broke early with status 255, it must have found something! Check mssqlhydra for output.")
+            print("Hydra finalizó antes con código 255, ¡debe haber encontrado algo! Revisa mssqlhydra para ver la salida.")
         elif hydrerr.returncode != 0:
-            print("Hydra broke:")
+            print("Hydra falló:")
             print(hydrerr.returncode)
             print(hydrerr.output)
         else:
-            print("INFO: No valid mssql credentials found")
+            print("INFO: No se encontraron credenciales MSSQL válidas")
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
 
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description='Rough script to handle checking MSSQL endpoints. Usage: mssqlrecon.py {options} <ip address> <port>')
-    parser.add_argument('ip_address', help="Ip address of target windows machine")
-    parser.add_argument('port', help="Specific port to enumerate")
-    parser.add_argument('--hydra', default=False, action='store_true', dest='hydra', help="Specify to run hydra")
+    parser = argparse.ArgumentParser(description='Script para verificar endpoints MSSQL. Uso: mssqlrecon.py {opciones} <dirección_ip> <puerto>')
+    parser.add_argument('ip_address', help="Dirección IP de la máquina Windows objetivo")
+    parser.add_argument('port', help="Puerto específico a enumerar")
+    parser.add_argument('--hydra', default=False, action='store_true', dest='hydra', help="Especificar para ejecutar Hydra")
     args = parser.parse_args()
 
     ip_address = args.ip_address
@@ -71,4 +68,4 @@ if __name__=='__main__':
     if args.hydra:
         doHydra()
 
-    print("[INFO] TTP, also check powerupsql for other MSSQL enumeration/techniques")
+    print("[INFO] TTP: también revisa PowerUpSQL para otras técnicas y enumeraciones en MSSQL")

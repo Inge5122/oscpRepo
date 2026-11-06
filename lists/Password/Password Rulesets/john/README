@@ -1,3 +1,3 @@
-Credit to: https://www.gracefulsecurity.com/custom-rules-for-john-the-ripper-examples/
-Add the rules to your john.conf file. You can call them with --rules=Try, --rules=TryHarder, --rule=BeBrutal
-Or you can include it in your john.conf file with: include <john_additions.conf>
+Créditos a: https://www.gracefulsecurity.com/custom-rules-for-john-the-ripper-examples/
+Añade las reglas a tu archivo john.conf. Puedes invocarlas con --rules=Try, --rules=TryHarder, --rule=BeBrutal
+O puedes incluirlo en tu archivo john.conf con: include <john_additions.conf>

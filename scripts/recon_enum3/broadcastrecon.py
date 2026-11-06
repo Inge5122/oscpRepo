@@ -8,65 +8,64 @@ from multiprocessing import Process
 import pathlib
 import argparse
 
-#NSE Documentation
-#Running
-#broadcast-ataoe-discover: discover servers supporting ATA over ethernet. requires "-e <interface>"
-#broadcast-bjnp-discover: Discover Canon (printer/scanner) supporting BJNP
-#broadcast-db2-discover: attempt to discover DB2 servers on network by sending broadcast to UDP 523
-#broadcast-dhcp-discover: send DHCP request to broadcast address and reports results
-#broadcast-dhcp6-discover: send DHCPv6 request to multicast and prints address with any other options
-#broadcast-dns-service-discovery: discover hosts' services using DNS Service Discovery Protocol
-#broadcast-dropbox-listener: Listen for LAN sync Dropbox client broadcasts (already doing broadcast-listener)
-#broadcast-eigrp-discovery: discover through CISCO's EIGRP, needs a A.S. value or will listen
-#broadcast-igmp-discovery: Discovers targets that have IGMP Multicast memberships and grabs interesting information
-#broadcast-listener: sniffs for broadcast communication and attempts to decode received packets, CDP, HSRP, Spotify, DropBox, DHCP, ARP and more
-#broadcast-ms-sql-discover: broadcast version uses roadcast and only SQL Server Browser service discovery method.
-#broadcast-netbios-master-browser: attempt to discovery master browser and the domains they manage
-#broadcast-networker-discover: Discovers EMC Networker backup software servers by sending broadcast query
-#broadcast-novell-locate: Attempts to use Service Location Protocol to discover Novell NetWare Core Protocol (NCP) servers
-#broadcast-ospf2-discover: discover IPv4 network using OSPFv2, sniff for OSPF Hello packets and reply
-#broadcast-pc-anywhere: sends a special broadcast to check for PC Anywhere hosts
-#broadcast-pc-duo: Discovers PC-DUO remote control hosts and gateways by sending broadcast probe
-#broadcast-pim-discovery: Discovers routers that are running PIM (protocol Independent Multicast)
-#broadcast-ping: Sends broadcast pings and outputs responding hosts IP and MAC
-#broadcast-pppoe-discover: Discovers PPPoE servers using PPPoE Discovery protocol
-#broadcast-rip-discover: discover hosts and routing using RIPv2. Send RIPv2 Request and collects responses
-#broadcast-ripng-discover: Discovers hosts and routing information from devices running RIPng
-#broadcast-sonicwall-discover: Discovers Sonicwall firewalls using same method as manufacturers SetupTool
-#broadcast-sybase-asa-discover: Discovers Sybase Anywhere Servers on LAN
-#broadcast-tellstick-discover: Discovers Telldus Technologies TellStickNet
-#broadcast-upnp-info: attempt to extract system information from UPnP service by sending multicast and collecting
-#broadcast-versant-locate: Discovers Versant object databases using broadcast srvloc
-#broadcast-wake-on-lan: Wakes a remote system from sleep using WoL packet
-#broadcast-wpad-discover: Retrieve a list of proxy servers on lan using WPAD. Both DHCP and DNS methods.
-#broadcast-wsdd-discover: multicast discover supporting Web Services Dynamic Discovery protocol.
-#broadcast-xdmcp-discover: discovers servers running XDMCP
-#url-snarf: Sniff interface for HTTP traffic and dumps URLs
-#targets-sniffer: Sniff interface for IP addresses
-#lltd-discovery: Use Microsoft LLTD protocol to discover hosts on a local network
+# Documentación de Scripts NSE
+# En ejecución:
+# broadcast-ataoe-discover: descubre servidores compatibles con ATA sobre Ethernet. Requiere "-e <interfaz>"
+# broadcast-bjnp-discover: descubre impresoras/escáneres Canon compatibles con BJNP
+# broadcast-db2-discover: intenta descubrir servidores DB2 en la red enviando broadcast a UDP 523
+# broadcast-dhcp-discover: envía solicitud DHCP a la dirección broadcast y reporta los resultados
+# broadcast-dhcp6-discover: envía solicitud DHCPv6 a multicast e imprime la dirección con sus opciones
+# broadcast-dns-service-discovery: descubre servicios de hosts usando el protocolo DNS Service Discovery
+# broadcast-dropbox-listener: escucha transmisiones de sincronización LAN de clientes Dropbox (ya cubierto por broadcast-listener)
+# broadcast-eigrp-discovery: descubre mediante EIGRP de CISCO; requiere valor de AS o se pondrá a la escucha
+# broadcast-igmp-discovery: descubre objetivos con membresías IGMP Multicast y obtiene información de interés
+# broadcast-listener: captura tráfico broadcast e intenta decodificar paquetes recibidos: CDP, HSRP, Spotify, DropBox, DHCP, ARP y más
+# broadcast-ms-sql-discover: versión broadcast que utiliza descubrimiento únicamente mediante SQL Server Browser service
+# broadcast-netbios-master-browser: intenta descubrir el master browser y los dominios que gestiona
+# broadcast-networker-discover: descubre servidores de respaldo EMC Networker mediante consulta broadcast
+# broadcast-novell-locate: intenta usar Service Location Protocol para descubrir servidores Novell NetWare Core Protocol (NCP)
+# broadcast-ospf2-discover: descubre redes IPv4 usando OSPFv2, capturando paquetes OSPF Hello y respondiendo
+# broadcast-pc-anywhere: envía un broadcast especial para comprobar hosts PC Anywhere
+# broadcast-pc-duo: descubre hosts de control remoto y pasarelas PC-DUO enviando sondeo broadcast
+# broadcast-pim-discovery: descubre enrutadores que ejecutan PIM (Protocol Independent Multicast)
+# broadcast-ping: envía pings broadcast y muestra las direcciones IP y MAC de los equipos que responden
+# broadcast-pppoe-discover: descubre servidores PPPoE mediante el protocolo PPPoE Discovery
+# broadcast-rip-discover: descubre hosts y enrutamiento usando RIPv2. Envía solicitud RIPv2 y recopila respuestas
+# broadcast-ripng-discover: descubre hosts e información de enrutamiento de dispositivos que ejecutan RIPng
+# broadcast-sonicwall-discover: descubre firewalls Sonicwall usando el mismo método que SetupTool del fabricante
+# broadcast-sybase-asa-discover: descubre servidores Sybase Anywhere en la red local
+# broadcast-tellstick-discover: descubre dispositivos Telldus Technologies TellStickNet
+# broadcast-upnp-info: intenta extraer información del sistema desde el servicio UPnP enviando multicast y recolectando
+# broadcast-versant-locate: descubre bases de datos orientadas a objetos Versant usando broadcast srvloc
+# broadcast-wake-on-lan: despierta un sistema remoto mediante paquete WoL
+# broadcast-wpad-discover: recupera una lista de servidores proxy en la LAN mediante WPAD por métodos DHCP y DNS
+# broadcast-wsdd-discover: descubrimiento multicast compatible con el protocolo Web Services Dynamic Discovery
+# broadcast-xdmcp-discover: descubre servidores que ejecutan XDMCP
+# url-snarf: captura tráfico HTTP en la interfaz y extrae URLs
+# targets-sniffer: analiza la interfaz en busca de direcciones IP
+# lltd-discovery: utiliza el protocolo LLTD de Microsoft para descubrir hosts en la red local
 
-#Not Running
-#broadcast-avahi-dos: Exploits DoS
-#broadcast-jenkins-discover:  #### DOES NOT EXIST ON KALI #### Discovers Jenkins on a LAN by sending a discovery broadcast probe
-#broadcast-hid-discoveryd:  #### DOES NOT EXIST ON KALI #### Discovers HID devices by sending a discoveryd network broadcast probe
-#llmnr-resolve: Resolve a hostname using LLMNR. Requires -script-arg llmnr-resolve.hostname=examplename
+# No en ejecución:
+# broadcast-avahi-dos: explota denegación de servicio (DoS)
+# broadcast-jenkins-discover:  #### NO EXISTE EN KALI #### Descubre Jenkins en una LAN mediante sondeo broadcast
+# broadcast-hid-discoveryd:  #### NO EXISTE EN KALI #### Descubre dispositivos HID mediante sondeo broadcast discoveryd
+# llmnr-resolve: resuelve un nombre de host usando LLMNR. Requiere -script-arg llmnr-resolve.hostname=nombre_ejemplo
 def doNmap(interface):
-    print("INFO: Performing nmap broadcast discovery using interface: %s" % (interface))
+    print("INFO: Realizando descubrimiento broadcast con nmap en la interfaz: %s" % (interface))
     subprocess.check_output(['nmap','-vv','--script=broadcast-ataoe-discover,broadcast-bjnp-discover,broadcast-db2-discover,broadcast-dhcp-discover,broadcast-dhcp6-discover,broadcast-dns-service-discovery,broadcast-dropbox-listener,broadcast-eigrp-discovery,broadcast-igmp-discovery,broadcast-listener,broadcast-ms-sql-discover,broadcast-netbios-master-browser,broadcast-networker-discover,broadcast-novell-locate,broadcast-ospf2-discover,broadcast-pc-anywhere,broadcast-pc-duo,broadcast-pim-discovery,broadcast-ping,broadcast-pppoe-discover,broadcast-rip-discover,broadcast-ripng-discover,broadcast-sonicwall-discover,broadcast-sybase-asa-discover,broadcast-tellstick-discover,broadcast-upnp-info,broadcast-versant-locate,broadcast-wake-on-lan,broadcast-wpad-discover,broadcast-wsdd-discover,broadcast-xdmcp-discover,url-snarf,targets-sniffer,lltd-discovery','-oA','%s/%s_broadcast' % (BASE,interface),'-e',interface])
-    print("INFO: Completed nmap broadcast discovery using interface: %s" % (interface))
+    print("INFO: Descubrimiento broadcast con nmap completado en la interfaz: %s" % (interface))
     return
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
 
 if __name__=='__main__':
 
-    parser = argparse.ArgumentParser(description='Rough script to handle nmap broadcast recon scripts. Usage: broadcastrecon.py interface')
-    parser.add_argument('interface', help="Interface to enumate/listen on")
+    parser = argparse.ArgumentParser(description='Script para gestionar scripts de reconocimiento broadcast en Nmap. Uso: broadcastrecon.py interfaz')
+    parser.add_argument('interface', help="Interfaz sobre la cual enumerar o escuchar")
 
     args = parser.parse_args()
-    #print args
 
     interface = args.interface
 

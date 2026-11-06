@@ -1,55 +1,58 @@
 # OSCPRepo
 
-This is a list of resources and scripts that I have been gathering (and continuing to gather) in preparation for the OSCP. Now achieved, this repo will continue to grow it's resources for future certifications. These are all free resources on the Internet, so feel free to use however you want to help you in your studies/reference material. If I have taken information from you or your work, please let me know so that I can acknowledge you.
+> [!NOTE]
+> Consulta la **[Caja de Herramientas de Ciberseguridad (CAJA_DE_HERRAMIENTAS.md)](./CAJA_DE_HERRAMIENTAS.md)** para acceder a la guía de instalación en Ubuntu/Debian, herramientas organizadas por fases de auditoría y comandos de uso rápido.
 
-Do you have a million bookmarks saved? Do all of those bookmarks contain unique information? Github repos starred for later?
-I wanted to actually compose and provide a compilation of all of these resources into a single organized notebook. No more need for bookmarked links. No need to open a web browser. Everything will be here for you.
+Esta es una lista de recursos y scripts que he estado recopilando (y continúo recopilando) en preparación para el OSCP. Ahora que lo he obtenido, este repositorio seguirá ampliando sus recursos para futuras certificaciones. Todos estos son recursos gratuitos en Internet, así que siéntete libre de usarlos como quieras para ayudarte en tus estudios o como material de referencia. Si he tomado información tuya o de tu trabajo, por favor házmelo saber para poder darte el crédito correspondiente.
+
+¿Tienes un millón de marcadores guardados? ¿Todos esos marcadores contienen información única? ¿Repositorios de GitHub marcados con estrella para más tarde?
+Quería componer y ofrecer una recopilación real de todos estos recursos en un único cuaderno organizado. Ya no hay necesidad de enlaces guardados en marcadores. No hace falta abrir un navegador web. Todo estará aquí para ti.
 
 # CherryTree
 
-Unable to install KeepNote on Kali-Rolling, the move to CherryTree has happened. Note that the nodes will be jumbled due to the import compared to the KeepNote. Sorting and links will be fixed over time in addition to new content.
+Al no poder instalar KeepNote en Kali-Rolling, se ha realizado la migración a CherryTree. Ten en cuenta que los nodos estarán desordenados debido a la importación en comparación con KeepNote. El ordenamiento y los enlaces se irán corrigiendo con el tiempo, además de añadir contenido nuevo.
 
-# Notable Resources
+# Recursos Destacados
 UsefulCommands.ctb
 
-It contains methodologies, commands, and interesting file locations. This has been moving more and more into BookmarkList. The goal will be to ensure UsefulCommands is just that. UsefulCommands. Man pages, reference material, etc. For walkthroughs and detailed information, head to BookmarkList.
+Contiene metodologías, comandos y ubicaciones de archivos interesantes. Esto se ha ido trasladando cada vez más a BookmarkList. El objetivo será asegurar que UsefulCommands sea exactamente eso: comandos útiles (páginas man, material de referencia, etc.). Para guías paso a paso (walkthroughs) e información detallada, dirígete a BookmarkList.
 
 BookmarkList.ctb
 
-List after list of compiled bookmarks, github pages, blogs, OSCP reviews, tools, and a lot more compiled into an organized list of bookmarks and references I could go back to (offline). Sources for all resources are still there so you can read the material directly if you desire. This is a work in progress and there are sections I have not read through yet and made child-nodes for yet, but it is still incredibly extensive with more work being done (almost) every day (look at the commit history!)
+Lista tras lista de marcadores recopilados, páginas de GitHub, blogs, reseñas de OSCP, herramientas y mucho más, todo reunido en una lista organizada de marcadores y referencias a las que poder recurrir (sin conexión). Las fuentes de todos los recursos siguen ahí para que puedas leer el material directamente si lo deseas. Este es un trabajo en curso y hay secciones que aún no he terminado de leer ni les he creado nodos secundarios, pero aun así es increíblemente extenso y se sigue trabajando en él (casi) todos los días (¡mira el historial de commits!).
 
 ![Parent Nodes](https://github.com/rewardone/OSCPRepo/blob/master/CherryTrees/BookmarkList.png)
 
 Recon_Scan.py
 
-A popular script in python 3 (python 2 for archive purposes). It's goal is to run nmap, identify popular services, pass that discovery on to other scripts for detailed enumeration etc, and then perform a full nmap scan (in case anything was missed). Partial Sparta integration is complete, and setup.sh will move those files for you. Also check out Vanquish. 
+Un script popular en Python 3 (Python 2 para fines de archivo). Su objetivo es ejecutar nmap, identificar servicios populares, pasar ese descubrimiento a otros scripts para una enumeración detallada, etc., y luego realizar un escaneo completo de nmap (en caso de que se haya pasado algo por alto). La integración parcial con Sparta está completa, y `setup.sh` moverá esos archivos por ti. También echa un vistazo a Vanquish.
 
-From the CLI, reconscan gets the job done with a single ./reconscan.py. It is designed to run multithreaded against multiple targets simultaneously if network bandwidth allows. You can adjust the min-rate in the scripts.
+Desde la CLI, reconscan hace el trabajo con un simple `./reconscan.py`. Está diseñado para ejecutarse en múltiples hilos (multithreaded) contra múltiples objetivos simultáneamente si el ancho de banda de la red lo permite. Puedes ajustar el `min-rate` en los scripts.
 
-There is now a setup.sh script in /scripts folder that will clone some required repositories, move folders into place, and should make reconscan ready to go. Recon_Scan has been ported to python 3, but may be rough around the edges. Testing help appreciated.
+Ahora hay un script `setup.sh` en la carpeta `/scripts` que clonará algunos repositorios necesarios, moverá las carpetas a su lugar y dejará a reconscan listo para funcionar. Recon_Scan ha sido portado a Python 3, pero puede tener algunos detalles por pulir. Se agradece la ayuda con las pruebas.
 
 
-# Other Stuff
+# Otras Cosas
 
-Folders mostly speak for themselves. Lists contains a bunch of wordlists (setup.sh will download more). Some methodologies and cheat sheets are downloaded. Some tools and scripts are kept local until they become integrated. You can find local enumeration checkers and privesc checkers in their respective folders (note that these are snapshots and not necessarily the most up-to-date versions of these scripts).
+Las carpetas hablan mayormente por sí solas. `lists` contiene un montón de diccionarios/wordlists (`setup.sh` descargará más). Algunas metodologías y hojas de referencia (cheat sheets) están descargadas. Algunas herramientas y scripts se mantienen de forma local hasta que sean integrados. Puedes encontrar verificadores de enumeración local y de escalada de privilegios (privesc) en sus respectivas carpetas (ten en cuenta que son instantáneas y no necesariamente las versiones más actualizadas de estos scripts).
 
 GetGitHubStars
 
-A quick powershell script that can grab a user's starred repositories and output them to a csv. I wanted to combine them with my own personal comments for a list of all my stars for easier sorting, tagging, etc. Edit commentsToJSON and they will be added to output.csv. Additionally, the script can go and get trending repositories. TODO: add function to star repos in the script; add function to 'blacklist' popular repositories that you no longer want to see.
+Un script rápido de PowerShell que puede obtener los repositorios marcados con estrella de un usuario y exportarlos a un archivo CSV. Quería combinarlos con mis propios comentarios personales para tener una lista de todas mis estrellas y facilitar su clasificación, etiquetado, etc. Edita `commentsToJSON` y se añadirán a `output.csv`. Adicionalmente, el script puede obtener los repositorios en tendencia. Por hacer (TODO): añadir función para marcar repositorios con estrella desde el script; añadir función para poner en 'lista negra' los repositorios populares que ya no quieras ver.
 
-# Latest Changes
-2020 Update: OSCP is now in version 2. I did not buy access to the new material yet, so updates for version 2 are appreciated. I imagine most of the needed material is still included, but could be more streamlined.
+# Últimos Cambios
+Actualización 2020: El OSCP está ahora en la versión 2. Aún no he comprado el acceso al nuevo material, por lo que se agradecen las actualizaciones para la versión 2. Imagino que la mayor parte del material necesario sigue incluido, pero podría optimizarse más.
 
-26 Dec 18: OSCP achieved. This marks a milestone in the repo that all information needed to pass the OSCP is included here in the relevant sections. Although information cannot replace hands-on practice, if you need a place to start diving into a particular piece deeper, it's here or linked here. Reconscan hasn't necessarily 'expanded' as much as it can, but it's been crucial in the labs, exams, hackthebox, and ctfs. Even if you don't want to use the script, look at the modules for commands you should include in your methodology. 
+26 Dic 18: OSCP logrado. Esto marca un hito en el repositorio: toda la información necesaria para aprobar el OSCP está incluida aquí en las secciones correspondientes. Aunque la información no puede reemplazar la práctica real, si necesitas un lugar donde empezar a profundizar en un tema particular, está aquí o enlazado aquí. Reconscan no necesariamente se ha 'expandido' tanto como podría, pero ha sido crucial en los laboratorios, exámenes, HackTheBox y CTFs. Incluso si no quieres usar el script, revisa los módulos para ver los comandos que deberías incluir en tu metodología.
 
-22 Aug 18: BlackHat and Defcon were a blast. There was a lot of bugfixing going on. Scripts are becoming more modular and nicer to work with (say hello to nfs and ldap recon). dirbustEVERYTHING has received a lot of attention including the integration of wfuzz and parameth. You can check which nmap scripts are run and which script they are in with the 'nmap to recon scan mapping' sheet (partially complete because I overwrote the master, but I will finish it again later). Some lists/payloads have been tweaked. 
+22 Ago 18: BlackHat y Defcon fueron increíbles. Hubo mucha corrección de errores. Los scripts se están volviendo más modulares y agradables de usar (saluda al reconocimiento de NFS y LDAP). `dirbustEVERYTHING` ha recibido mucha atención, incluyendo la integración de wfuzz y parameth. Puedes comprobar qué scripts de nmap se ejecutan y en qué script se encuentran con la hoja 'nmap to recon scan mapping' (parcialmente completa porque sobrescribí la maestra, pero la terminaré de nuevo más adelante). Se han ajustado algunas listas y payloads.
 
-21 May 18: Unicornscan and python mutliprocessing don't go well together. Changed everything to Nmap. It's advisable to adjust --min-rate as needed. Some modules added. Banners. dirbEverything logic and wordlists all updated. Nmap has also been changed to run full connect scans sT. Syn scans are too identifiable (though the speed probably doesn't help this script).
+21 May 18: Unicornscan y el multiprocesamiento de Python no se llevan bien. Se cambió todo a Nmap. Es recomendable ajustar `--min-rate` según sea necesario. Se añadieron algunos módulos. Banners. Toda la lógica de `dirbEverything` y los diccionarios han sido actualizados. Nmap también se ha cambiado para ejecutar escaneos de conexión completa (`sT`). Los escaneos SYN son demasiado identificables (aunque la velocidad probablemente no ayude a este script).
 
-10 Apr 18: Updated LinEnum. Most enumeration scripts are not bad even if they haven't been updated in a few years. I was partial to linuxprivchecker.py for a long time; however, I wanted something just in case a machine didn't have python installed. I really like the idea behind pentestmonkey's linux-privesc-check master branch. I even thought about putting work into Lynis or creating a 'pentest' profile. Eventually I chose to update LinEnum due to it being a single file, relatively updated, and already has features like reporting and verbosity level (thorough). Many additional checks, updated version number, etc. Please let me know if you want additional checks included or find bugs. Enjoy.
+10 Abr 18: LinEnum actualizado. La mayoría de los scripts de enumeración no están mal incluso si no se han actualizado en algunos años. Tuve preferencia por `linuxprivchecker.py` durante mucho tiempo; sin embargo, quería algo por si acaso una máquina no tenía Python instalado. Realmente me gusta la idea detrás de la rama master de `linux-privesc-check` de pentestmonkey. Incluso pensé en trabajar en Lynis o crear un perfil de 'pentest'. Finalmente elegí actualizar LinEnum debido a que es un solo archivo, está relativamente actualizado y ya cuenta con funciones como generación de informes y nivel de detalle (thorough). Muchas comprobaciones adicionales, número de versión actualizado, etc. Por favor, házmelo saber si quieres que se incluyan comprobaciones adicionales o si encuentras errores. Disfrútalo.
 
-28 Mar 18: Some minor updates. Included aliverecon which just does an nmap ping scan. Included nbtscan for additional coverage in smbrecon. Reconscan will now backup everything in the exam folder and move it every time it's launched. Please ensure you always have a targets.txt in place.
+28 Mar 18: Algunas actualizaciones menores. Se incluyó `aliverecon`, que simplemente hace un escaneo ping de nmap. Se incluyó `nbtscan` para cobertura adicional en `smbrecon`. Reconscan ahora hará una copia de seguridad de todo en la carpeta `exam` y lo moverá cada vez que se inicie. Por favor, asegúrate de tener siempre un archivo `targets.txt` en su lugar.
 
-4 Mar 18: dirTrav.py as a wrapper for dotdotpwn. It requires a file with a list of URLs to attempt. If it finds anything, it will grab the files listed in the default list (lists/Personal/Misc\ Lists/DirTrav/linux_all.txt). Windows support has not been tested. This script requires a manual invocation. I did not want it to launch automatically from the gobuster results (since there is always a lot of junk and would just increase dirTrav time). Special note, setup.sh alters dotdotpwn so that pressing 'Enter' is not required to start the scan.
+4 Mar 18: `dirTrav.py` como envoltorio (wrapper) para dotdotpwn. Requiere un archivo con una lista de URLs a probar. Si encuentra algo, obtendrá los archivos listados en la lista por defecto (`lists/Personal/Misc\ Lists/DirTrav/linux_all.txt`). El soporte para Windows no ha sido probado. Este script requiere una invocación manual. No quería que se ejecutara automáticamente a partir de los resultados de gobuster (ya que siempre hay mucha basura y solo aumentaría el tiempo de dirTrav). Nota especial: `setup.sh` modifica dotdotpwn para que no sea necesario presionar 'Enter' al iniciar el escaneo.
 
-20 Feb 18: At the least, httpenum, httpsenum, and dirbustEVERYTHING should be able to handle port changes (ie scan and output different ports manually). httpenum and httpsenum might be pulled out and made their own modules. dirbustEVERYTHING now scans for .php and .html extensions and runs cewl to generate a new list for additional enumeration.
+20 Feb 18: Como mínimo, `httpenum`, `httpsenum` y `dirbustEVERYTHING` deberían poder manejar cambios de puerto (es decir, escanear y generar salidas de diferentes puertos manualmente). Es posible que `httpenum` y `httpsenum` se extraigan y se conviertan en sus propios módulos. `dirbustEVERYTHING` ahora busca extensiones `.php` y `.html` y ejecuta `cewl` para generar una nueva lista para enumeración adicional.

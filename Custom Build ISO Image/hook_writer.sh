@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#usage: hook_writer.sh Name_of_Hook directory git_repo
+# Uso: hook_writer.sh Nombre_del_Hook directorio repositorio_git
 
 cat << EOF > $1
 #!/bin/bash

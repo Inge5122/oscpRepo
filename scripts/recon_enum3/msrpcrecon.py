@@ -7,17 +7,15 @@ import argparse
 import socket
 import shutil
 
-# RPCDump is an impacket script. This script will require python3-impacket to be installed, apt install python3-impacket is not enough. Must download and setup.py
+# RPCDump es un script de Impacket. Requiere tener instalado python3-impacket mediante setup.py
 
-# Patch to force ifmap to continue on timeout error instead of raising timeout errors
-# can code this for dynamic check later on (grab the version out of /usr/local/bin/ifmap.py)
-# but would need more checking around patching correctly
+# Parche para forzar que ifmap continúe ante errores de tiempo de espera (timeout) en vez de lanzar excepciones
 def patch_ifmap():
-    #line 329: dce.connect()
+    # línea 329: dce.connect()
     ifmap = '/usr/local/lib/python3.7/dist-packages/impacket-0.9.21.dev1+20200313.160519.0056b61c-py3.7.egg/EGG-INFO/scripts/ifmap.py'
     tmpmap = '/tmp/ifmap.py'
-    sha256sum = 'ca54b5a010df84ef57e39143cb14d86343574ed22efb44b9c40b8a12c9558b4c' #orig file
-    sha256sum_patched = '883d9d9085d67b010eb3ff63699a678101db95e597373b99029ca6d6be5c18ac' #patched
+    sha256sum = 'ca54b5a010df84ef57e39143cb14d86343574ed22efb44b9c40b8a12c9558b4c' # archivo original
+    sha256sum_patched = '883d9d9085d67b010eb3ff63699a678101db95e597373b99029ca6d6be5c18ac' # parchado
     if os.path.isfile(ifmap):
         sha_check = subprocess.run(['sha256sum',ifmap],check=True,stdout=subprocess.PIPE,encoding='utf8').stdout
         sha_check = sha_check.split(' ')[0]
@@ -27,7 +25,7 @@ def patch_ifmap():
         sha_check = subprocess.run(['sha256sum',ifmap],check=True,stdout=subprocess.PIPE,encoding='utf8').stdout
         sha_check = sha_check.split(' ')[0]
         if sha_check == sha256sum:
-            print("Patching ifmap")
+            print("Aplicando parche a ifmap")
             try:
                 f = open(ifmap, 'r')
                 g = open(tmpmap,'w+')
@@ -47,24 +45,22 @@ def patch_ifmap():
                 g.close()
                 shutil.move(tmpmap, ifmap)
             except:
-                print("Unable to patch ifmap correctly.")
+                print("No fue posible parchar ifmap correctamente.")
                 shutil.move("%s.bak" % ifmap, ifmap)
         else:
-            print("ifmap sha doesn't match orig or patched, not patching")
+            print("El hash SHA de ifmap no coincide con el original ni con el parchado, se omite el parche")
 
-
-#NSE Documentation
-#Running
-#msrpc-enum: Queries an MSRPC endoing mapper for a list of mapped services and displays the gathered information.
-#   SMB library, so you can specify an optional username and password.
+# Documentación de Scripts NSE
+# En ejecución:
+# msrpc-enum: consulta al endpoint mapper de MSRPC para obtener una lista de servicios mapeados
 def doNmap():
-    print("INFO: Performing nmap MSRPC script scan for %s:%s" % (ip_address, port))
+    print("INFO: Realizando escaneo de scripts MSRPC con nmap para %s:%s" % (ip_address, port))
     subprocess.check_output(['nmap','-n','-sV','-Pn','-vv','-p',port,'--script','msrpc-enum,vulners','-oA','/root/scripts/recon_enum/results/exam/msrpc/%s_%s_msrpc.nmap' % (ip_address,port),ip_address],encoding='utf8')
 
-#For interfaces listening on msrpc (select ports), do an ifmap
+# Para interfaces a la escucha en msrpc, ejecutar ifmap
 def doIFMap():
-    print("Starting ifmap")
-    if os.path.isfile("/usr/local/bin/ifmap.py"): #may be installed in other places?
+    print("Iniciando ifmap")
+    if os.path.isfile("/usr/local/bin/ifmap.py"):
         DEVNULL = open(os.devnull, 'w')
         ifmap_tmp = "/root/scripts/recon_enum/results/exam/msrpc/%s_%s_ifmap_tmp.txt" % (ip_address, port)
         ifmap_outfile = "/root/scripts/recon_enum/results/exam/msrpc/%s_%s_ifmap.txt" % (ip_address, port)
@@ -94,16 +90,16 @@ def doIFMap():
 
             os.remove(ifmap_tmp)
             try:
-                print("Starting opdump")
+                print("Iniciando opdump")
                 doOpdump(rawUUIDs,ifmap_results_array)
             except:
-                print("Opdump failed!")
+                print("¡Falló opdump!")
         except:
-            print("Something went wrong with ifmap on %s:%s, run manually" % (ip_address, port))
+            print("Ocurrió un error con ifmap en %s:%s, ejecutar manualmente" % (ip_address, port))
     else:
-        print("Unable to find ifmap, run must manually")
+        print("No se encontró ifmap, debe ejecutarse manualmente")
 
-#Process the listening results from ifmap and get more information with opdump
+# Procesa los resultados a la escucha desde ifmap y obtiene mayor detalle con opdump
 def doOpdump(rawUUIDs,ifmap_results_array):
     access_denied=[]
     success=[]
@@ -116,12 +112,12 @@ def doOpdump(rawUUIDs,ifmap_results_array):
             try:
                 results = subprocess.check_output(['opdump.py',ip_address,port,scanme[0],scanme[1]],encoding='utf8',stderr=DEVNULL)
             except subprocess.CalledProcessError:
-                t.write("opdumping UUID: " + scanme[0] + " v" + scanme[1] + " resulted in a timeout.\n")
+                t.write("opdump con UUID: " + scanme[0] + " v" + scanme[1] + " resultó en tiempo de espera agotado (timeout).\n")
                 continue
             except Exception as e:
                 print(type(e))
-                print("AHHHHHH uncaught exception in ifmap: doOpdump")
-                print("opdumping UUID: " + scanme[0] + " v" + scanme[1] + " resulted in a timeout.")
+                print("Excepción no controlada en ifmap: doOpdump")
+                print("opdump con UUID: " + scanme[0] + " v" + scanme[1] + " agotó el tiempo de espera.")
                 continue
             if ("rpc_s_access_denied" in results):
                 access_denied.append(scanme[0] + " " + scanme[1])
@@ -138,11 +134,11 @@ def doOpdump(rawUUIDs,ifmap_results_array):
         f.close()
         analyzeOpdump(success,ifmap_results_array)
     except NameError:
-        print("Unable to run opdump without ifmap")
+        print("No es posible ejecutar opdump sin ifmap")
 
 def analyzeOpdump(successArray,ifmap_results):
-    print("Analzing opdump")
-    #For success with opdump, reference the UID with limited additional information (offline)
+    print("Analizando opdump")
+    # Para resultados exitosos con opdump, correlaciona el UUID con información referencial
     success_outfile = "/root/scripts/recon_enum/results/exam/msrpc/%s_%s_opdump_success.txt" % (ip_address, port)
     f = open(success_outfile, "w")
     if successArray is not None:
@@ -170,12 +166,12 @@ def analyzeOpdump(successArray,ifmap_results):
                 f.write("\n")
         f.close()
     else:
-        print("Unable to run opdump on successful pipes")
+        print("No es posible analizar opdump en tuberías exitosas")
 
 def doRPCDump():
     if os.path.isfile('/usr/bin/impacket-rpcdump'):
-        print("Starting rpcdump")
-        #more information for kicks and giggles, no auth, but it supports Hash for SMB
+        print("Iniciando rpcdump")
+        # Información complementaria sin autenticación (soporta hash para SMB)
         rpcdump_outfile = "/root/scripts/recon_enum/results/exam/msrpc/%s_%s_rpcdump.txt" % (ip_address, port)
         results = subprocess.check_output(['impacket-rpcdump',ip_address,'-port',port],encoding='utf8')
         f = open(rpcdump_outfile, "w")
@@ -183,18 +179,18 @@ def doRPCDump():
             f.write(res)
         f.close()
 
-        print("This RPCDump is NOT authenticated, you must run manually for auth")
+        print("Este RPCDump NO es autenticado, debe ejecutarse manualmente para autenticación")
     else:
-        print("Unable to find impacket-rpcdump, you must run manually")
+        print("No se encontró impacket-rpcdump, debe ejecutarse manualmente")
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
 
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description='Rough script to handle checking MSRPC endpoints and available pipes. Usage: msrpcrecon.py <ip address> <port>')
-    parser.add_argument('ip_address', help="Ip address of target windows machine")
-    parser.add_argument('port', help="Specific port to enumerate")
+    parser = argparse.ArgumentParser(description='Script para verificar endpoints MSRPC y tuberías (pipes) disponibles. Uso: msrpcrecon.py <dirección_ip> <puerto>')
+    parser.add_argument('ip_address', help="Dirección IP de la máquina Windows objetivo")
+    parser.add_argument('port', help="Puerto específico a enumerar")
     args = parser.parse_args()
 
     ip_address = args.ip_address
@@ -203,9 +199,9 @@ if __name__=='__main__':
     BASE = "/root/scripts/recon_enum/results/exam/msrpc"
     mkdir_p(BASE)
 
-    print("\nINFO: Starting MSRPCrecon")
+    print("\nINFO: Iniciando MSRPCrecon")
     patch_ifmap()
     doNmap()
-    doIFMap() #IFMap will call doOpdump and doOpdump will call analyzeOpdump
+    doIFMap() # IFMap llamará a doOpdump y doOpdump llamará a analyzeOpdump
     doRPCDump()
-    print("\nINFO: MSRPCrecon Complete")
+    print("\nINFO: MSRPCrecon completado")

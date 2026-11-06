@@ -1,7 +1,7 @@
 #!/bin/sh
-# This script provisions a bare installation to resemble the configuration of the custom iso
+# Este script aprovisiona una instalación base para reflejar la configuración de la ISO personalizada
 
-# intall as many packages from apt as possible:
+# Instalar tantos paquetes de apt como sea posible:
 apt-get update
 
 variant="xfce"
@@ -15,7 +15,7 @@ for i in $install_string; do
   res="";
   res=$(apt-cache search $i); 
   if [ -z "${res}" ]; then 
-    echo "$i has been removed from kali-rolling. Make a hook or download and add the package manually!"; REM="$i $REM"; 
+    echo "$i ha sido eliminado de kali-rolling. ¡Crea un hook o descarga y añade el paquete manualmente!"; REM="$i $REM"; 
   fi;
 done
 

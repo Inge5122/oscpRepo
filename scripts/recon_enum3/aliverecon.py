@@ -9,12 +9,11 @@ from multiprocessing import Process
 import pathlib
 import argparse
 
-#nmap ping sends 0 data by default (detectable)
-#TODO add options for --data <hex string>, --data-string <string>, or --data-length <number>
-
+# El ping de nmap envía 0 datos por defecto (fácilmente detectable)
+# POR HACER (TODO): añadir opciones para --data <cadena hex>, --data-string <cadena>, o --data-length <número>
 
 def alive_hosts(target_hosts):
-    print("INFO: Performing ping sweep over %s" % (target_hosts))
+    print("INFO: Realizando barrido de ping sobre %s" % (target_hosts))
     output_file = "/root/scripts/recon_enum/results/exam/targets.txt"
     f = open(output_file, 'w')
     if not os.path.isdir('/root/scripts/recon_enum/results/exam/nmap'):
@@ -30,39 +29,38 @@ def alive_hosts(target_hosts):
                 f.write('\n')
             f.write("%s" % (ip_address))
             live_hosts += 1
-    print("INFO: Host scanning complete. Targets acquired.")
+    print("INFO: Escaneo de hosts completado. Objetivos adquiridos.")
     f.close()
     return
 
-#NSE Documentation
-#Running
-#targets-ipv6-multicast-echo: Sends ICMPv6 echo to all nodes link local ff02::1 -script-args newtargets,interface=, may need -SL
-#targets-ipv6-multicast-invalid-dst: Sends ICMPv6 with invalid extension to all nodes link-local (ff02::1) for Windows responses. --script-args 'newtargets,interface=', may need -sP
-#targets-ipv6-multicast-mld: Sends multicast listener discovery to link-local (ff02::1), resp set to 1 to provoke immediate response. --script-args 'newtargets,interface='
+# Documentación de Scripts NSE
+# En ejecución:
+# targets-ipv6-multicast-echo: Envía eco ICMPv6 a la dirección link-local de todos los nodos ff02::1 --script-args newtargets,interface=, puede requerir -sL
+# targets-ipv6-multicast-invalid-dst: Envía ICMPv6 con extensión inválida a link-local (ff02::1) para provocar respuestas en Windows. --script-args 'newtargets,interface=', puede requerir -sP
+# targets-ipv6-multicast-mld: Envía consulta MLD a link-local (ff02::1) con tiempo de respuesta 1 para provocar respuesta inmediata. --script-args 'newtargets,interface='
 
-#Not Running
-#targets-asn: List of IP prefixes for a given routing AS number -script-args targets-asn.asn=
-#targets-ipv6-map4to6: Runs in pre-scanning to map IPv4 to IPv6 and add them to scan. Lower 4 bytes of IPv6 are replaced with IPv4 address. --script-args targets-ipv6-map4to6.IPv4Hosts={},targets-ipv6-subnet={}
-#targets-ipv6-multicast-slaac: Sends ICMPv6 router advertisement with random address prefix. Some hosts being SLAAC. --script-args 'newtargets,interface='
-#targets-ipv6-wordlist: Adds IPv6 addresses to scan queue using wordlist of hexadecimal 'words' that form addresses in a given subnet. --script-args targets-ipv6-wordlist.wordlist,targets-ipv6-wordlists.nsegments,targets-ipv6-wordliss.fillright,targets-ipv6-subnet
+# No en ejecución:
+# targets-asn: Lista de prefijos IP para un número AS de enrutamiento dado --script-args targets-asn.asn=
+# targets-ipv6-map4to6: Se ejecuta en pre-escaneo para mapear IPv4 a IPv6 y añadirlos al escaneo. Los 4 bytes inferiores de IPv6 se reemplazan con la dirección IPv4. --script-args targets-ipv6-map4to6.IPv4Hosts={},targets-ipv6-subnet={}
+# targets-ipv6-multicast-slaac: Envía anuncio de router ICMPv6 con prefijo aleatorio para que hosts inicien SLAAC. --script-args 'newtargets,interface='
+# targets-ipv6-wordlist: Añade direcciones IPv6 a la cola de escaneo usando lista de 'palabras' hexadecimales que forman direcciones en una subred dada. --script-args targets-ipv6-wordlist.wordlist,targets-ipv6-wordlists.nsegments,targets-ipv6-wordliss.fillright,targets-ipv6-subnet
 def alive_hosts6(interface):
-    print("INFO: Performing IPv6 pings and multicast")
+    print("INFO: Realizando pings y multicast IPv6")
     subprocess.check_output(['nmap','-6','-n','--script','targets-ipv6-multicast-echo,targets-ipv6-multicast-invalid-dst,targets-ipv6-multicast-mld','--script-args','interface=%s' % interface,'-oA','%s/%s_HOST_DISCOVERY_IPv6' % (BASE,interface)],encoding='utf8')
-    print("INFO: Completed IPv6 pings and multicast. Add hosts to targets manually!!")
+    print("INFO: Pings y multicast IPv6 completados. ¡Añade los hosts a targets manualmente!")
     return
 
-# mkdir_p function updated for >= python 3.5
+# Función mkdir_p actualizada para Python >= 3.5
 def mkdir_p(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
 
 if __name__=='__main__':
 
-    parser = argparse.ArgumentParser(description='Rough script to handle target aquisition. If interface is specified, nmap IPv6 will be done as well. Usage: aliverecon.py {-i interface} ip_range')
-    parser.add_argument('ip_range', help="Range of target IPs. Typically last octect ranges: 10.10.10.0-255")
-    parser.add_argument('-i', dest='interface', default="", help="Interface to enumate IPv6 on")
+    parser = argparse.ArgumentParser(description='Script para la adquisición inicial de objetivos. Si se especifica interfaz, también se realizará nmap IPv6. Uso: aliverecon.py {-i interfaz} rango_ip')
+    parser.add_argument('ip_range', help="Rango de IPs objetivo. Comúnmente el último octeto: 10.10.10.0-255")
+    parser.add_argument('-i', dest='interface', default="", help="Interfaz sobre la cual enumerar IPv6")
 
     args = parser.parse_args()
-    #print args
 
     target_hosts = args.ip_range
     interface = args.interface

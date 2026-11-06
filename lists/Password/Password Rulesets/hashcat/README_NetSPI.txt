@@ -1,26 +1,13 @@
-So what do I do with these?
+¿Qué hago con estos archivos?
 
-OCLHashcat has support for these mask files. Just use the attack mode 3 (brute force) option and 
-provide the list of masks to use in a text file.
+OCLHashcat es compatible con estos archivos de máscaras (masks). Simplemente utiliza la opción de modo de ataque 3 (fuerza bruta) y proporciona la lista de máscaras a utilizar mediante un archivo de texto.
 
 ./oclHashcat64.bin -m 1000 hashes.txt -o output.txt -a 3 2015-Top40-Time-Sort.hcmask
 
-When should I use these?
+¿Cuándo debería utilizarlos?
 
-Personally, I would use these after I�ve gone through some dictionaries and rules. 
-Since this is a brute force attack (on a limited key-space) this is not always as 
-efficient as the dictionary and rule-based attacks. However, I have found that this 
-works well for passwords that are not using dictionary words. For example, a 
-dictionary and rule would catch Spring15, but it would be less likely to catch 
-Gralwu94. However, Gralwu94 would be caught by a mask attack in this situation.
+Personalmente, los utilizaría después de haber probado con algunos diccionarios y reglas. Dado que este es un ataque de fuerza bruta (en un espacio de claves limitado), no siempre es tan eficiente como los ataques basados en diccionarios y reglas. Sin embargo, he comprobado que funciona bien para contraseñas que no utilizan palabras de diccionario. Por ejemplo, un diccionario y una regla detectarían Spring15, pero sería menos probable que detectaran Gralwu94. En cambio, Gralwu94 sí sería detectada por un ataque de máscara en esta situación.
 
-How long would this take?
+¿Cuánto tiempo tomaría esto?
 
-That depends. We have a couple of GPU cracking boxes that we can distribute this 
-against, but if we just ran it on our main cracking system, it would take about 
-three and a half days to complete. That�s a really long time. There�s a few weird 
-ones in the list that were easy to crack with word lists and rules (resulting in 
-lots of mask hits), but they take a long time to brute force the key space 
-(?u?l?l?l?l?l?l?l?l?l?d?d � Springtime15). I went through and time stamped each of 
-the top 40 and created a time sorted list that you can quit using when you start 
-hitting your own time limits.
+Depende. Disponemos de un par de equipos con GPU dedicados a cracking entre los que podemos distribuir la carga, pero si solo lo ejecutáramos en nuestro sistema principal de cracking, tardaría alrededor de tres días y medio en completarse. Es bastante tiempo. Hay algunas máscaras peculiares en la lista que fueron fáciles de descifrar con listas de palabras y reglas (lo que generó muchos aciertos por máscara), pero toman mucho tiempo al aplicar fuerza bruta sobre el espacio de claves (?u?l?l?l?l?l?l?l?l?l?d?d – Springtime15). Revisé y registré el tiempo de cada una de las 40 principales y creé una lista ordenada por tiempo que puedes dejar de usar cuando comiences a alcanzar tus propios límites de tiempo.

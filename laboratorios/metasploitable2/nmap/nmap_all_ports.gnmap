@@ -1,0 +1,4 @@
+# Nmap 7.98 scan initiated Sat Nov  7 23:49:06 2026 as: nmap -n -Pn -sT -p 1-65535 --min-rate 1000 -T4 -oA nmap_all_ports 192.168.1.154
+Host: 192.168.1.154 ()	Status: Up
+Host: 192.168.1.154 ()	Ports: 21/open/tcp//ftp///, 22/open/tcp//ssh///, 23/open/tcp//telnet///, 25/open/tcp//smtp///, 53/open/tcp//domain///, 80/open/tcp//http///, 111/open/tcp//rpcbind///, 139/open/tcp//netbios-ssn///, 445/open/tcp//microsoft-ds///, 513/open/tcp//login///, 1524/open/tcp//ingreslock///, 2121/open/tcp//ccproxy-ftp///, 3306/open/tcp//mysql///, 3632/open/tcp//distccd///, 5432/open/tcp//postgresql///, 5900/open/tcp//vnc///, 6667/open/tcp//irc///, 8180/open/tcp/////, 32990/open/tcp/////, 41746/open/tcp/////, 47110/open/tcp/////
+# Nmap done at Sat Nov  7 23:54:18 2026 -- 1 IP address (1 host up) scanned in 311.59 seconds

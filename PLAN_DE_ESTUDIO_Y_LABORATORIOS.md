@@ -68,8 +68,8 @@ sudo mkdir -p /opt/tools && sudo chown -R $USER:$USER /opt/tools
 cd /opt/tools
 
 # Scripts de enumeración local esenciales (descarga directa)
-wget https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/linPEAS/linpeas.sh -O linpeas.sh
-wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany.exe -O winPEASany.exe
+curl -sL https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh -o linpeas.sh
+wget https://github.com/peass-ng/PEASS-ng/releases/latest/download/winPEASany.exe -O winPEASany.exe
 chmod +x linpeas.sh
 ```
 
@@ -119,9 +119,9 @@ flowchart LR
 **Objetivo:** Evitar saltarse vectores. Los fallos en auditorías y en el OSCP provienen en un 80% de una enumeración deficiente.
 
 1. **Metodología de Escaneo en 2 Fases con Nmap:**
-   - **Fase A (Velocidad):** Escaneo de todos los 65535 puertos TCP:
+   - **Fase A (Velocidad):** Escaneo de todos los 65535 puertos TCP (usar `-p 1-65535` explícito para evitar errores de sintaxis en Nmap):
      ```bash
-     nmap -n -Pn -sT -p- --min-rate 1000 -T4 <IP> -oA nmap_all_ports
+     nmap -n -Pn -sT -p 1-65535 --min-rate 1000 -T4 <IP> -oA nmap_all_ports
      ```
    - **Fase B (Profundidad):** Detección de versión y scripts seguros sobre puertos descubiertos:
      ```bash

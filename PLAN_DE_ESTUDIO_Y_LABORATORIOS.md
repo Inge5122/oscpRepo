@@ -233,42 +233,47 @@ flowchart LR
 
 ## 3. Ruta de Laboratorios Prácticos (Poco a Poco)
 
-Se recomienda utilizar plataformas con laboratorios autónomos. Las mejores opciones son **OffSec Proving Grounds (Play / Practice)**, **VulnHub** (máquinas locales gratuitas) y **Hack The Box (HTB)**.
-
-### Fase Inicial: Máquinas Guiadas de Fundamentos
-*Objetivo: Afianzar el flujo escaneo -> identificación del vector -> shell inicial -> privesc básico.*
-
-| Máquina | Plataforma | SO | Vectores Principales |
-| :--- | :--- | :--- | :--- |
-| **Kioptrix Level 1** | VulnHub | Linux | Enumeración de Samba y Apache antiguo. Ideal para entender escaneo básico. |
-| **Lame** | Hack The Box | Linux | Vulnerabilidad clásica en Samba (`usermap script`) y VSFTPD. |
-| **Blue** | Hack The Box | Windows | Comprensión de EternalBlue (MS17-010) y arquitectura SMBv1. |
-| **Shocker** | Hack The Box | Linux | Comprensión práctica de Shellshock en scripts CGI `/cgi-bin/`. |
-| **Nibbles** | Hack The Box | Linux | Subida de archivos maliciosos en CMS y abuso de script sudo con permisos de escritura. |
+Se divide el entrenamiento en dos fases estratégicas antes de presentarse al examen: la **validación exhaustiva del arsenal propio del repositorio** (para dominar nuestras herramientas) y el **simulacro intensivo de cajas negras** (para evaluar autonomía y velocidad bajo presión de examen).
 
 ---
 
-### Fase Intermedia: Máquinas Estilo OSCP Clásico
-*Objetivo: Resolver sin guías, manejando múltiples servicios e identificando pistas falsas (rabbit holes).*
+### Fase 1: Validación y Banco de Pruebas del Arsenal Propio (`oscpRepo`)
+*Objetivo: Poner a prueba, validar compatibilidad (Python 3) y dominar las herramientas del repositorio antes de ir a ciegas a máquinas de examen.*
 
-| Máquina | Plataforma | SO | Vectores Principales |
+| Módulo / Laboratorio | Herramientas del Repo a Probar | Objetivo de Evaluación | Entorno de Prueba |
 | :--- | :--- | :--- | :--- |
-| **Legacy** | Hack The Box | Windows | Vulnerabilidades SMB clásicas (MS08-067 / MS17-010). |
-| **Devel** | Hack The Box | Windows | Acceso anónimo en FTP + servidor web IIS (subida de webshell ASPX) + Potato Privesc. |
-| **Bashed** | Hack The Box | Linux | Webshell PHP preinstalada, manipulación de tareas cron y sudoers. |
-| **Cronos** | Hack The Box | Linux | Transferencia de zona DNS (`axfr`), SQLi para bypass de login y cron jobs. |
-| **Optimum** | Hack The Box | Windows | HttpFileServer (HFS) vulnerable y exploits de kernel / token privesc. |
+| **Lab A: Automatizadores de Reconocimiento** | `scripts/recon_enum3/` (`smbrecon.py`, `webrecon.py`, `msrpcrecon.py`, `nfsrecon.py`) | Automatización de escaneos dirigidos por puerto sin saturar la red ni generar ruido innecesario. | Metasploitable 2 & Metasploitable 3 Windows |
+| **Lab B: Arsenal de Post-Explotación Linux** | `Priv Esc Checks/Linux/linuxprivchecker.py` | Comparativa directa de detección frente a `linpeas.sh` (SUID, sudoers, tareas cron y servicios locales). | Metasploitable 2 (`192.168.1.154`) |
+| **Lab C: Arsenal de Post-Explotación Windows** | `Priv Esc Checks/Windows/SecWiki-Windows-Exploit-Suggester.py`, `iCacls_Service_Check.bat`, `Local Info Enum/Windows/HostEnum.py` | Auditoría de parches faltantes (cruce con `systeminfo`), permisos ACL de servicios débiles y volcado de tokens. | Metasploitable 3 Windows (`192.168.1.155`) |
 
 ---
 
-### Fase Avanzada: Cadenas Complejas y Active Directory
-*Objetivo: Cadenas completas de explotación y conceptos de Directorio Activo (requeridos en el OSCP moderno).*
+### Fase 2: Intensivo de Pruebas de Dominio (Simulacros de Examen OSCP)
+*Objetivo: Resolver máquinas 100% a ciegas (Black Box) con cronómetro, evaluando no solo el conocimiento sino la velocidad, metodología y generación de informes de nivel profesional.*
 
-| Máquina / Entorno | Plataforma | Enfoque |
-| :--- | :--- | :--- |
-| **Forest** | Hack The Box | Windows / Active Directory: AS-REP Roasting, permisos DACL y DCSync. |
-| **Sauna** | Hack The Box | Windows / Active Directory: Enumeración de usuarios, Kerberoasting y BloodHound. |
-| **Active** | Hack The Box | Windows / Active Directory: Reconocimiento SMB, Group Policy Preferences (GPP cpassword) y Kerberoast. |
+#### Bloque 1: Máquinas Locales Gratuitas (VulnHub - Práctica Inicial Ciega)
+1. **Kioptrix Level 1 (v1.0):** Escaneo sin pistas, enumeración profunda de Samba/Apache y escalada de privilegios local.
+2. **Kioptrix Level 1.1 (v1.2):** Interacción web con inyección SQL para bypass de autenticación y abuso de comandos administrativos.
+3. **Mr-Robot (VulnHub):** Enumeración web estilo CTF, fuerza bruta dirigida a WordPress, descifrado de credenciales y escalada SUID.
+
+#### Bloque 2: Máquinas Oficiales Estilo Examen (OffSec Proving Grounds / HackTheBox)
+*Seleccionadas siguiendo la lista de referencia canónica de TJNull para el OSCP moderno:*
+
+| Máquina | Plataforma | SO | Dificultad | Enfoque Evaluativo |
+| :--- | :--- | :--- | :--- | :--- |
+| **Lame** | Hack The Box / PG | Linux | Fácil | Ataque a demonios de red heredados y shells directas. |
+| **Blue** | Hack The Box / PG | Windows | Fácil | Explotación de arquitectura de kernel SMBv1 (MS17-010). |
+| **Devel** | Hack The Box / PG | Windows | Fácil-Media | Cadena: FTP anónimo -> IIS -> Webshell ASPX -> Potato Privesc. |
+| **Shocker** | Hack The Box / PG | Linux | Fácil-Media | Detección de directorios CGI y ejecución remota vía Shellshock. |
+| **Bashed** | Hack The Box / PG | Linux | Media | Shell inicial web, abuso de sudoers y manipulación de tareas cron. |
+| **Optimum** | Hack The Box / PG | Windows | Media | Explotación de servicio web HTTP File Server (HFS) y bypass de token UAC. |
+
+#### Bloque 3: Simulacro Oficial de 24 Horas (The Real Challenge)
+* **Condiciones de Simulación:**
+  1. Cronómetro de 24 horas ininterrumpidas.
+  2. Prohibido el uso de herramientas automatizadas no permitidas por OffSec (Metasploit limitado a un único uso o prescindiendo de él).
+  3. Estructuración en tiempo real del informe formal con evidencias de flags `local.txt` y `proof.txt` con comandos `whoami && ip a / ipconfig`.
+  4. Redacción del Reporte Ejecutivo de Vulnerabilidades en formato Word antes de las 24 horas posteriores.
 
 ---
 

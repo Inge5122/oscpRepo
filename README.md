@@ -3,6 +3,7 @@
 > [!NOTE]
 > - Consulta la **[Caja de Herramientas de Ciberseguridad (CAJA_DE_HERRAMIENTAS.md)](./CAJA_DE_HERRAMIENTAS.md)** para acceder al arsenal de utilidades organizadas por fase y su instalación en Ubuntu/Debian.
 > - Consulta el **[Plan de Estudio y Guía de Laboratorios (PLAN_DE_ESTUDIO_Y_LABORATORIOS.md)](./PLAN_DE_ESTUDIO_Y_LABORATORIOS.md)** para seguir la progresión por niveles ("subiendo los voltios"), preparación en Ubuntu, lista recomendada de máquinas y plantilla de reportes.
+> - Consulta el **[Plan de Estudio de Redes Inalámbricas y OSWP (PLAN_DE_ESTUDIO_WIRELESS.md)](./PLAN_DE_ESTUDIO_WIRELESS.md)** y la carpeta **[`Wireless_Pentesting/`](./Wireless_Pentesting/)** para la auditoría técnica de redes Wi-Fi (802.11 b/g/n/ac), WPA2/WPA3, PMF (802.11w) y análisis forense RF.
 
 Esta es una lista de recursos y scripts que he estado recopilando (y continúo recopilando) en preparación para el OSCP. Ahora que lo he obtenido, este repositorio seguirá ampliando sus recursos para futuras certificaciones. Todos estos son recursos gratuitos en Internet, así que siéntete libre de usarlos como quieras para ayudarte en tus estudios o como material de referencia. Si he tomado información tuya o de tu trabajo, por favor házmelo saber para poder darte el crédito correspondiente.
 

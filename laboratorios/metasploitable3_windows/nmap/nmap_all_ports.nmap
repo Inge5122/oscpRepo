@@ -1,0 +1,26 @@
+# Nmap 7.98 scan initiated Sat Nov 21 11:17:06 2026 as: nmap -n -Pn -sT -p 1-65535 --min-rate 1000 -T4 -oA nmap_all_ports 192.168.1.155
+Warning: 192.168.1.155 giving up on port because retransmission cap hit (6).
+Nmap scan report for 192.168.1.155
+Host is up (0.80s latency).
+Not shown: 32911 filtered tcp ports (no-response), 32606 closed tcp ports (conn-refused)
+PORT      STATE SERVICE
+21/tcp    open  ftp
+80/tcp    open  http
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+3306/tcp  open  mysql
+3389/tcp  open  ms-wbt-server
+3700/tcp  open  lrs-paging
+4848/tcp  open  appserv-http
+7676/tcp  open  imqbrokerd
+8009/tcp  open  ajp13
+8080/tcp  open  http-proxy
+8282/tcp  open  libelle
+8686/tcp  open  sun-as-jmxrmi
+49152/tcp open  unknown
+49154/tcp open  unknown
+49159/tcp open  unknown
+49231/tcp open  unknown
+
+# Nmap done at Sat Nov 21 11:23:38 2026 -- 1 IP address (1 host up) scanned in 391.97 seconds

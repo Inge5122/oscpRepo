@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Nov 21 11:32:45 2026 as: nmap -n -Pn -sC -sV -p 21,80,135,139,445,3306,3389,3700,4848,7676,8009,8080,8282,8686,49152,49154,49159,49231 -oA nmap_targeted 192.168.1.155 -->
+<nmaprun scanner="nmap" args="nmap -n -Pn -sC -sV -p 21,80,135,139,445,3306,3389,3700,4848,7676,8009,8080,8282,8686,49152,49154,49159,49231 -oA nmap_targeted 192.168.1.155" start="1795278765" startstr="Sat Nov 21 11:32:45 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="18" services="21,80,135,139,445,3306,3389,3700,4848,7676,8009,8080,8282,8686,49152,49154,49159,49231"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.155" addrtype="ipv4"/>
+<address addr="08:00:27:23:40:14" addrtype="mac" vendor="Oracle VirtualBox virtual NIC"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1795278766" endtime="1795278857"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.155" addrtype="ipv4"/>
+<address addr="08:00:27:23:40:14" addrtype="mac" vendor="Oracle VirtualBox virtual NIC"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="21"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="ftp" product="Microsoft ftpd" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:ftp_service</cpe><cpe>cpe:/o:microsoft:windows</cpe></service><script id="ftp-syst" output="&#xa;  SYST: Windows_NT"><elem key="SYST">Windows_NT</elem>
+</script></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="http" product="Microsoft IIS httpd" version="7.5" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:internet_information_services:7.5</cpe><cpe>cpe:/o:microsoft:windows</cpe></service><script id="http-title" output="Site doesn&apos;t have a title (text/html)."></script><script id="http-methods" output="&#xa;  Potentially risky methods: TRACE"><table key="Potentially risky methods">
+<elem>TRACE</elem>
+</table>
+</script><script id="http-server-header" output="Microsoft-IIS/7.5"><elem>Microsoft-IIS/7.5</elem>
+</script></port>
+<port protocol="tcp" portid="135"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="139"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="netbios-ssn" product="Microsoft Windows netbios-ssn" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="445"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="microsoft-ds" product="Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds" ostype="Windows Server 2008 R2 - 2012" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="3306"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="mysql" product="MySQL" version="5.5.20-log" method="probed" conf="10"><cpe>cpe:/a:mysql:mysql:5.5.20-log</cpe></service><script id="mysql-info" output="&#xa;  Protocol: 10&#xa;  Version: 5.5.20-log&#xa;  Thread ID: 5&#xa;  Capabilities flags: 63487&#xa;  Some Capabilities: LongPassword, Support41Auth, SupportsTransactions, Speaks41ProtocolOld, IgnoreSigpipes, FoundRows, InteractiveClient, DontAllowDatabaseTableColumn, Speaks41ProtocolNew, ODBCClient, SupportsCompression, LongColumnFlag, SupportsLoadDataLocal, IgnoreSpaceBeforeParenthesis, ConnectWithDatabase, SupportsMultipleResults, SupportsMultipleStatments, SupportsAuthPlugins&#xa;  Status: Autocommit&#xa;  Salt: 7\LG]!(C[!0lQ1@.c-R7&#xa;  Auth Plugin Name: mysql_native_password"><elem key="Protocol">10</elem>
+<elem key="Version">5.5.20-log</elem>
+<elem key="Thread ID">5</elem>
+<elem key="Capabilities flags">63487</elem>
+<table key="Some Capabilities">
+<elem>LongPassword</elem>
+<elem>Support41Auth</elem>
+<elem>SupportsTransactions</elem>
+<elem>Speaks41ProtocolOld</elem>
+<elem>IgnoreSigpipes</elem>
+<elem>FoundRows</elem>
+<elem>InteractiveClient</elem>
+<elem>DontAllowDatabaseTableColumn</elem>
+<elem>Speaks41ProtocolNew</elem>
+<elem>ODBCClient</elem>
+<elem>SupportsCompression</elem>
+<elem>LongColumnFlag</elem>
+<elem>SupportsLoadDataLocal</elem>
+<elem>IgnoreSpaceBeforeParenthesis</elem>
+<elem>ConnectWithDatabase</elem>
+<elem>SupportsMultipleResults</elem>
+<elem>SupportsMultipleStatments</elem>
+<elem>SupportsAuthPlugins</elem>
+</table>
+<elem key="Status">Autocommit</elem>
+<elem key="Salt">7\LG]!(C[!0lQ1@.c-R7</elem>
+<elem key="Auth Plugin Name">mysql_native_password</elem>
+</script></port>
+<port protocol="tcp" portid="3389"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="ms-wbt-server" method="table" conf="3"/><script id="ssl-cert" output="Subject: commonName=vagrant-2008R2&#xa;Not valid before: 2026-11-08T00:49:42&#xa;Not valid after:  2027-05-10T00:49:42"><table key="subject">
+<elem key="commonName">vagrant-2008R2</elem>
+</table>
+<table key="issuer">
+<elem key="commonName">vagrant-2008R2</elem>
+</table>
+<table key="pubkey">
+<elem key="type">rsa</elem>
+<elem key="bits">2048</elem>
+<elem key="modulus">9A54FBFFFF9FA305B43BCBAA52B4580D576731652988AE37015D1858F441DE9C52A4DD7C9D37C5602CF1B3F71D8D572F4EF12D91BC10E63704FAC26778237508AA09E3FB70CD2A63CAE4A1A32992899360BCB9C1F24B7475B65B363A27FBE04F0CD27D0692F533DD3AF267944D38B472F4383808AEE8D30D26140E0D5B61C058805B192149FED8CC224ABC04E57F6F13A2534C168C58EFF0CA86C892DF6AFF44B13B5568F1FC6EB4AE57A5B6CFC9CE3C242A46689968A7EE07E629AA84BB5D57BEF0B78EFC2BAF50E932FCE04FA71DC5AF8943E9E4CD0BB3839CE2ED6E3EB580D73B2B4EF5F29246D6120B60C5FC56E06D001FB1F0A4536713BAEA76339A48FD</elem>
+<elem key="exponent">65537</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">X509v3 Extended Key Usage</elem>
+<elem key="value">TLS Web Server Authentication</elem>
+</table>
+<table>
+<elem key="name">X509v3 Key Usage</elem>
+<elem key="value">Key Encipherment, Data Encipherment</elem>
+</table>
+</table>
+<elem key="sig_algo">sha1WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2026-11-08T00:49:42</elem>
+<elem key="notAfter">2027-05-10T00:49:42</elem>
+</table>
+<elem key="md5">e679e73e0a32b69e57f895658495652a</elem>
+<elem key="sha1">3a2758c9872185ef12cea645bf4338927e517ecf</elem>
+<elem key="sha256">fb25ba8597a9512510eaa86d59766a34bfe1c6c9168e21e0dc2e65bed8d1f771</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIC4DCCAcigAwIBAgIQIR2b8E1/n4JNoqS4AMY54TANBgkqhkiG9w0BAQUFADAZ&#xa;MRcwFQYDVQQDEw52YWdyYW50LTIwMDhSMjAeFw0yNjExMDgwMDQ5NDJaFw0yNzA1&#xa;MTAwMDQ5NDJaMBkxFzAVBgNVBAMTDnZhZ3JhbnQtMjAwOFIyMIIBIjANBgkqhkiG&#xa;9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmlT7//+fowW0O8uqUrRYDVdnMWUpiK43AV0Y&#xa;WPRB3pxSpN18nTfFYCzxs/cdjVcvTvEtkbwQ5jcE+sJneCN1CKoJ4/twzSpjyuSh&#xa;oymSiZNgvLnB8kt0dbZbNjon++BPDNJ9BpL1M9068meUTTi0cvQ4OAiu6NMNJhQO&#xa;DVthwFiAWxkhSf7YzCJKvATlf28TolNMFoxY7/DKhsiS32r/RLE7VWjx/G60rlel&#xa;ts/JzjwkKkZomWin7gfmKaqEu11XvvC3jvwrr1DpMvzgT6cdxa+JQ+nkzQuzg5zi&#xa;7W4+tYDXOytO9fKSRtYSC2DF/FbgbQAfsfCkU2cTuup2M5pI/QIDAQABoyQwIjAT&#xa;BgNVHSUEDDAKBggrBgEFBQcDATALBgNVHQ8EBAMCBDAwDQYJKoZIhvcNAQEFBQAD&#xa;ggEBAEqR42/iCGYGy7AYlWFfRATf0p7dLXeuPmL5uVN8+dDWpV1LOWRLWioMD2tG&#xa;0H+dNqbB+YduF7uE4ps4VGeKZPI+5L/E0GlzfavO8zVf71gHVYIL16953R0nFyGu&#xa;dYo7WlNE5o1QC9FCDtUpm9jDvUDbkcyYXyhuYdf9i4Poyz6IY7etB4Rz7sm1RYES&#xa;aEER72mp9X3/pDYh6lhn2WN6y2DUxvTMOB9H8pZ1HsbaH8joBXie0amZpA6+QoVJ&#xa;bq84VCPUvDjjjYcjMJvEbVIO6tYZ3TvJQj+VXJob4+NbfthPDvcp6mYYKzxzjRHx&#xa;ZY3NYf6158p9HNMNhMHq7lzeyko=&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script><script id="ssl-date" output="2026-11-21T16:34:17+00:00; 0s from scanner time."><elem key="delta">0.0</elem>
+<elem key="date">2026-11-21T16:34:17+00:00</elem>
+</script></port>
+<port protocol="tcp" portid="3700"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="giop" servicefp="SF-Port3700-TCP:V=7.98%I=7%D=11/21%Time=6B01C7BA%P=x86_64-pc-linux-gnu%r(GetRequest,C,&quot;GIOP\x01\x02\0\x06\0\0\0\0&quot;)%r(X11Probe,C,&quot;GIOP\x01\x02\0\x06\0\0\0\0&quot;)%r(giop,CEC,&quot;GIOP\x01\0\0\x01\0\0\x0c\xe0\0\0\0\x03NEO\0\0\0\0\x02\0\x14\0\0\0\0\0\x06\0\0\x010\0\0\0\0\0\0\0\(IDL:omg\.org/SendingContext/CodeBase:1\.0\0\0\0\0\x01\0\0\0\0\0\0\0\xf4\0\x01\x02\0\0\0\0\x0e192\.168\.1\.155\0\x0et\0\0\0\x19\xaf\xab\xcb\0\0\0\0\x02\0\0\0d\0\0\0\x08\0\0\0\0\0\0\0\0\x14\0\0\0\0\0\0\x03\0\0\0\x01\0\0\0\x20\0\0\0\0\0\x01\0\x01\0\0\0\x02\x05\x01\0\x01\0\x01\0\x20\0\x01\x01\t\0\0\0\x01\0\x01\x01\0\0\0\0&amp;\0\0\0\x02\0\x02\0\0\0\0\0!\0\0\0\|\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0\$\0\0\0\x20\0\0\0f\0\0\0\0\0\0\0\x01\0\0\0\x0e192\.168\.1\.155\0\x0e\xec\0@\0\0\0\0\0\x08\x06\x06g\x81\x02\x01\x01\x01\0\0\0\x17\x04\x01\0\x08\x06\x06g\x81\x02\x01\x01\x01\0\0\0\x07default\0\x04\0\0\0\0\0\0\0\0\0\0\x01\0\0\0\x08\x06\x06g\x81\x02\x01\x01\x01\0\0\0\x0f\0\0\0\x0e\0\0\x0bR\0\0\0\0\0\0\x0bJ\0o\0r\0g\0\.\0o\0m\0g\0\.\0C\0O\0R\0B\0A\0\.\0O\0B\0J\0E\0C\0T\0_\0N\0O\0T\0_\0E\0X\0I\0S\0T\0:\0\x20\0F\0I\0N\0E\0:\0\x20\x000\x002\x005\x001\x000\x000\x000\x002\0:\0\x20\0T\0h\0e\0\x20\0s\0e\0r\0v\0e\0r\0\x20\0I\0D\0\x20\0i\0n\0\x20\0t\0h\0e\0\x20\0t\0a\0r\0g\0e\0t\0\x20\0o\0b\0j\0e\0c\0t\0\x20\0k\0e\0y\0\x20\0d\0o\0e\0s\0\x20\0n\0o\0t\0\x20\0m\0a\0t\0c\0h\0\x20\0t\0h\0e\0\x20\0s\0e\0r\0v\0e\0r\0\x20\0k\0e\0y\0\x20\0e\0x\0p\0e\0c\0t\0e\0d\0\x20\0b\0y\0\x20\0t\0h\0e\0\x20\0s\0e\0r\0v\0e\0r\0\x20\0\x20\0v\0m\0c\0i\0d\0:\0\x20\0O\0M\0G\0\x20\0\x20\0m\0i\0n\0o\0r\0\x20\0c\0o\0d\0e\0:\0\x20\x002\0\x20\0\x20\0c\0o\0m\0p\0l\0e\0t\0e\0d\0:\0\x20\0N\0o\0\r\0\n\0\t\0a\0t\0\x20\0c\0o\0m\0\.\0s\0u\0n\0\.\0p\0r\0o\0x\0y\0\.\0\$\0P\0r\0o\0x\0y\x001\x006\x006\0\.\0b\0a\0d\0S\0e\0r\0v\0e\0r\0I\0d\0\(\0U\0n\0k\0n\0o\0w\0n\0\x20\0S\0o\0u\0r\0c\0e\0\)\0\r\0\n\0\t\0a\0t\0\x20\0c\0o\0m\0\.\0s\0u\0n\0\.\0c\0o\0r\0b\0a\0\.\0e\0e\0\.\0i\0m\0p\0l\0\.\0o\0r\0b\0\.\0O\0R&quot;);" method="probed" conf="10"/><script id="giop-info" output="ERROR: Script execution failed (use -d to debug)"/><script id="fingerprint-strings" output="&#xa;  GetRequest, X11Probe: &#xa;    GIOP&#xa;  giop: &#xa;    GIOP&#xa;    (IDL:omg.org/SendingContext/CodeBase:1.0&#xa;    192.168.1.155&#xa;    192.168.1.155&#xa;    default"><elem key="GetRequest, X11Probe">&#xa;    GIOP</elem>
+<elem key="giop">&#xa;    GIOP&#xa;    (IDL:omg.org/SendingContext/CodeBase:1.0&#xa;    192.168.1.155&#xa;    192.168.1.155&#xa;    default</elem>
+</script></port>
+<port protocol="tcp" portid="4848"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="http" product="Oracle Glassfish Application Server" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:oracle:glassfish_application_server</cpe></service><script id="ssl-date" output="TLS randomness does not represent time"></script><script id="http-title" output="Did not follow redirect to https://192.168.1.155:4848/"><elem key="redirect_url">https://192.168.1.155:4848/</elem>
+</script><script id="ssl-cert" output="Subject: commonName=localhost/organizationName=Oracle Corporation/stateOrProvinceName=California/countryName=US&#xa;Not valid before: 2013-05-15T05:33:38&#xa;Not valid after:  2023-05-13T05:33:38"><table key="subject">
+<elem key="commonName">localhost</elem>
+<elem key="countryName">US</elem>
+<elem key="localityName">Santa Clara</elem>
+<elem key="organizationName">Oracle Corporation</elem>
+<elem key="organizationalUnitName">GlassFish</elem>
+<elem key="stateOrProvinceName">California</elem>
+</table>
+<table key="issuer">
+<elem key="commonName">localhost</elem>
+<elem key="countryName">US</elem>
+<elem key="localityName">Santa Clara</elem>
+<elem key="organizationName">Oracle Corporation</elem>
+<elem key="organizationalUnitName">GlassFish</elem>
+<elem key="stateOrProvinceName">California</elem>
+</table>
+<table key="pubkey">
+<elem key="type">rsa</elem>
+<elem key="bits">2048</elem>
+<elem key="modulus">D2D2E73B6672C091273644647C7D1DCE5F381047B5C9881064262F1147519781E3C722B004CF9F36795B45F4C1C8C0E6B0E2931A8157C0A21E12C2CFCE11F30BC3D66E4C6BCCDF2804F0133CE5BD4E7252ACD45A7E07D41A3282ECB29D5380C5FF057B5EB1C74AC262B2B56780564C0615756A81FFF47B81B18DCF2AD764A51BA2F2B1348873677D3DB0E6366A7A55249E6E18E4CB50AA27C21118889B10611B6F2BBDF8D5AEEF1504EAAB9EE874FA8CE43ED61FAEB261E80C52FEE5C6B334FA62A91076C1114E5EE1C0E0DC1837F52A702995511BC8CA8BEAAE0E736F4AF6EB15FA54EFB2335363FBE10AB406245D7484A257E53BA8A444592658E9245CAEA1</elem>
+<elem key="exponent">65537</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+<elem key="value">4C:05:82:BD:8C:02:B8:05:00:04:14:0A:FB:29:AA:F7:48:6C:CB:86</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2013-05-15T05:33:38</elem>
+<elem key="notAfter">2023-05-13T05:33:38</elem>
+</table>
+<elem key="md5">790dfccf99322bbe7736404a14e12d91</elem>
+<elem key="sha1">4a5758f59279e82f2a913c83ca658d6964575a72</elem>
+<elem key="sha256">ab48b2e6c44c50867fb3703083f1cee806f4b575f0e3ad5b23381002a885f556</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIDmTCCAoGgAwIBAgIEBKmXLzANBgkqhkiG9w0BAQsFADB9MQswCQYDVQQGEwJV&#xa;UzETMBEGA1UECBMKQ2FsaWZvcm5pYTEUMBIGA1UEBxMLU2FudGEgQ2xhcmExGzAZ&#xa;BgNVBAoTEk9yYWNsZSBDb3Jwb3JhdGlvbjESMBAGA1UECxMJR2xhc3NGaXNoMRIw&#xa;EAYDVQQDEwlsb2NhbGhvc3QwHhcNMTMwNTE1MDUzMzM4WhcNMjMwNTEzMDUzMzM4&#xa;WjB9MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEUMBIGA1UEBxML&#xa;U2FudGEgQ2xhcmExGzAZBgNVBAoTEk9yYWNsZSBDb3Jwb3JhdGlvbjESMBAGA1UE&#xa;CxMJR2xhc3NGaXNoMRIwEAYDVQQDEwlsb2NhbGhvc3QwggEiMA0GCSqGSIb3DQEB&#xa;AQUAA4IBDwAwggEKAoIBAQDS0uc7ZnLAkSc2RGR8fR3OXzgQR7XJiBBkJi8RR1GX&#xa;gePHIrAEz582eVtF9MHIwOaw4pMagVfAoh4Sws/OEfMLw9ZuTGvM3ygE8BM85b1O&#xa;clKs1Fp+B9QaMoLssp1TgMX/BXtescdKwmKytWeAVkwGFXVqgf/0e4Gxjc8q12Sl&#xa;G6LysTSIc2d9PbDmNmp6VSSebhjky1CqJ8IRGIibEGEbbyu9+NWu7xUE6que6HT6&#xa;jOQ+1h+usmHoDFL+5cazNPpiqRB2wRFOXuHA4NwYN/UqcCmVURvIyovqrg5zb0r2&#xa;6xX6VO+yM1Nj++EKtAYkXXSEolflO6ikRFkmWOkkXK6hAgMBAAGjITAfMB0GA1Ud&#xa;DgQWBBRMBYK9jAK4BQAEFAr7Kar3SGzLhjANBgkqhkiG9w0BAQsFAAOCAQEAEzjp&#xa;mBaRpqKlmWTxSf3BKw3dicdBaB3+O88f7EeEcw5b4e2us+lny5RkPms4AdKppef7&#xa;GhKxOzb+CLKj/NsBS8bEQ96olkppEVCFzYZknJgnoxfyzeFTYibP4lSm3aWGElky&#xa;DMyFMUMgO6O6k3jAgtzVGpVsPfxJH5m8HSjaulBeEpSlEaysGOPaWJzWMlmZK02s&#xa;xWh65ebMPpsQx63prp7AYnvQrZsEY5LYVPdLgqtLhffvNS1KVqJwNv3kSNWNzx/H&#xa;KTCRtJtgGc/6THvz+C6QS2vg78aziDHiYLZYjVpO17CXa5oLchJd+L51SuZTjWZu&#xa;qtKcWJ/UJe3j9BhODA==&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script></port>
+<port protocol="tcp" portid="7676"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="java-message-service" product="Java Message Service" version="301" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="8009"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="ajp13" product="Apache Jserv" extrainfo="Protocol v1.3" method="probed" conf="10"/><script id="ajp-methods" output="Failed to get a valid response for the OPTION request"/></port>
+<port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="http" product="Sun GlassFish Open Source Edition" version=" 4.0" method="probed" conf="10"><cpe>cpe:/a:sun:glassfish_server:_4.0_::open_source</cpe></service><script id="http-server-header" output="GlassFish Server Open Source Edition  4.0 "><elem>GlassFish Server Open Source Edition  4.0 </elem>
+</script><script id="http-methods" output="&#xa;  Potentially risky methods: PUT DELETE TRACE"><table key="Potentially risky methods">
+<elem>PUT</elem>
+<elem>DELETE</elem>
+<elem>TRACE</elem>
+</table>
+</script><script id="http-title" output="GlassFish Server - Server Running"><elem key="title">GlassFish Server - Server Running</elem>
+</script></port>
+<port protocol="tcp" portid="8282"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="http" product="Apache Tomcat/Coyote JSP engine" version="1.1" method="probed" conf="10"><cpe>cpe:/a:apache:coyote_http_connector:1.1</cpe></service><script id="http-server-header" output="Apache-Coyote/1.1"><elem>Apache-Coyote/1.1</elem>
+</script><script id="http-favicon" output="Apache Tomcat"/><script id="http-title" output="Apache Tomcat/8.0.33"><elem key="title">Apache Tomcat/8.0.33</elem>
+</script></port>
+<port protocol="tcp" portid="8686"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="java-rmi" product="Java RMI" method="probed" conf="10"/><script id="rmi-dumpregistry" output="&#xa;  jmxrmi&#xa;    javax.management.remote.rmi.RMIServerImpl_Stub&#xa;    @169.254.58.79:8686&#xa;    extends&#xa;      java.rmi.server.RemoteStub&#xa;      extends&#xa;        java.rmi.server.RemoteObject&#xa;  192.168.1.155/7676/jmxrmi&#xa;    javax.management.remote.rmi.RMIServerImpl_Stub&#xa;    @169.254.58.79:49543&#xa;    extends&#xa;      java.rmi.server.RemoteStub&#xa;      extends&#xa;        java.rmi.server.RemoteObject&#xa;"/></port>
+<port protocol="tcp" portid="49152"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49154"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49159"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49231"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="ssh" product="Apache Mina sshd" version="0.8.0" extrainfo="protocol 2.0" method="probed" conf="10"><cpe>cpe:/a:apache:sshd:0.8.0</cpe></service></port>
+</ports>
+<hostscript><script id="smb-security-mode" output="&#xa;  account_used: &lt;blank&gt;&#xa;  authentication_level: user&#xa;  challenge_response: supported&#xa;  message_signing: disabled (dangerous, but default)"><elem key="account_used">&lt;blank&gt;</elem>
+<elem key="authentication_level">user</elem>
+<elem key="challenge_response">supported</elem>
+<elem key="message_signing">disabled</elem>
+</script><script id="smb-os-discovery" output="&#xa;  OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)&#xa;  OS CPE: cpe:/o:microsoft:windows_server_2008::sp1&#xa;  Computer name: vagrant-2008R2&#xa;  NetBIOS computer name: VAGRANT-2008R2\x00&#xa;  Workgroup: WORKGROUP\x00&#xa;  System time: 2026-11-21T08:33:48-08:00&#xa;"><elem key="os">Windows Server 2008 R2 Standard 7601 Service Pack 1</elem>
+<elem key="lanmanager">Windows Server 2008 R2 Standard 6.1</elem>
+<elem key="server">VAGRANT-2008R2\x00</elem>
+<elem key="date">2026-11-21T08:33:48-08:00</elem>
+<elem key="fqdn">vagrant-2008R2</elem>
+<elem key="domain_dns">vagrant-2008R2</elem>
+<elem key="workgroup">WORKGROUP\x00</elem>
+<elem key="cpe">cpe:/o:microsoft:windows_server_2008::sp1</elem>
+</script><script id="nbstat" output="NetBIOS name: VAGRANT-2008R2, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 08:00:27:23:40:14 (Oracle VirtualBox virtual NIC)"/><script id="smb2-security-mode" output="&#xa;  2.1: &#xa;    Message signing enabled but not required"><table key="2.1">
+<elem>Message signing enabled but not required</elem>
+</table>
+</script><script id="clock-skew" output="mean: 2h00m00s, deviation: 4h00m01s, median: 0s"><elem key="median">0</elem>
+<elem key="stddev">14401</elem>
+<elem key="count">4</elem>
+<elem key="mean">7200</elem>
+</script><script id="smb2-time" output="&#xa;  date: 2026-11-21T16:33:48&#xa;  start_date: 2026-11-21T19:10:26"><elem key="date">2026-11-21T16:33:48</elem>
+<elem key="start_date">2026-11-21T19:10:26</elem>
+</script></hostscript><times srtt="13825" rttvar="2519" to="100000"/>
+</host>
+<runstats><finished time="1795278857" timestr="Sat Nov 21 11:34:17 2026" summary="Nmap done at Sat Nov 21 11:34:17 2026; 1 IP address (1 host up) scanned in 91.99 seconds" elapsed="91.99" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

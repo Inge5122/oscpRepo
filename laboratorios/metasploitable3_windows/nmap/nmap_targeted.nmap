@@ -1,0 +1,136 @@
+# Nmap 7.98 scan initiated Sat Nov 21 11:32:45 2026 as: nmap -n -Pn -sC -sV -p 21,80,135,139,445,3306,3389,3700,4848,7676,8009,8080,8282,8686,49152,49154,49159,49231 -oA nmap_targeted 192.168.1.155
+Nmap scan report for 192.168.1.155
+Host is up (0.014s latency).
+
+PORT      STATE SERVICE              VERSION
+21/tcp    open  ftp                  Microsoft ftpd
+| ftp-syst: 
+|_  SYST: Windows_NT
+80/tcp    open  http                 Microsoft IIS httpd 7.5
+|_http-title: Site doesn't have a title (text/html).
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/7.5
+135/tcp   open  msrpc                Microsoft Windows RPC
+139/tcp   open  netbios-ssn          Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds         Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds
+3306/tcp  open  mysql                MySQL 5.5.20-log
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.5.20-log
+|   Thread ID: 5
+|   Capabilities flags: 63487
+|   Some Capabilities: LongPassword, Support41Auth, SupportsTransactions, Speaks41ProtocolOld, IgnoreSigpipes, FoundRows, InteractiveClient, DontAllowDatabaseTableColumn, Speaks41ProtocolNew, ODBCClient, SupportsCompression, LongColumnFlag, SupportsLoadDataLocal, IgnoreSpaceBeforeParenthesis, ConnectWithDatabase, SupportsMultipleResults, SupportsMultipleStatments, SupportsAuthPlugins
+|   Status: Autocommit
+|   Salt: 7\LG]!(C[!0lQ1@.c-R7
+|_  Auth Plugin Name: mysql_native_password
+3389/tcp  open  ms-wbt-server?
+| ssl-cert: Subject: commonName=vagrant-2008R2
+| Not valid before: 2026-11-08T00:49:42
+|_Not valid after:  2027-05-10T00:49:42
+|_ssl-date: 2026-11-21T16:34:17+00:00; 0s from scanner time.
+3700/tcp  open  giop
+|_giop-info: ERROR: Script execution failed (use -d to debug)
+| fingerprint-strings: 
+|   GetRequest, X11Probe: 
+|     GIOP
+|   giop: 
+|     GIOP
+|     (IDL:omg.org/SendingContext/CodeBase:1.0
+|     192.168.1.155
+|     192.168.1.155
+|_    default
+4848/tcp  open  ssl/http             Oracle Glassfish Application Server
+|_ssl-date: TLS randomness does not represent time
+|_http-title: Did not follow redirect to https://192.168.1.155:4848/
+| ssl-cert: Subject: commonName=localhost/organizationName=Oracle Corporation/stateOrProvinceName=California/countryName=US
+| Not valid before: 2013-05-15T05:33:38
+|_Not valid after:  2023-05-13T05:33:38
+7676/tcp  open  java-message-service Java Message Service 301
+8009/tcp  open  ajp13                Apache Jserv (Protocol v1.3)
+|_ajp-methods: Failed to get a valid response for the OPTION request
+8080/tcp  open  http                 Sun GlassFish Open Source Edition  4.0
+|_http-server-header: GlassFish Server Open Source Edition  4.0 
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE TRACE
+|_http-title: GlassFish Server - Server Running
+8282/tcp  open  http                 Apache Tomcat/Coyote JSP engine 1.1
+|_http-server-header: Apache-Coyote/1.1
+|_http-favicon: Apache Tomcat
+|_http-title: Apache Tomcat/8.0.33
+8686/tcp  open  java-rmi             Java RMI
+| rmi-dumpregistry: 
+|   jmxrmi
+|     javax.management.remote.rmi.RMIServerImpl_Stub
+|     @169.254.58.79:8686
+|     extends
+|       java.rmi.server.RemoteStub
+|       extends
+|         java.rmi.server.RemoteObject
+|   192.168.1.155/7676/jmxrmi
+|     javax.management.remote.rmi.RMIServerImpl_Stub
+|     @169.254.58.79:49543
+|     extends
+|       java.rmi.server.RemoteStub
+|       extends
+|_        java.rmi.server.RemoteObject
+49152/tcp open  msrpc                Microsoft Windows RPC
+49154/tcp open  msrpc                Microsoft Windows RPC
+49159/tcp open  msrpc                Microsoft Windows RPC
+49231/tcp open  ssh                  Apache Mina sshd 0.8.0 (protocol 2.0)
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port3700-TCP:V=7.98%I=7%D=11/21%Time=6B01C7BA%P=x86_64-pc-linux-gnu%r(G
+SF:etRequest,C,"GIOP\x01\x02\0\x06\0\0\0\0")%r(X11Probe,C,"GIOP\x01\x02\0\
+SF:x06\0\0\0\0")%r(giop,CEC,"GIOP\x01\0\0\x01\0\0\x0c\xe0\0\0\0\x03NEO\0\0
+SF:\0\0\x02\0\x14\0\0\0\0\0\x06\0\0\x010\0\0\0\0\0\0\0\(IDL:omg\.org/Sendi
+SF:ngContext/CodeBase:1\.0\0\0\0\0\x01\0\0\0\0\0\0\0\xf4\0\x01\x02\0\0\0\0
+SF:\x0e192\.168\.1\.155\0\x0et\0\0\0\x19\xaf\xab\xcb\0\0\0\0\x02\0\0\0d\0\
+SF:0\0\x08\0\0\0\0\0\0\0\0\x14\0\0\0\0\0\0\x03\0\0\0\x01\0\0\0\x20\0\0\0\0
+SF:\0\x01\0\x01\0\0\0\x02\x05\x01\0\x01\0\x01\0\x20\0\x01\x01\t\0\0\0\x01\
+SF:0\x01\x01\0\0\0\0&\0\0\0\x02\0\x02\0\0\0\0\0!\0\0\0\|\0\0\0\0\0\0\0\x01
+SF:\0\0\0\0\0\0\0\$\0\0\0\x20\0\0\0f\0\0\0\0\0\0\0\x01\0\0\0\x0e192\.168\.
+SF:1\.155\0\x0e\xec\0@\0\0\0\0\0\x08\x06\x06g\x81\x02\x01\x01\x01\0\0\0\x1
+SF:7\x04\x01\0\x08\x06\x06g\x81\x02\x01\x01\x01\0\0\0\x07default\0\x04\0\0
+SF:\0\0\0\0\0\0\0\0\x01\0\0\0\x08\x06\x06g\x81\x02\x01\x01\x01\0\0\0\x0f\0
+SF:\0\0\x0e\0\0\x0bR\0\0\0\0\0\0\x0bJ\0o\0r\0g\0\.\0o\0m\0g\0\.\0C\0O\0R\0
+SF:B\0A\0\.\0O\0B\0J\0E\0C\0T\0_\0N\0O\0T\0_\0E\0X\0I\0S\0T\0:\0\x20\0F\0I
+SF:\0N\0E\0:\0\x20\x000\x002\x005\x001\x000\x000\x000\x002\0:\0\x20\0T\0h\
+SF:0e\0\x20\0s\0e\0r\0v\0e\0r\0\x20\0I\0D\0\x20\0i\0n\0\x20\0t\0h\0e\0\x20
+SF:\0t\0a\0r\0g\0e\0t\0\x20\0o\0b\0j\0e\0c\0t\0\x20\0k\0e\0y\0\x20\0d\0o\0
+SF:e\0s\0\x20\0n\0o\0t\0\x20\0m\0a\0t\0c\0h\0\x20\0t\0h\0e\0\x20\0s\0e\0r\
+SF:0v\0e\0r\0\x20\0k\0e\0y\0\x20\0e\0x\0p\0e\0c\0t\0e\0d\0\x20\0b\0y\0\x20
+SF:\0t\0h\0e\0\x20\0s\0e\0r\0v\0e\0r\0\x20\0\x20\0v\0m\0c\0i\0d\0:\0\x20\0
+SF:O\0M\0G\0\x20\0\x20\0m\0i\0n\0o\0r\0\x20\0c\0o\0d\0e\0:\0\x20\x002\0\x2
+SF:0\0\x20\0c\0o\0m\0p\0l\0e\0t\0e\0d\0:\0\x20\0N\0o\0\r\0\n\0\t\0a\0t\0\x
+SF:20\0c\0o\0m\0\.\0s\0u\0n\0\.\0p\0r\0o\0x\0y\0\.\0\$\0P\0r\0o\0x\0y\x001
+SF:\x006\x006\0\.\0b\0a\0d\0S\0e\0r\0v\0e\0r\0I\0d\0\(\0U\0n\0k\0n\0o\0w\0
+SF:n\0\x20\0S\0o\0u\0r\0c\0e\0\)\0\r\0\n\0\t\0a\0t\0\x20\0c\0o\0m\0\.\0s\0
+SF:u\0n\0\.\0c\0o\0r\0b\0a\0\.\0e\0e\0\.\0i\0m\0p\0l\0\.\0o\0r\0b\0\.\0O\0
+SF:R");
+MAC Address: 08:00:27:23:40:14 (Oracle VirtualBox virtual NIC)
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb-security-mode: 
+|   account_used: <blank>
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb-os-discovery: 
+|   OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)
+|   OS CPE: cpe:/o:microsoft:windows_server_2008::sp1
+|   Computer name: vagrant-2008R2
+|   NetBIOS computer name: VAGRANT-2008R2\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2026-11-21T08:33:48-08:00
+|_nbstat: NetBIOS name: VAGRANT-2008R2, NetBIOS user: <unknown>, NetBIOS MAC: 08:00:27:23:40:14 (Oracle VirtualBox virtual NIC)
+| smb2-security-mode: 
+|   2.1: 
+|_    Message signing enabled but not required
+|_clock-skew: mean: 2h00m00s, deviation: 4h00m01s, median: 0s
+| smb2-time: 
+|   date: 2026-11-21T16:33:48
+|_  start_date: 2026-11-21T19:10:26
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Nov 21 11:34:17 2026 -- 1 IP address (1 host up) scanned in 91.99 seconds

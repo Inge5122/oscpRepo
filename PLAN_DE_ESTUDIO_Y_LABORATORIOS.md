@@ -431,9 +431,12 @@ flowchart TD
         PIPELINE --> ML2["Clasificación de Amenazas\n(Random Forest / XGBoost)"]
     end
     subgraph "Capa 4: Agente Local de Razonamiento (Ollama)"
-        ML1 -- "Alertas No Concluyentes / Outliers" --> OLLAMA["Ollama LLM Agent\n(Modelos: Llama 3 / Mistral / DeepSeek)"]
-        ML2 -- "Correlación Compleja de IoCs" --> OLLAMA
-        OLLAMA --> SOC["Triage Automatizado & Recomendaciones de Hardening"]
+        ML1 -- "Alertas No Concluyentes / Outliers" --> T1["Nivel 1: soc-triage\n(qwen3:4b · 100% GPU · JSON)"]
+        ML2 -- "Correlación Compleja de IoCs" --> T1
+        T1 -- "falso_positivo" --> ARCH["Archivo / Feedback al ML"]
+        T1 -- "sospechoso / intrusion" --> T2["Nivel 2: soc-analista\n(llama3.1:8b · GPU+CPU)"]
+        RAG["RAG: MITRE ATT&CK / Sigma\n(nomic-embed-text)"] -.-> T2
+        T2 --> SOC["Triage Automatizado & Recomendaciones de Hardening\n(iptables · Sigma · Suricata)"]
     end
 ```
 
@@ -447,3 +450,18 @@ Un modelo de Machine Learning o un Agente LLM en ciberseguridad es tan bueno com
 * **Privacidad Estricta de Telemetría:** La información de servidores, puertos internos, vulnerabilidades y registros de auditoría corporativos **nunca debe ser transmitida a nubes públicas**. Ollama garantiza inferencia 100% local en hardware propio.
 * **Triage de Casos Borde (Outliers):** Los algoritmos clásicos de ML (como Isolation Forests) marcan eventos como anómalos pero carecen de contexto semántico. El agente de Ollama recibe el log exacto, el banner del servicio y el historial temporal para dictaminar si se trata de un falso positivo o de un intento activo de intrusión.
 * **Respuesta Asistida y Generación de Reglas:** Sugerencia automática de reglas de firewall (`iptables`, `Windows Defender Firewall`), políticas de hardening o firmas Sigma/Suricata en tiempo real.
+
+### Selección de Modelos para el Hardware del Laboratorio
+
+**Hardware de referencia:** Intel i7-11800H (8C/16T, AVX-512) · 14 GiB RAM · NVIDIA RTX 3050 Ti Laptop (**4 GB VRAM**). El cuello de botella es la VRAM: un modelo que cabe entero en GPU es varias veces más rápido que uno repartido entre GPU y CPU.
+
+| Modelo evaluado | Decisión | Motivo |
+|---|---|---|
+| `qwen3:4b` | ✅ **Nivel 1 (soc-triage)** | ~2.5 GB, 100% en GPU. Buen soporte de salida JSON y tool calling; el razonamiento se puede desactivar (`think: false`) para triage rápido. |
+| `llama3.2:3b` | Alternativa Nivel 1 | ~2 GB, 100% GPU. Más ligero, algo menos preciso con JSON estructurado. |
+| `llama3.1:8b` | ✅ **Nivel 2 (soc-analista)** | ~4.9 GB, reparto GPU+CPU. Mejor razonamiento para correlación y redacción de reglas; solo procesa lo escalado por el Nivel 1. |
+| `nomic-embed-text` | ✅ **Embeddings (RAG)** | ~270 MB. Indexa MITRE ATT&CK y reglas Sigma para que el Nivel 2 consulte técnicas reales. |
+| Mistral 7B | ❌ Descartado | Generación anterior; peor en JSON y tool calling que sus alternativas del mismo tamaño. |
+| DeepSeek-R1 (7B/8B) | ❌ Descartado para triage | Genera cadenas de razonamiento largas: a ~10 tok/s cada alerta tardaría minutos. Útil solo para análisis forense sin prisa. |
+
+**Implementación:** Modelfiles, configuración del servicio, script de instalación y prueba en [`ia_local/`](ia_local/README.md).

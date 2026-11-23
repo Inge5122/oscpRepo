@@ -1,0 +1,75 @@
+Impacket v0.13.1 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] SMBv2.1 dialect used
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_state.exe BUILTIN\IIS_IUSRS:(I)(RX)
+                                                                 NT AUTHORITY\SYSTEM:(I)(F)
+                                                                 BUILTIN\Administrators:(I)(F)
+                                                                 BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\mscorsvw.exe NT SERVICE\TrustedInstaller:(F)
+                                                           BUILTIN\Administrators:(RX)
+                                                           NT AUTHORITY\SYSTEM:(RX)
+                                                           BUILTIN\Users:(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows\Microsoft.NET\Framework64\v2.0.50727\mscorsvw.exe NT SERVICE\TrustedInstaller:(F)
+                                                             BUILTIN\Administrators:(RX)
+                                                             NT AUTHORITY\SYSTEM:(RX)
+                                                             BUILTIN\Users:(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe BUILTIN\IIS_IUSRS:(I)(RX)
+                                                           NT AUTHORITY\SYSTEM:(I)(F)
+                                                           BUILTIN\Administrators:(I)(F)
+                                                           BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe BUILTIN\IIS_IUSRS:(I)(RX)
+                                                             NT AUTHORITY\SYSTEM:(I)(F)
+                                                             BUILTIN\Administrators:(I)(F)
+                                                             BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\ManageEngine\DesktopCentral_Server\bin\wrapper.exe -s C:\ManageEngine\DesktopCentral_Server\conf\wrapper.conf: The filename, directory name, or volume label syntax is incorrect.
+Successfully processed 0 files; Failed processing 1 files
+C:\glassfish\glassfish4\glassfish\domains\domain1\bin\domain1Service.exe NT AUTHORITY\LOCAL SERVICE:(I)(F)
+                                                                         NT AUTHORITY\SYSTEM:(I)(F)
+                                                                         BUILTIN\Administrators:(I)(F)
+                                                                         BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+Invalid parameter "//RS//elasticsearch-service-x64|"
+Invalid parameter "-ServiceExec"
+Invalid parameter "-k"
+Invalid parameter "-k"
+Invalid parameter "-NetMsmqActivator|"
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SMSvcHost.exe BUILTIN\IIS_IUSRS:(I)(RX)
+                                                              NT AUTHORITY\SYSTEM:(I)(F)
+                                                              BUILTIN\Administrators:(I)(F)
+                                                              BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SMSvcHost.exe BUILTIN\IIS_IUSRS:(I)(RX)
+                                                              NT AUTHORITY\SYSTEM:(I)(F)
+                                                              BUILTIN\Administrators:(I)(F)
+                                                              BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SMSvcHost.exe BUILTIN\IIS_IUSRS:(I)(RX)
+                                                              NT AUTHORITY\SYSTEM:(I)(F)
+                                                              BUILTIN\Administrators:(I)(F)
+                                                              BUILTIN\Users:(I)(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+Invalid parameter "//RS//Tomcat8|"
+C:\Windows\servicing\TrustedInstaller.exe NT SERVICE\TrustedInstaller:(F)
+                                          BUILTIN\Administrators:(RX)
+                                          NT AUTHORITY\SYSTEM:(RX)
+                                          BUILTIN\Users:(RX)
+
+Successfully processed 1 files; Failed processing 0 files
+Invalid parameter "-k"
+c:\wamp\bin\mysql\mysql5.5.20\bin\mysqld.exe wampmysqld: The system cannot find the file specified.
+Successfully processed 0 files; Failed processing 1 files
+

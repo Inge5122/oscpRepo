@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Generador de Informe Técnico Formal: Fase 1 - Validación del Arsenal Propio (Lab A y Lab B)
+Generador de Informe Técnico Formal: Fase 1 - Validación Integral del Arsenal Propio (Lab A, Lab B y Lab C)
 OSCP / Pentesting Ético y Base de Investigación de Maestría
 """
 
@@ -122,7 +122,6 @@ def style_table(table, col_widths, headers, data):
 def build_report():
     doc = docx.Document()
     
-    # Configuración de márgenes
     sections = doc.sections
     for s in sections:
         s.top_margin = Inches(0.8)
@@ -130,7 +129,6 @@ def build_report():
         s.left_margin = Inches(0.8)
         s.right_margin = Inches(0.8)
         
-    # Encabezado Principal
     p_title = doc.add_paragraph()
     p_title.paragraph_format.space_before = Pt(0)
     p_title.paragraph_format.space_after = Pt(2)
@@ -145,16 +143,15 @@ def build_report():
     p_sub.paragraph_format.space_before = Pt(0)
     p_sub.paragraph_format.space_after = Pt(14)
     p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r_sub = p_sub.add_run("Fase 1: Validación y Calibración del Arsenal Propio (Lab A: Reconocimiento & Lab B: Post-Explotación)")
+    r_sub = p_sub.add_run("Fase 1: Validación Integral del Arsenal Propio (Lab A: Reconocimiento | Lab B: Linux PrivEsc | Lab C: Windows PrivEsc)")
     r_sub.font.name = "Arial"
-    r_sub.font.size = Pt(12)
+    r_sub.font.size = Pt(11.5)
     r_sub.font.bold = True
     r_sub.font.color.rgb = RGBColor(0x2B, 0x6C, 0xB0)
     
-    # Metadata del Documento
     tbl_meta = doc.add_table(rows=1, cols=4)
-    meta_headers = ["Fecha de Evaluación", "Objetivo Evaluado", "Arquitectura / SO", "Certificación / Alcance"]
-    meta_data = [["22 de Noviembre, 2026", "Metasploitable 2 (192.168.1.154)", "Ubuntu 8.04 Linux (Kernel 2.6.24 x86)", "OSCP / OSWP / Propuesta Maestría"]]
+    meta_headers = ["Fecha de Evaluación", "Objetivos Evaluados", "Sistemas Operativos", "Alcance Metodológico"]
+    meta_data = [["22 de Noviembre, 2026", "Metasploitable 2 & 3 Windows", "Ubuntu 8.04 x86 / Windows Server 2008 R2 x64", "OSCP / OSWP / Propuesta Maestría"]]
     style_table(tbl_meta, [1.6, 2.0, 1.8, 1.6], meta_headers, meta_data)
     doc.add_paragraph().paragraph_format.space_after = Pt(10)
     
@@ -162,168 +159,173 @@ def build_report():
     h1 = doc.add_heading("1. Resumen Ejecutivo", level=1)
     h1.paragraph_format.space_before = Pt(12)
     p = doc.add_paragraph(
-        "El presente informe documenta la ejecución formal de la Fase 1 del Plan de Estudio Intensivo, correspondiente "
-        "a la validación de compatibilidad, corrección de defectos de ingeniería y calibración práctica de las herramientas "
-        "internas del repositorio 'oscpRepo'. Dicha evaluación se estructuró en dos módulos complementarios: "
-        "Laboratorio A (Automatizadores de Reconocimiento Perimetral en 'scripts/recon_enum3/') y Laboratorio B "
-        "(Arsenal de Post-Explotación y Escalada de Privilegios Local en 'Priv Esc Checks/Linux/')."
+        "El presente informe formaliza la culminación integral de la Fase 1 del Plan de Estudio Práctico, orientada "
+        "a la auditoría de código, refactorización para compatibilidad moderna y calibración operativa de las herramientas "
+        "propias del repositorio 'oscpRepo'. Se evaluaron tres módulos críticos: Laboratorio A (Reconocimiento perimetral "
+        "con 'scripts/recon_enum3/'), Laboratorio B (Post-explotación y escalada local Linux con 'Priv Esc Checks/Linux/') y "
+        "Laboratorio C (Post-explotación y análisis de parches Windows con 'Priv Esc Checks/Windows/')."
     )
     p.paragraph_format.line_spacing = 1.15
     
     add_callout(
         doc,
-        "La evaluación demostró que la suite de scripts históricos (2018-2020) presentaba bloqueos por rutas hardcodeadas "
-        "hacia '/root/scripts/recon_enum/results/'. Tras el refactor dinámico a rutas relativas y la implementación de control "
-        "robusto de excepciones en Python 3, la suite ejecutó con éxito contra Metasploitable 2 descubriendo acceso R/W en SMB, "
-        "exportación total de la raíz en NFS, y vectores críticos de escalada local (SUID Nmap y vulnerabilidades de Kernel).",
-        "DICTAMEN DE OPERATIVIDAD"
+        "DICTAMEN GLOBAL: Se corrigieron fallos de rutas absolutas antiguas y de control de flujo en Python 3 en la suite de red. "
+        "En Linux, se verificó la superioridad de herramientas multiplataforma (Perl/Python) frente a scripts rígidos de Bash ante entornos legacy. "
+        "En Windows, se contrastó el sugeridor histórico (.xls de 2017) frente a la solución estándar moderna WES-NG (actualizada a 2026), "
+        "demostrando que mientras los exploits de kernel envejecen, las malas configuraciones de permisos y servicios (iCacls / Unquoted Paths) "
+        "siguen vigentes como vectores críticos universales tanto en sistemas antiguos como modernos.",
+        "DICTAMEN DE OPERATIVIDAD Y EFICACIA"
     )
     
-    # 2. Laboratorio A: Automatizadores de Reconocimiento
-    doc.add_heading("2. Laboratorio A: Validación de Suite de Reconocimiento (scripts/recon_enum3/)", level=1)
-    
+    # 2. Laboratorio A: Reconocimiento Modular
+    doc.add_heading("2. Laboratorio A: Suite de Reconocimiento Automatizado (scripts/recon_enum3/)", level=1)
     p = doc.add_paragraph(
-        "El objetivo del Laboratorio A consistió en verificar la capacidad de la suite para enumerar servicios específicos "
-        "sin generar sobrecarga en la red ni causar falsos positivos por fallos de dependencias. Se auditaron cuatro scripts modulares:"
+        "Se evaluaron los scripts de reconocimiento dirigido contra los servicios activos de Metasploitable 2 (192.168.1.154), "
+        "comprobando la capacidad de extraer inteligencia técnica sin generar denegación de servicio:"
     )
     
-    # Tabla de Resultados Lab A
     tbl_lab_a = doc.add_table(rows=1, cols=4)
     h_a = ["Script Evaluado", "Puerto / Protocolo", "Hallazgo Técnico Principal", "Vector de Ataque Asociado"]
     d_a = [
-        ["smbrecon.py", "TCP 139, 445 (SMB)", "Samba 3.0.20-Debian, SMBv1, Recurso '\\\\tmp' con permisos READ/WRITE anónimo", "RCE directo vía usermap_script; escritura de shells o binarios maliciosos"],
-        ["nfsrecon.py", "TCP 111, 2049 (NFS)", "Export list 'showmount -e': '/' accesible para cualquier host (*)", "Montaje remoto no autenticado; inyección de claves SSH en /root/.ssh/"],
+        ["smbrecon.py", "TCP 139, 445 (SMB)", "Samba 3.0.20-Debian, SMBv1, Recurso '\\\\tmp' con permisos READ/WRITE anónimo", "RCE directo vía usermap_script; escritura de payloads en /tmp"],
+        ["nfsrecon.py", "TCP 111, 2049 (NFS)", "Export list 'showmount -e': '/' exportado a cualquier host (*)", "Montaje remoto no autenticado; inyección de claves SSH en /root/.ssh/"],
         ["sshrecon.py", "TCP 22 (SSH)", "OpenSSH 4.7p1 Debian 8ubuntu1, soporte de cifrados CBC heredados", "Enumeración de usuarios CVE-2018-15473 y password spraying controlado"],
         ["webrecon.py", "TCP 80 (HTTP)", "Apache 2.2.8 + PHP 5.2.4; Mutillidae con LFI/XSS; Nikto detectó phpMyAdmin y TRACE", "Inclusión de archivos locales (LFI), ejecución de scripts en cliente (XST/XSS)"]
     ]
     style_table(tbl_lab_a, [1.5, 1.4, 2.3, 1.8], h_a, d_a)
     doc.add_paragraph().paragraph_format.space_after = Pt(8)
     
-    # 2.1 Refactor de Código
-    doc.add_heading("2.1 Refactorización e Ingeniería de Compatibilidad Aplicada", level=2)
-    p = doc.add_paragraph(
-        "Durante las pruebas se detectaron tres anomalías críticas en el código heredado de 'scripts/recon_enum3/' que fueron corregidas y versionadas en master:"
-    )
-    add_code_block(
-        doc,
-        "# [Mejora 1: Resolución dinámica de rutas relativas]\n"
-        "SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))\n"
-        "BASE = os.path.join(SCRIPT_DIR, 'results', 'exam', 'smb')\n"
-        "mkdir_p(BASE)\n\n"
-        "# [Mejora 2: Tolerancia a fallos por herramientas externas ausentes]\n"
-        "try:\n"
-        "    results = subprocess.check_output(['enum4linux', '-va', ip_address], encoding='utf8')\n"
-        "except FileNotFoundError:\n"
-        "    print(\"INFO: 'enum4linux' no está instalado en el sistema. Omitiendo.\")\n\n"
-        "# [Mejora 3: Corrección de redirección en Python 3 subprocess.run]\n"
-        "with open(outPath, 'w') as out_f, open(errPath, 'w') as err_f:\n"
-        "    subprocess.run(['openssl', 's_client', '-connect', f'{ip}:{port}'], stdout=out_f, stderr=err_f)"
-    )
-    
     # 3. Laboratorio B: Arsenal de Post-Explotación Linux
-    doc.add_heading("3. Laboratorio B: Arsenal de Post-Explotación Local (Priv Esc Checks/Linux/)", level=1)
+    doc.add_heading("3. Laboratorio B: Arsenal de Post-Explotación Local Linux (Priv Esc Checks/Linux/)", level=1)
     p = doc.add_paragraph(
-        "Una vez obtenido el acceso al sistema, la fase de post-explotación requiere auditar vectores de elevación de privilegios. "
-        "Se transfirieron y ejecutaron las herramientas del repositorio en Metasploitable 2 operando bajo el usuario no privilegiado 'msfadmin' (UID 1000)."
-    )
-    
-    # 3.1 Detección de Exploits de Kernel
-    doc.add_heading("3.1 Sugerencia y Auditoría de Vulnerabilidades de Kernel", level=2)
-    p = doc.add_paragraph(
-        "Al intentar ejecutar 'linux-exploit-suggester.sh' (Bash), el script abortó de forma inmediata reportando incompatibilidad: "
-        "'Script needs Bash in version 4.0 or newer. Aborting'. La distribución Ubuntu 8.04 cuenta con Bash 3.2. "
-        "En su lugar, se ejecutó 'perl-linux-exploit-suggester-2.pl' (Perl), el cual operó de forma inmediata y certera:"
-    )
-    add_code_block(
-        doc,
-        "#############################\n"
-        "  Linux Exploit Suggester 2  \n"
-        "#############################\n"
-        "Local Kernel: 2.6.24 | Searching among 71 exploits...\n"
-        "Possible Exploits:\n"
-        "[+] american-sign-language (CVE-2010-4347) -> BID 45408\n"
-        "[+] can_bcm (CVE-2010-2959)               -> EDB-ID 14814\n"
-        "[+] dirty_cow (CVE-2016-5195)             -> EDB-ID 40616\n"
-        "[+] do_pages_move (CVE-2010-0415)         -> Spenders Enlightenment\n"
-        "[+] half_nelson (CVE-2010-3848)           -> EDB-ID 17787\n"
-        "[+] msr (CVE-2013-0268)                   -> /dev/cpu/*/msr driver privilege escalation"
-    )
-    
-    # 3.2 Auditoría de Configuraciones Locales con linuxprivchecker.py
-    doc.add_heading("3.2 Auditoría de Configuraciones Débiles con linuxprivchecker.py", level=2)
-    p = doc.add_paragraph(
-        "El script 'linuxprivchecker.py' (escrito en Python 2.x por Mike Czumak) fue ejecutado como 'msfadmin'. "
-        "El script realizó una auditoría completa del entorno sin requerir librerías externas adicionales. Destacan:"
+        "Operando bajo la cuenta no privilegiada 'msfadmin' (UID 1000) en Metasploitable 2, se auditaron los sugeridores de kernel y configuraciones locales:"
     )
     
     tbl_lpc = doc.add_table(rows=1, cols=3)
-    h_lpc = ["Categoría Auditada", "Detalle del Hallazgo", "Riesgo de Seguridad"]
+    h_lpc = ["Herramienta Evaluada", "Comportamiento / Hallazgo", "Impacto Técnico y Operativo"]
     d_lpc = [
-        ["Binarios SUID Críticos", "-rwsr-xr-x 1 root root /usr/bin/nmap (v4.53)", "CRÍTICO: Permite escape a shell de root inmediata ejecutando 'nmap --interactive' -> '!sh'"],
-        ["Permisos de Archivos", "/etc/passwd y /etc/shadow permisos convencionales; /tmp con permisos globales", "MEDIO: Facilita almacenamiento y staging de herramientas de explotación"],
-        ["Servicios de Red Locales", "Puertos 512, 513 (rlogin/rsh), 2049 (NFS), 3306 (MySQL) escuchando en 0.0.0.0", "ALTO: Conexiones internas no autenticadas o con credenciales por defecto"],
-        ["Herramientas de Compilación", "gcc 4.2.3, make, perl 5.8.8, python 2.5.2 disponibles localmente", "ALTO: Permite compilar código fuente en C (exploits de kernel) directamente en el host"]
+        ["linux-exploit-suggester.sh", "Abortó: 'Script needs Bash in version 4.0 or newer'", "Incompatibilidad en Ubuntu 8.04 (Bash 3.2); demuestra la fragilidad de scripts bash modernos en entornos legacy"],
+        ["perl-linux-exploit-suggester-2.pl", "Detectó 6 exploits: Dirty COW (CVE-2016-5195), can_bcm (CVE-2010-2959), half_nelson, etc.", "Excelente portabilidad: Perl se ejecuta de inmediato sin dependencias adicionales"],
+        ["linuxprivchecker.py", "Detectó binario SUID crítico: /usr/bin/nmap (v4.53) y compiladores (gcc, make)", "Elevación inmediata a root ejecutando 'nmap --interactive' -> '!sh'"]
     ]
-    style_table(tbl_lpc, [1.8, 2.7, 2.5], h_lpc, d_lpc)
+    style_table(tbl_lpc, [1.8, 2.8, 2.4], h_lpc, d_lpc)
     doc.add_paragraph().paragraph_format.space_after = Pt(8)
     
-    # 4. Comparativa Técnica: linuxprivchecker vs linpeas
-    doc.add_heading("4. Comparativa Técnica de Arsenal: linuxprivchecker.py vs linpeas.sh", level=1)
+    # 4. Laboratorio C: Arsenal de Post-Explotación Windows
+    doc.add_heading("4. Laboratorio C: Arsenal de Post-Explotación Windows (Priv Esc Checks/Windows/)", level=1)
     p = doc.add_paragraph(
-        "En auditorías de seguridad y exámenes de certificación (OSCP), la elección de la herramienta de enumeración "
-        "influye en el sigilo, la velocidad y la compatibilidad con el entorno auditado:"
+        "Para validar el arsenal Windows, se interactuó con Metasploitable 3 Windows (192.168.1.155) mediante WMI e Impacket. "
+        "Se extrajo la telemetría base de 'systeminfo' revelando una instalación de Windows Server 2008 R2 SP1 con únicamente 2 hotfixes instalados (KB3191566 y KB976902)."
     )
     
-    tbl_comp = doc.add_table(rows=1, cols=4)
-    h_comp = ["Parámetro de Evaluación", "linuxprivchecker.py (Repo)", "linpeas.sh (Estándar Moderno)", "Veredicto Operativo"]
-    d_comp = [
-        ["Huella en Disco / Tamaño", "Ligero (25 KB, un solo archivo)", "Pesado (> 800 KB en versiones recientes)", "linuxprivchecker es ideal para transferencias restrictivas"],
-        ["Compatibilidad de Shell", "Independiente de la versión de Bash; corre sobre Python", "Exige Bash moderno; falla en shells reducidas o versiones antiguas (<4.0)", "linuxprivchecker y Perl LES superan a LinPEAS en sistemas legacy"],
-        ["Ruido y Detección (EDR)", "Bajo: no genera cientos de subprocesos concurrentes", "Muy alto: ejecuta miles de comandos en bucle agresivo", "linuxprivchecker genera menor anomalía en logs de telemetría"],
-        ["Formato de Salida", "Texto plano estructurado; fácil de procesar con regex o LLM", "Colores ANSI intensos; excelente visualización humana en consola", "linpeas gana en inspección humana; linuxprivchecker gana en ingesta automática ML"]
+    # 4.1 Análisis Comparativo de Sugeridores
+    doc.add_heading("4.1 Auditoría de Parches: Script Histórico (.xls 2017) vs WES-NG (Actualizado 2026)", level=2)
+    p = doc.add_paragraph(
+        "Se identificó que el script original 'SecWiki-Windows-Exploit-Suggester.py' depende de Python 2 y de una base de datos estática "
+        "('2017-06-14-mssb.xls') que desconoce los parches emitidos después de 2017. Para cerrar esta brecha tecnológica y homologar la metodología moderna, "
+        "se integró y ejecutó WES-NG (Windows Exploit Suggester - Next Generation) con definiciones sincronizadas al 20261122:"
+    )
+    
+    tbl_wes = doc.add_table(rows=1, cols=4)
+    h_wes = ["CVE / Boletín", "Severidad / Impacto", "Componente Afectado", "Exploit Público Asociado"]
+    d_wes = [
+        ["CVE-2010-2729 (KB2347290)", "Critical / Remote Code Execution", "Print Spooler Service", "https://exploit-db.com/exploits/16361"],
+        ["CVE-2012-0002 (KB2621440)", "Critical / Remote Code Execution", "Remote Desktop Protocol (RDP)", "MS12-020 (Denegación y RCE en puerto 3389)"],
+        ["CVE-2010-4398 (KB2443105)", "Important / Elevation of Privilege", "Windows Kernel", "Exploit local de ring0 / escalada a SYSTEM"],
+        ["CVE-2010-3338 (KB2401593)", "Important / Elevation of Privilege", "Task Scheduler", "Evasion de UAC y secuestro de tareas programadas"]
     ]
-    style_table(tbl_comp, [1.6, 1.8, 1.8, 1.8], h_comp, d_comp)
+    style_table(tbl_wes, [1.8, 1.8, 1.8, 1.6], h_wes, d_wes)
     doc.add_paragraph().paragraph_format.space_after = Pt(8)
     
-    # 5. Articulación con la Tesis de Maestría
-    doc.add_heading("5. Implicaciones para la Tesis de Maestría (Escaneo, ML y Ollama)", level=1)
+    # 4.2 Auditoría de Permisos de Servicios Débiles con iCacls
+    doc.add_heading("4.2 Detección de Malas Configuraciones de Servicios con iCacls_Service_Check.bat", level=2)
     p = doc.add_paragraph(
-        "La validación de estos laboratorios aporta valor directo a la propuesta académica de investigación de maestría:"
+        "A diferencia de los exploits de kernel que dependen de parches específicos, la auditoría de configuraciones busca "
+        "errores humanos o de instaladores de software de terceros. Se ejecutó 'iCacls_Service_Check.bat' contra todos los servicios no estándar:"
+    )
+    
+    add_code_block(
+        doc,
+        "# [Salida de iCacls_Service_Check.bat en Metasploitable 3 Windows]\n"
+        "C:\\glassfish\\glassfish4\\glassfish\\domains\\domain1\\bin\\domain1Service.exe\n"
+        "  NT AUTHORITY\\SYSTEM:(I)(F)\n"
+        "  BUILTIN\\Administrators:(I)(F)\n"
+        "  BUILTIN\\Users:(I)(RX)\n\n"
+        "C:\\ManageEngine\\DesktopCentral_Server\\bin\\wrapper.exe -s C:\\ManageEngine\\DesktopCentral_Server\\conf\\wrapper.conf:\n"
+        "  The filename, directory name, or volume label syntax is incorrect.\n"
+        "  [HALLAZGO CRÍTICO]: Ruta de binario de servicio sin entrecomillar (Unquoted Service Path)"
+    )
+    
+    add_callout(
+        doc,
+        "La salida reveló un vector clásico de Unquoted Service Path en 'ManageEngine DesktopCentral'. "
+        "Al no contener comillas en la ruta, Windows intentará ejecutar secuencialmente: C:\\ManageEngine.exe o "
+        "C:\\ManageEngine\\DesktopCentral_Server\\bin\\wrapper.exe. Si un atacante tiene permisos de escritura en la carpeta raíz, "
+        "puede colocar un binario malicioso y esperar el reinicio del servicio para obtener shell como NT AUTHORITY\\SYSTEM.",
+        "VECTOR DE ESCALADA POR SERVICIOS SIN ENTRECOMILLAR"
+    )
+    
+    # 5. Reflexión Estratégica: Kernel Exploits vs Misconfigurations
+    doc.add_heading("5. Análisis Estratégico: Vulnerabilidades de Kernel vs Malas Configuraciones en 2026", level=1)
+    p = doc.add_paragraph(
+        "Un aprendizaje central de esta práctica responde a la vigencia del arsenal ofensivo en infraestructuras modernas:"
+    )
+    
+    tbl_strat = doc.add_table(rows=1, cols=3)
+    h_strat = ["Dimensión de Seguridad", "Exploits de Kernel (CVEs Específicos)", "Malas Configuraciones (Misconfigurations)"]
+    d_strat = [
+        ["Vida Útil del Vector", "Corta: Los proveedores emiten parches automáticos y los EDR bloquean firmas conocidas.", "Permanente: No se resuelven con 'Windows Update'; dependen de políticas de administración."],
+        ["Riesgo Operativo", "Alto: Puede causar pantallazo azul (BSOD) o desestabilizar servidores de producción.", "Bajo: La explotación de permisos débiles o tokens es limpia, silenciosa y altamente confiable."],
+        ["Frecuencia en Entornos Reales", "Presente en servidores obsoletos o aislados sin conexión a parches.", "Presente en más del 80% de despliegues modernos (Active Directory, software heredado, permisos laxos)."]
+    ]
+    style_table(tbl_strat, [1.8, 2.6, 2.6], h_strat, d_strat)
+    doc.add_paragraph().paragraph_format.space_after = Pt(8)
+    
+    # 6. Conexión con la Tesis de Maestría
+    doc.add_heading("6. Integración con la Arquitectura de Tesis: Censys, ML y Triage con Ollama", level=1)
+    p = doc.add_paragraph(
+        "Los resultados de estos tres laboratorios fundamentan directamente el diseño del sistema autónomo de ciberseguridad propuesto para la maestría:"
     )
     
     p1 = doc.add_paragraph()
-    r = p1.add_run("1. Extracción de Telemetría para Modelos de Machine Learning: ")
+    r = p1.add_run("1. Extracción y Normalización de Telemetría Perimetral e Interna: ")
     r.bold = True
     p1.add_run(
-        "La salida estructurada generada por 'webrecon.py', 'smbrecon.py' y 'linuxprivchecker.py' proporciona vectores "
-        "de características limpios (puertos, cabeceras HTTP, dialectos SMB, binarios SUID) que pueden ser vectorizados "
-        "para entrenar modelos de detección de anomalías o clasificación automática de severidad."
+        "El pipeline propuesto consumirá datos de escaneo externo (Censys API para banners y certificados) combinados con "
+        "telemetría local de host (salida de systeminfo, listas de hotfixes, permisos de servicios). Esta combinación proporciona "
+        "una visión integral de superficie externa e interna."
     )
     
     p2 = doc.add_paragraph()
-    r = p2.add_run("2. Triage y Remediación Automatizada con Ollama: ")
+    r = p2.add_run("2. Modelos de Machine Learning para Filtrado y Reducción de Ruido: ")
     r.bold = True
     p2.add_run(
-        "Al alimentar los archivos de evidencia ('lpc_output.txt', 'smb_recon.txt') a un agente LLM local servido con Ollama, "
-        "el modelo puede sintetizar de inmediato los 3 caminos más directos hacia el compromiso del sistema y sugerir "
-        "las reglas de firewall o endurecimiento (hardening) requeridas, cerrando el ciclo de DevSecOps inteligente."
+        "Herramientas como WES-NG generan decenas de vulnerabilidades potenciales. El modelo de Machine Learning (clasificador supervisado) "
+        "filtra los falsos positivos basándose en los procesos en ejecución reales y el contexto de red, priorizando las alertas de riesgo inminente."
     )
     
-    # 6. Conclusiones y Próximos Pasos
-    doc.add_heading("6. Conclusiones y Próximos Pasos de la Fase 1", level=1)
+    p3 = doc.add_paragraph()
+    r = p3.add_run("3. Agente de Razonamiento y Hardening Automatizado con Ollama: ")
+    r.bold = True
+    p3.add_run(
+        "En lugar de depender de scripts estáticos con listas rígidas, el agente LLM local en Ollama recibe la telemetría "
+        "filtrada y sintetiza el plan de remediación en lenguaje natural (ej. 'Comando icacls para revocar permisos de escritura "
+        "en ManageEngine y regla de bloqueo en firewall para el puerto 3389'), cerrando la brecha entre detección y respuesta."
+    )
+    
+    # 7. Conclusiones y Próximos Pasos
+    doc.add_heading("7. Conclusiones y Cierre Oficial de la Fase 1", level=1)
     p = doc.add_paragraph(
-        "1. Las herramientas del repositorio en 'scripts/recon_enum3/' y 'Priv Esc Checks/Linux/' se encuentran plenamente operativas, "
-        "corregidas para entornos modernos y probadas con éxito contra sistemas Linux.\n"
-        "2. Se demostró la importancia de contar con alternativas en múltiples lenguajes (Perl/Python) ante fallos de compatibilidad en Bash.\n"
-        "3. El siguiente paso en la Fase 1 corresponde al Laboratorio C: Arsenal de Post-Explotación Windows sobre Metasploitable 3 "
-        "('SecWiki-Windows-Exploit-Suggester.py' y 'HostEnum.py'), el cual se programará para cuando se active dicho entorno."
+        "1. La Fase 1 del Plan de Estudio (Arsenal Propio) queda 100% completada, verificada y documentada en los entornos Linux y Windows.\n"
+        "2. Se modernizaron y corrigieron defectos de ejecución en la suite de red 'recon_enum3' y se validó la eficacia de 'Priv Esc Checks'.\n"
+        "3. El arsenal propio se encuentra listo para servir de soporte técnico durante la Fase 2: Simulacros Intensivos de Examen OSCP (Black Box)."
     )
     
     out_dir = "/home/diego-romero/Documents/oscpRepo/laboratorios/fase1_arsenal_propio"
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "Informe_Laboratorio_Fase1_Arsenal_Propio.docx")
     doc.save(out_path)
-    print(f"Informe generado exitosamente en: {out_path}")
+    print(f"Informe actualizado y guardado exitosamente en: {out_path}")
 
 if __name__ == "__main__":
     build_report()

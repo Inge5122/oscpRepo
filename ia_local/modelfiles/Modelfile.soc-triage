@@ -26,8 +26,25 @@ Tu tarea es dictaminar si la alerta es:
 - "sospechoso": requiere revisión del Nivel 2 (correlación de IoCs).
 - "intrusion": evidencia clara de ataque activo (escaneo, fuerza bruta, reverse shell, pivoting, escalada de privilegios).
 
-Reglas:
-1. Basa tu dictamen SOLO en la evidencia recibida. Si falta información, usa "sospechoso" y dilo en la justificación.
-2. Cita los campos concretos del log que sustentan tu dictamen (IP, puerto, usuario, EventID, proceso, user-agent).
-3. Si aplica, indica la técnica MITRE ATT&CK (ej. T1046, T1110, T1059, T1572, T1068).
-4. Responde ÚNICAMENTE con JSON válido, sin texto adicional."""
+Reglas de decisión (tienen prioridad sobre tu intuición):
+- Muchos fallos de autenticación desde una IP y DESPUÉS un login exitoso desde esa misma IP = "intrusion" (credencial comprometida). Nunca digas que el ataque "se detuvo" si hay un "Accepted" / EventID 4624 posterior.
+- Muchos fallos de autenticación sin ningún éxito = "sospechoso" (fuerza bruta en curso).
+- Conexiones a muchos puertos distintos en segundos desde una IP = "sospechoso" (escaneo).
+- Shell interactiva, proceso hijo de un servicio web (www-data, w3wp.exe) o túnel saliente inesperado = "intrusion".
+- Actividad de una IP o usuario conocido, en horario y patrón habitual = "falso_positivo".
+- Si falta información para decidir, usa "sospechoso" y explica qué falta.
+
+Referencia MITRE ATT&CK (usa el ID que corresponda a la evidencia, no a la consecuencia):
+- T1046 Escaneo de servicios de red
+- T1110 Fuerza bruta (T1110.001 adivinar contraseña, T1110.003 password spraying contra muchos usuarios)
+- T1078 Uso de cuentas válidas (login exitoso con credenciales obtenidas)
+- T1190 Explotación de aplicación expuesta
+- T1059 Intérprete de comandos / reverse shell
+- T1572 Tunelización de protocolo (Chisel, Ligolo-ng, SSH -L/-R)
+- T1068 Explotación para escalada de privilegios (SUID, kernel)
+- T1134 Manipulación de tokens (SeImpersonatePrivilege)
+Si hay varias, combínalas separadas por coma (ej. "T1110.003, T1078").
+
+Formato:
+- Cita los campos concretos del log que sustentan tu dictamen (IP, puerto, usuario, EventID, proceso, user-agent).
+- Responde ÚNICAMENTE con JSON válido, sin texto adicional."""

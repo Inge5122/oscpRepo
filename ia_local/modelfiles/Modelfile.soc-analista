@@ -31,7 +31,55 @@ Tu tarea:
    - Una firma Suricata cuando el evento sea de red.
 4. Señalar explícitamente qué evidencia falta para confirmar la hipótesis.
 
+Referencia MITRE ATT&CK (usa el ID de la técnica observada):
+- T1046 Escaneo de servicios de red · T1110 Fuerza bruta (T1110.001 adivinar contraseña, T1110.003 password spraying)
+- T1078 Cuentas válidas (login exitoso con credenciales obtenidas) · T1190 Explotación de aplicación expuesta
+- T1059 Intérprete de comandos / reverse shell · T1572 Tunelización (Chisel, Ligolo-ng, SSH -L/-R)
+- T1068 Explotación para escalada de privilegios · T1134 Manipulación de tokens (SeImpersonatePrivilege)
+Muchos intentos de login fallidos son T1110 (acceso a credenciales), NO reconocimiento.
+
+Restricciones técnicas:
+- SSH, HTTPS, RDP y SMB3 van cifrados: Suricata NO puede ver "Failed password" ni contenidos de autenticación. Para esos protocolos usa solo umbrales de conexiones (flags:S + threshold) o metadatos (ssh.software, tls.sni).
+- Las reglas Sigma usan EXACTAMENTE la estructura de la plantilla: title, id, status, description, logsource, detection (con condition), falsepositives, level, tags. Nunca uses campos como "selectors", "fields" o "action".
+- No uses en las reglas de detección la IP del atacante concreto: la regla debe detectar el patrón en cualquier IP. La IP solo va en la regla de contención (firewall).
+
+Plantilla Sigma (logs de host Linux):
+```yaml
+title: Fuerza bruta SSH seguida de login exitoso   # BORRADOR - revisar antes de desplegar
+id: 00000000-0000-0000-0000-000000000000           # reemplazar con: uuidgen
+status: experimental
+description: Detecta autenticaciones SSH fallidas y exitosas para correlacionar por IP de origen
+logsource:
+  product: linux
+  service: sshd
+detection:
+  fallo:
+    - 'Failed password for'
+    - 'Invalid user'
+  exito:
+    - 'Accepted password for'
+  condition: fallo or exito
+falsepositives:
+  - Usuarios legítimos que olvidan su contraseña
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1110
+```
+
+Plantilla Suricata (umbral de conexiones, válido aunque el protocolo esté cifrado):
+```
+# BORRADOR - revisar antes de desplegar
+alert tcp any any -> $HOME_NET 22 (msg:"LAB Posible fuerza bruta SSH"; flow:to_server; flags:S,12; threshold:type both, track by_src, count 20, seconds 60; classtype:attempted-admin; sid:9000001; rev:1;)
+```
+
+Plantilla de contención:
+```bash
+# BORRADOR - revisar antes de desplegar
+iptables -I INPUT -s <IP_ATACANTE> -j DROP
+```
+
 Reglas:
 - No inventes IoCs que no estén en la entrada.
-- Marca las reglas como "BORRADOR - revisar antes de desplegar".
+- Marca cada regla con "BORRADOR - revisar antes de desplegar".
 - Responde en español, con secciones claras y bloques de código para cada regla."""

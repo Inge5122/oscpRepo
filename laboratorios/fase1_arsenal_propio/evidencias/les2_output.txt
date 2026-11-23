@@ -1,0 +1,62 @@
+root@metasploitable:/# 
+[00;33m  #############################[00m
+[00;31m    Linux Exploit Suggester 2[00m
+[00;33m  #############################[00m
+
+  Local Kernel: 2.6.24
+  Searching among 71 exploits...
+
+  [00;35mPossible Exploits:[00m
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mamerican-sign-language[00m
+     CVE-2010-4347
+     Source: http://www.securityfocus.com/bid/45408/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mcan_bcm[00m
+     CVE-2010-2959
+     Source: http://www.exploit-db.com/exploits/14814/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mdirty_cow[00m
+     CVE-2016-5195
+     Source: https://www.exploit-db.com/exploits/40616/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mdo_pages_move[00m
+     Alt: sieve      CVE-2010-0415
+     Source: Spenders Enlightenment
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mhalf_nelson[00m
+     Alt: econet      CVE-2010-3848
+     Source: http://www.exploit-db.com/exploits/6851
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mhalf_nelson1[00m
+     Alt: econet      CVE-2010-3848
+     Source: http://www.exploit-db.com/exploits/17787/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mhalf_nelson2[00m
+     Alt: econet      CVE-2010-3850
+     Source: http://www.exploit-db.com/exploits/17787/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mhalf_nelson3[00m
+     Alt: econet      CVE-2010-4073
+     Source: http://www.exploit-db.com/exploits/17787/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mmsr[00m
+     CVE-2013-0268
+     Source: http://www.exploit-db.com/exploits/27297/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mpipe.c_32bit[00m
+     CVE-2009-3547
+     Source: http://www.securityfocus.com/data/vulnerabilities/exploits/36901-1.c
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mpktcdvd[00m
+     CVE-2010-3437
+     Source: http://www.exploit-db.com/exploits/15150/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mreiserfs[00m
+     CVE-2010-1146
+     Source: http://www.exploit-db.com/exploits/12130/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33msock_sendpage[00m
+     Alt: wunderbar_emporium      CVE-2009-2692
+     Source: http://www.exploit-db.com/exploits/9435
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33msock_sendpage2[00m
+     Alt: proto_ops      CVE-2009-2692
+     Source: http://www.exploit-db.com/exploits/9436
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mvideo4linux[00m
+     CVE-2010-3081
+     Source: http://www.exploit-db.com/exploits/15024/
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mvmsplice1[00m
+     Alt: jessica biel      CVE-2008-0600
+     Source: http://www.exploit-db.com/exploits/5092
+[00;33m[[00m[00;31m+[00m[00;33m][00m [00;33mvmsplice2[00m
+     Alt: diane_lane      CVE-2008-0600
+     Source: http://www.exploit-db.com/exploits/5093
+
+root@metasploitable:/# exit

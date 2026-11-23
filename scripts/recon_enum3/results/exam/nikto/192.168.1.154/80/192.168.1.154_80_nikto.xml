@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<!DOCTYPE niktoscan SYSTEM "/usr/share/doc/nikto/nikto.dtd">
+<niktoscan hoststest="0" options="-host 192.168.1.154 -port 80 -nolookup -ask auto -output /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/nikto/192.168.1.154/80/192.168.1.154_80_nikto.xml" version="2.1.5" scanstart="Sun Nov 22 19:20:09 2026" scanend="Wed Dec 31 19:00:00 1969" scanelapsed=" seconds" nxmlversion="1.2">
+
+<scandetails targetip="192.168.1.154" targethostname="192.168.1.154" targetport="80" targetbanner="Apache/2.2.8 (Ubuntu) DAV/2" starttime="2026-11-22 19:20:09" sitename="http://192.168.1.154:80" siteip="http://192.168.1.154:80" hostheader="192.168.1.154" errors="0" checks="6544">
+
+
+<item id="999986" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Retrieved x-powered-by header: PHP/5.2.4-2ubuntu5.10]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/]]></iplink>
+</item>
+
+<item id="999976" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[The anti-clickjacking X-Frame-Options header is not present.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/]]></iplink>
+</item>
+
+<item id="600050" osvdbid="0" osvdblink="http://osvdb.org/0" method="HEAD">
+<description><![CDATA[Apache/2.2.8 appears to be outdated (current is at least Apache/2.2.22). Apache 1.3.42 (final release) and 2.0.64 are also current.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/]]></iplink>
+</item>
+
+<item id="999972" osvdbid="0" osvdblink="http://osvdb.org/0" method="DEBUG">
+<description><![CDATA[DEBUG HTTP verb may show server debugging information. See http://msdn.microsoft.com/en-us/library/e8z01xdh%28VS.80%29.aspx for details.]]></description>
+<uri><![CDATA[HASH(0x5ffa017db548)]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80HASH(0x5ffa017db548)]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80HASH(0x5ffa017db548)]]></iplink>
+</item>
+
+<item id="999971" osvdbid="877" osvdblink="http://osvdb.org/877" method="TRACE">
+<description><![CDATA[HTTP TRACE method is active, suggesting the host is vulnerable to XST]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/]]></iplink>
+</item>
+
+<item id="001145" osvdbid="3233" osvdblink="http://osvdb.org/3233" method="GET">
+<description><![CDATA[/phpinfo.php: Contains PHP configuration information]]></description>
+<uri><![CDATA[/phpinfo.php]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/phpinfo.php]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/phpinfo.php]]></iplink>
+</item>
+
+<item id="750000" osvdbid="3268" osvdblink="http://osvdb.org/3268" method="GET">
+<description><![CDATA[/doc/: Directory indexing found.]]></description>
+<uri><![CDATA[/doc/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/doc/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/doc/]]></iplink>
+</item>
+
+<item id="001213" osvdbid="48" osvdblink="http://osvdb.org/48" method="GET">
+<description><![CDATA[/doc/: The /doc/ directory is browsable. This may be /usr/doc.]]></description>
+<uri><![CDATA[/doc/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/doc/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/doc/]]></iplink>
+</item>
+
+<item id="001384" osvdbid="12184" osvdblink="http://osvdb.org/12184" method="GET">
+<description><![CDATA[/index.php?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000: PHP reveals potentially sensitive information via certain HTTP requests that contain specific QUERY strings.]]></description>
+<uri><![CDATA[/index.php?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/index.php?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/index.php?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000]]></iplink>
+</item>
+
+<item id="001795" osvdbid="3092" osvdblink="http://osvdb.org/3092" method="GET">
+<description><![CDATA[/phpMyAdmin/changelog.php: phpMyAdmin is for managing MySQL databases, and should be protected or limited to authorized hosts.]]></description>
+<uri><![CDATA[/phpMyAdmin/changelog.php]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/phpMyAdmin/changelog.php]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/phpMyAdmin/changelog.php]]></iplink>
+</item>
+
+<item id="999960" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Cookie phpMyAdmin created without the httponly flag]]></description>
+<uri><![CDATA[/phpMyAdmin/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/phpMyAdmin/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/phpMyAdmin/]]></iplink>
+</item>
+
+<item id="001796" osvdbid="3092" osvdblink="http://osvdb.org/3092" method="GET">
+<description><![CDATA[/phpMyAdmin/: phpMyAdmin is for managing MySQL databases, and should be protected or limited to authorized hosts.]]></description>
+<uri><![CDATA[/phpMyAdmin/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/phpMyAdmin/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/phpMyAdmin/]]></iplink>
+</item>
+
+<item id="750000" osvdbid="3268" osvdblink="http://osvdb.org/3268" method="GET">
+<description><![CDATA[/test/: Directory indexing found.]]></description>
+<uri><![CDATA[/test/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/test/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/test/]]></iplink>
+</item>
+
+<item id="001894" osvdbid="3092" osvdblink="http://osvdb.org/3092" method="GET">
+<description><![CDATA[/test/: This might be interesting...]]></description>
+<uri><![CDATA[/test/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/test/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/test/]]></iplink>
+</item>
+
+<item id="750000" osvdbid="3268" osvdblink="http://osvdb.org/3268" method="GET">
+<description><![CDATA[/icons/: Directory indexing found.]]></description>
+<uri><![CDATA[/icons/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/icons/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/icons/]]></iplink>
+</item>
+
+<item id="999984" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Server leaks inodes via ETags, header found with file /icons/README, inode: 412190, size: 5108, mtime: 0x438c0358aae80]]></description>
+<uri><![CDATA[/icons/README]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/icons/README]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/icons/README]]></iplink>
+</item>
+
+<item id="003584" osvdbid="3233" osvdblink="http://osvdb.org/3233" method="GET">
+<description><![CDATA[/icons/README: Apache default file found.]]></description>
+<uri><![CDATA[/icons/README]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/icons/README]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/icons/README]]></iplink>
+</item>
+
+<item id="006495" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[/phpMyAdmin/: phpMyAdmin directory found]]></description>
+<uri><![CDATA[/phpMyAdmin/]]></uri>
+<namelink><![CDATA[http://192.168.1.154:80/phpMyAdmin/]]></namelink>
+<iplink><![CDATA[http://192.168.1.154:80/phpMyAdmin/]]></iplink>
+</item>
+
+<statistics elapsed="62" itemsfound="18" itemstested="6544" endtime="2026-11-22 19:21:11" />
+</scandetails>
+
+
+</niktoscan>

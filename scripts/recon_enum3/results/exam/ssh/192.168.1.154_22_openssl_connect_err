@@ -1,0 +1,2 @@
+Connecting to 192.168.1.154
+40F7A3ED957D0000:error:0A00010B:SSL routines:tls_validate_record_header:wrong version number:../ssl/record/methods/tlsany_meth.c:77:

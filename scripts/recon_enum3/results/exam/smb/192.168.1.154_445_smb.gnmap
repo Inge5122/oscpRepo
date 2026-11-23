@@ -1,0 +1,5 @@
+# Nmap 7.98 scan initiated Sun Nov 22 19:16:36 2026 as: nmap -n -sV -Pn -vv -p 445 --script=smb-double-pulsar-backdoor,smb-enum-domains,smb-enum-groups,smb-enum-processes,smb-enum-sessions,smb-enum-shares,smb-enum-users,smb-ls,smb-os-discovery,smb-protocols,smb-security-mode,smb-system-info,smb-vuln-cve-2017-7494,smb-vuln-ms10-061,smb-vuln-ms17-010,smb2-security-mode,smb2-vuln-uptime,samba-vuln-cve-2012-1182,nbstat,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/smb/192.168.1.154_445_smb 192.168.1.154
+# Ports scanned: TCP(1;445) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+Host: 192.168.1.154 ()	Status: Up
+Host: 192.168.1.154 ()	Ports: 445/open/tcp//netbios-ssn//Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)/
+# Nmap done at Sun Nov 22 19:16:48 2026 -- 1 IP address (1 host up) scanned in 11.66 seconds

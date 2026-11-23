@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sun Nov 22 19:18:02 2026 as: nmap -n -sV -Pn -vv -p 111 -&#45;script nfs-ls,nfs-showmount,nfs-statfs,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/nfs/192.168.1.154_111_nfsnmap 192.168.1.154 -->
+<nmaprun scanner="nmap" args="nmap -n -sV -Pn -vv -p 111 -&#45;script nfs-ls,nfs-showmount,nfs-statfs,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/nfs/192.168.1.154_111_nfsnmap 192.168.1.154" start="1795393082" startstr="Sun Nov 22 19:18:02 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="111"/>
+<verbose level="2"/>
+<debugging level="0"/>
+<taskbegin task="NSE" time="1795393083"/>
+<taskend task="NSE" time="1795393083"/>
+<taskbegin task="NSE" time="1795393083"/>
+<taskend task="NSE" time="1795393083"/>
+<taskbegin task="NSE" time="1795393083"/>
+<taskend task="NSE" time="1795393083"/>
+<taskbegin task="Connect Scan" time="1795393083"/>
+<taskend task="Connect Scan" time="1795393083" extrainfo="1 total ports"/>
+<taskbegin task="Service scan" time="1795393083"/>
+<taskend task="Service scan" time="1795393089" extrainfo="1 service on 1 host"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<host starttime="1795393083" endtime="1795393089"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="192.168.1.154" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="111"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="rpcbind" version="2" extrainfo="RPC #100000" method="probed" conf="10"/><script id="rpcinfo" output="&#xa;  program version    port/proto  service&#xa;  100000  2            111/tcp   rpcbind&#xa;  100000  2            111/udp   rpcbind&#xa;  100003  2,3,4       2049/tcp   nfs&#xa;  100003  2,3,4       2049/udp   nfs&#xa;  100005  1,2,3      53753/tcp   mountd&#xa;  100005  1,2,3      57106/udp   mountd&#xa;  100021  1,3,4      34085/tcp   nlockmgr&#xa;  100021  1,3,4      52831/udp   nlockmgr&#xa;  100024  1          34713/tcp   status&#xa;  100024  1          40131/udp   status&#xa;"><table key="100003">
+<table key="tcp">
+<elem key="port">2049</elem>
+<table key="version">
+<elem>2</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">2049</elem>
+<table key="version">
+<elem>2</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+</table>
+<table key="100024">
+<table key="tcp">
+<elem key="port">34713</elem>
+<table key="version">
+<elem>1</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">40131</elem>
+<table key="version">
+<elem>1</elem>
+</table>
+</table>
+</table>
+<table key="100005">
+<table key="tcp">
+<elem key="port">53753</elem>
+<table key="version">
+<elem>1</elem>
+<elem>2</elem>
+<elem>3</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">57106</elem>
+<table key="version">
+<elem>1</elem>
+<elem>2</elem>
+<elem>3</elem>
+</table>
+</table>
+</table>
+<table key="100021">
+<table key="tcp">
+<elem key="port">34085</elem>
+<table key="version">
+<elem>1</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">52831</elem>
+<table key="version">
+<elem>1</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+</table>
+<table key="100000">
+<table key="udp">
+<elem key="port">111</elem>
+<table key="version">
+<elem>2</elem>
+</table>
+</table>
+<table key="tcp">
+<elem key="port">111</elem>
+<table key="version">
+<elem>2</elem>
+</table>
+</table>
+</table>
+</script><script id="nfs-showmount" output="&#xa;  / *&#xa;"/></port>
+</ports>
+<times srtt="8200" rttvar="8200" to="100000"/>
+</host>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<runstats><finished time="1795393089" timestr="Sun Nov 22 19:18:09 2026" summary="Nmap done at Sun Nov 22 19:18:09 2026; 1 IP address (1 host up) scanned in 6.39 seconds" elapsed="6.39" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

@@ -1,0 +1,5 @@
+# Nmap 7.98 scan initiated Sun Nov 22 19:18:09 2026 as: nmap -n -sV -Pn -vv -p 2049 --script nfs-ls,nfs-showmount,nfs-statfs,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/nfs/192.168.1.154_2049_nfsnmap 192.168.1.154
+# Ports scanned: TCP(1;2049) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+Host: 192.168.1.154 ()	Status: Up
+Host: 192.168.1.154 ()	Ports: 2049/open/tcp//nfs//2-4 (RPC #100003)/
+# Nmap done at Sun Nov 22 19:18:15 2026 -- 1 IP address (1 host up) scanned in 6.39 seconds

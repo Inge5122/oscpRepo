@@ -1,0 +1,5 @@
+# Nmap 7.98 scan initiated Sun Nov 22 19:17:32 2026 as: nmap -n -sV -Pn -vv -p 22 --script=banner,ssh-auth-methods,sshv1,ssh2-enum-algos,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/ssh/192.168.1.154_22_ssh 192.168.1.154
+# Ports scanned: TCP(1;22) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+Host: 192.168.1.154 ()	Status: Up
+Host: 192.168.1.154 ()	Ports: 22/open/tcp//ssh//OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)/
+# Nmap done at Sun Nov 22 19:17:33 2026 -- 1 IP address (1 host up) scanned in 0.88 seconds

@@ -1,0 +1,7 @@
+Showmount -a: 
+All mount points on 192.168.1.154:
+
+Showmount -e: 
+Export list for 192.168.1.154:
+/ *
+

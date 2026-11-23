@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sun Nov 22 19:16:36 2026 as: nmap -n -sV -Pn -vv -p 445 -&#45;script=smb-double-pulsar-backdoor,smb-enum-domains,smb-enum-groups,smb-enum-processes,smb-enum-sessions,smb-enum-shares,smb-enum-users,smb-ls,smb-os-discovery,smb-protocols,smb-security-mode,smb-system-info,smb-vuln-cve-2017-7494,smb-vuln-ms10-061,smb-vuln-ms17-010,smb2-security-mode,smb2-vuln-uptime,samba-vuln-cve-2012-1182,nbstat,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/smb/192.168.1.154_445_smb 192.168.1.154 -->
+<nmaprun scanner="nmap" args="nmap -n -sV -Pn -vv -p 445 -&#45;script=smb-double-pulsar-backdoor,smb-enum-domains,smb-enum-groups,smb-enum-processes,smb-enum-sessions,smb-enum-shares,smb-enum-users,smb-ls,smb-os-discovery,smb-protocols,smb-security-mode,smb-system-info,smb-vuln-cve-2017-7494,smb-vuln-ms10-061,smb-vuln-ms17-010,smb2-security-mode,smb2-vuln-uptime,samba-vuln-cve-2012-1182,nbstat,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/smb/192.168.1.154_445_smb 192.168.1.154" start="1795392996" startstr="Sun Nov 22 19:16:36 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="445"/>
+<verbose level="2"/>
+<debugging level="0"/>
+<taskbegin task="NSE" time="1795392996"/>
+<taskend task="NSE" time="1795392996"/>
+<taskbegin task="NSE" time="1795392996"/>
+<taskend task="NSE" time="1795392996"/>
+<taskbegin task="Connect Scan" time="1795392996"/>
+<taskend task="Connect Scan" time="1795392996" extrainfo="1 total ports"/>
+<taskbegin task="Service scan" time="1795392996"/>
+<taskend task="Service scan" time="1795393003" extrainfo="1 service on 1 host"/>
+<taskbegin task="NSE" time="1795393003"/>
+<taskend task="NSE" time="1795393005"/>
+<taskbegin task="NSE" time="1795393005"/>
+<taskend task="NSE" time="1795393008"/>
+<host starttime="1795392996" endtime="1795393008"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="192.168.1.154" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="445"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="netbios-ssn" product="Samba smbd" version="3.0.20-Debian" extrainfo="workgroup: WORKGROUP" method="probed" conf="10"><cpe>cpe:/a:samba:samba</cpe></service></port>
+</ports>
+<hostscript><script id="smb-system-info" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-protocols" output="&#xa;  dialects: &#xa;    NT LM 0.12 (SMBv1) [dangerous, but default]"><table key="dialects">
+<elem>NT LM 0.12 (SMBv1) [dangerous, but default]</elem>
+</table>
+</script><script id="smb2-security-mode" output="Couldn&apos;t establish a SMBv2 connection."/><script id="smb-security-mode" output="&#xa;  account_used: &lt;blank&gt;&#xa;  authentication_level: user&#xa;  challenge_response: supported&#xa;  message_signing: disabled (dangerous, but default)"><elem key="account_used">&lt;blank&gt;</elem>
+<elem key="authentication_level">user</elem>
+<elem key="challenge_response">supported</elem>
+<elem key="message_signing">disabled</elem>
+</script><script id="smb-enum-sessions" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-os-discovery" output="&#xa;  OS: Unix (Samba 3.0.20-Debian)&#xa;  Computer name: metasploitable&#xa;  NetBIOS computer name: &#xa;  Domain name: localdomain&#xa;  FQDN: metasploitable.localdomain&#xa;  System time: 2026-11-22T19:16:43-05:00&#xa;"><elem key="os">Unix</elem>
+<elem key="lanmanager">Samba 3.0.20-Debian</elem>
+<elem key="server"></elem>
+<elem key="date">2026-11-22T19:16:43-05:00</elem>
+<elem key="fqdn">metasploitable.localdomain</elem>
+<elem key="domain_dns">localdomain</elem>
+<elem key="workgroup">WORKGROUP\x00</elem>
+</script><script id="smb-ls" output="Volume \\192.168.1.154\tmp&#xa;SIZE   TIME                 FILENAME&#xa;&lt;DIR&gt;  2026-11-23T00:16:45  .&#xa;&lt;DIR&gt;  2012-05-20T19:36:12  ..&#xa;0      2026-11-23T00:10:30  4555.jsvc_up&#xa;&#xa;"><table key="volumes">
+<table>
+<table key="files">
+<table>
+<elem key="time">2026-11-23T00:16:45</elem>
+<elem key="filename">.</elem>
+<elem key="size">&lt;DIR&gt;</elem>
+</table>
+<table>
+<elem key="time">2012-05-20T19:36:12</elem>
+<elem key="filename">..</elem>
+<elem key="size">&lt;DIR&gt;</elem>
+</table>
+<table>
+<elem key="time">2026-11-23T00:10:30</elem>
+<elem key="filename">4555.jsvc_up</elem>
+<elem key="size">0</elem>
+</table>
+</table>
+<elem key="volume">\\192.168.1.154\tmp</elem>
+</table>
+</table>
+<table key="total">
+<elem key="files">3</elem>
+<elem key="bytes">0</elem>
+</table>
+</script><script id="smb-vuln-ms10-061" output="false">false</script><script id="nbstat" output="NetBIOS name: METASPLOITABLE, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)&#xa;Names:&#xa;  METASPLOITABLE&lt;00&gt;   Flags: &lt;unique&gt;&lt;active&gt;&#xa;  METASPLOITABLE&lt;03&gt;   Flags: &lt;unique&gt;&lt;active&gt;&#xa;  METASPLOITABLE&lt;20&gt;   Flags: &lt;unique&gt;&lt;active&gt;&#xa;  WORKGROUP&lt;00&gt;        Flags: &lt;group&gt;&lt;active&gt;&#xa;  WORKGROUP&lt;1e&gt;        Flags: &lt;group&gt;&lt;active&gt;&#xa;Statistics:&#xa;  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&#xa;  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&#xa;  00 00 00 00 00 00 00 00 00 00 00 00 00 00"/><script id="smb-enum-shares" output="&#xa;  account_used: &lt;blank&gt;&#xa;  \\192.168.1.154\ADMIN$: &#xa;    Type: STYPE_IPC&#xa;    Comment: IPC Service (metasploitable server (Samba 3.0.20-Debian))&#xa;    Users: 1&#xa;    Max Users: &lt;unlimited&gt;&#xa;    Path: C:\tmp&#xa;    Anonymous access: &lt;none&gt;&#xa;  \\192.168.1.154\IPC$: &#xa;    Type: STYPE_IPC&#xa;    Comment: IPC Service (metasploitable server (Samba 3.0.20-Debian))&#xa;    Users: 1&#xa;    Max Users: &lt;unlimited&gt;&#xa;    Path: C:\tmp&#xa;    Anonymous access: READ/WRITE&#xa;  \\192.168.1.154\opt: &#xa;    Type: STYPE_DISKTREE&#xa;    Comment: &#xa;    Users: 1&#xa;    Max Users: &lt;unlimited&gt;&#xa;    Path: C:\tmp&#xa;    Anonymous access: &lt;none&gt;&#xa;  \\192.168.1.154\print$: &#xa;    Type: STYPE_DISKTREE&#xa;    Comment: Printer Drivers&#xa;    Users: 1&#xa;    Max Users: &lt;unlimited&gt;&#xa;    Path: C:\var\lib\samba\printers&#xa;    Anonymous access: &lt;none&gt;&#xa;  \\192.168.1.154\tmp: &#xa;    Type: STYPE_DISKTREE&#xa;    Comment: oh noes!&#xa;    Users: 1&#xa;    Max Users: &lt;unlimited&gt;&#xa;    Path: C:\tmp&#xa;    Anonymous access: READ/WRITE"><elem key="account_used">&lt;blank&gt;</elem>
+<table key="\\192.168.1.154\ADMIN$">
+<elem key="Type">STYPE_IPC</elem>
+<elem key="Comment">IPC Service (metasploitable server (Samba 3.0.20-Debian))</elem>
+<elem key="Users">1</elem>
+<elem key="Max Users">&lt;unlimited&gt;</elem>
+<elem key="Path">C:\tmp</elem>
+<elem key="Anonymous access">&lt;none&gt;</elem>
+</table>
+<table key="\\192.168.1.154\IPC$">
+<elem key="Type">STYPE_IPC</elem>
+<elem key="Comment">IPC Service (metasploitable server (Samba 3.0.20-Debian))</elem>
+<elem key="Users">1</elem>
+<elem key="Max Users">&lt;unlimited&gt;</elem>
+<elem key="Path">C:\tmp</elem>
+<elem key="Anonymous access">READ/WRITE</elem>
+</table>
+<table key="\\192.168.1.154\opt">
+<elem key="Type">STYPE_DISKTREE</elem>
+<elem key="Comment"></elem>
+<elem key="Users">1</elem>
+<elem key="Max Users">&lt;unlimited&gt;</elem>
+<elem key="Path">C:\tmp</elem>
+<elem key="Anonymous access">&lt;none&gt;</elem>
+</table>
+<table key="\\192.168.1.154\print$">
+<elem key="Type">STYPE_DISKTREE</elem>
+<elem key="Comment">Printer Drivers</elem>
+<elem key="Users">1</elem>
+<elem key="Max Users">&lt;unlimited&gt;</elem>
+<elem key="Path">C:\var\lib\samba\printers</elem>
+<elem key="Anonymous access">&lt;none&gt;</elem>
+</table>
+<table key="\\192.168.1.154\tmp">
+<elem key="Type">STYPE_DISKTREE</elem>
+<elem key="Comment">oh noes!</elem>
+<elem key="Users">1</elem>
+<elem key="Max Users">&lt;unlimited&gt;</elem>
+<elem key="Path">C:\tmp</elem>
+<elem key="Anonymous access">READ/WRITE</elem>
+</table>
+</script><script id="smb-enum-users" output="&#xa;  METASPLOITABLE\backup (RID: 1068)&#xa;    Full name:   backup&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\bin (RID: 1004)&#xa;    Full name:   bin&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\bind (RID: 1210)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\daemon (RID: 1002)&#xa;    Full name:   daemon&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\dhcp (RID: 1202)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\distccd (RID: 1222)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\ftp (RID: 1214)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\games (RID: 1010)&#xa;    Full name:   games&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\gnats (RID: 1082)&#xa;    Full name:   Gnats Bug-Reporting System (admin)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\irc (RID: 1078)&#xa;    Full name:   ircd&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\klog (RID: 1206)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\libuuid (RID: 1200)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\list (RID: 1076)&#xa;    Full name:   Mailing List Manager&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\lp (RID: 1014)&#xa;    Full name:   lp&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\mail (RID: 1016)&#xa;    Full name:   mail&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\man (RID: 1012)&#xa;    Full name:   man&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\msfadmin (RID: 3000)&#xa;    Full name:   msfadmin,,,&#xa;    Flags:       Normal user account&#xa;  METASPLOITABLE\mysql (RID: 1218)&#xa;    Full name:   MySQL Server,,,&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\news (RID: 1018)&#xa;    Full name:   news&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\nobody (RID: 501)&#xa;    Full name:   nobody&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\postfix (RID: 1212)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\postgres (RID: 1216)&#xa;    Full name:   PostgreSQL administrator,,,&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\proftpd (RID: 1226)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\proxy (RID: 1026)&#xa;    Full name:   proxy&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\root (RID: 1000)&#xa;    Full name:   root&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\service (RID: 3004)&#xa;    Full name:   ,,,&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\sshd (RID: 1208)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\sync (RID: 1008)&#xa;    Full name:   sync&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\sys (RID: 1006)&#xa;    Full name:   sys&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\syslog (RID: 1204)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\telnetd (RID: 1224)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\tomcat55 (RID: 1220)&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\user (RID: 3002)&#xa;    Full name:   just a user,111,,&#xa;    Flags:       Normal user account&#xa;  METASPLOITABLE\uucp (RID: 1020)&#xa;    Full name:   uucp&#xa;    Flags:       Account disabled, Normal user account&#xa;  METASPLOITABLE\www-data (RID: 1066)&#xa;    Full name:   www-data&#xa;    Flags:       Account disabled, Normal user account&#xa;"/></hostscript><times srtt="11982" rttvar="11982" to="100000"/>
+</host>
+<taskbegin task="NSE" time="1795393008"/>
+<taskend task="NSE" time="1795393008"/>
+<taskbegin task="NSE" time="1795393008"/>
+<taskend task="NSE" time="1795393008"/>
+<runstats><finished time="1795393008" timestr="Sun Nov 22 19:16:48 2026" summary="Nmap done at Sun Nov 22 19:16:48 2026; 1 IP address (1 host up) scanned in 11.66 seconds" elapsed="11.66" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

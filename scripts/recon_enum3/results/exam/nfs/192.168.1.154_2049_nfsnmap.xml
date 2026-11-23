@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sun Nov 22 19:18:09 2026 as: nmap -n -sV -Pn -vv -p 2049 -&#45;script nfs-ls,nfs-showmount,nfs-statfs,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/nfs/192.168.1.154_2049_nfsnmap 192.168.1.154 -->
+<nmaprun scanner="nmap" args="nmap -n -sV -Pn -vv -p 2049 -&#45;script nfs-ls,nfs-showmount,nfs-statfs,vulners -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/nfs/192.168.1.154_2049_nfsnmap 192.168.1.154" start="1795393089" startstr="Sun Nov 22 19:18:09 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="2049"/>
+<verbose level="2"/>
+<debugging level="0"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="NSE" time="1795393089"/>
+<taskend task="NSE" time="1795393089"/>
+<taskbegin task="Connect Scan" time="1795393089"/>
+<taskend task="Connect Scan" time="1795393089" extrainfo="1 total ports"/>
+<taskbegin task="Service scan" time="1795393089"/>
+<taskend task="Service scan" time="1795393095" extrainfo="1 service on 1 host"/>
+<taskbegin task="NSE" time="1795393095"/>
+<taskend task="NSE" time="1795393095"/>
+<taskbegin task="NSE" time="1795393095"/>
+<taskend task="NSE" time="1795393095"/>
+<taskbegin task="NSE" time="1795393095"/>
+<taskend task="NSE" time="1795393095"/>
+<host starttime="1795393089" endtime="1795393095"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="192.168.1.154" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="2049"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="nfs" version="2-4" extrainfo="RPC #100003" method="probed" conf="10"/></port>
+</ports>
+<times srtt="8046" rttvar="8046" to="100000"/>
+</host>
+<taskbegin task="NSE" time="1795393095"/>
+<taskend task="NSE" time="1795393095"/>
+<taskbegin task="NSE" time="1795393095"/>
+<taskend task="NSE" time="1795393095"/>
+<taskbegin task="NSE" time="1795393095"/>
+<taskend task="NSE" time="1795393095"/>
+<runstats><finished time="1795393095" timestr="Sun Nov 22 19:18:15 2026" summary="Nmap done at Sun Nov 22 19:18:15 2026; 1 IP address (1 host up) scanned in 6.39 seconds" elapsed="6.39" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

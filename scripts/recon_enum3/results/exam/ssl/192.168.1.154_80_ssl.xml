@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sun Nov 22 19:19:52 2026 as: nmap -n -sV -Pn -vv -p 80 -&#45;script banner,ssl-cert-intaddr,ssl-cert,ssl-heartbleed,ssl-poodle,sslv2-drown,tls-nextprotoneg,tls-alpn -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/ssl/192.168.1.154_80_ssl 192.168.1.154 -->
+<nmaprun scanner="nmap" args="nmap -n -sV -Pn -vv -p 80 -&#45;script banner,ssl-cert-intaddr,ssl-cert,ssl-heartbleed,ssl-poodle,sslv2-drown,tls-nextprotoneg,tls-alpn -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/ssl/192.168.1.154_80_ssl 192.168.1.154" start="1795393192" startstr="Sun Nov 22 19:19:52 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="80"/>
+<verbose level="2"/>
+<debugging level="0"/>
+<taskbegin task="NSE" time="1795393192"/>
+<taskend task="NSE" time="1795393192"/>
+<taskbegin task="NSE" time="1795393192"/>
+<taskend task="NSE" time="1795393192"/>
+<taskbegin task="Connect Scan" time="1795393192"/>
+<taskend task="Connect Scan" time="1795393192" extrainfo="1 total ports"/>
+<taskbegin task="Service scan" time="1795393192"/>
+<taskend task="Service scan" time="1795393198" extrainfo="1 service on 1 host"/>
+<taskbegin task="NSE" time="1795393198"/>
+<taskend task="NSE" time="1795393208"/>
+<taskbegin task="NSE" time="1795393208"/>
+<taskend task="NSE" time="1795393208"/>
+<host starttime="1795393192" endtime="1795393208"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="192.168.1.154" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.2.8" extrainfo="(Ubuntu) DAV/2" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.2.8</cpe></service><script id="http-server-header" output="Apache/2.2.8 (Ubuntu) DAV/2"><elem>Apache/2.2.8 (Ubuntu) DAV/2</elem>
+</script></port>
+</ports>
+<times srtt="5146" rttvar="5146" to="100000"/>
+</host>
+<taskbegin task="NSE" time="1795393208"/>
+<taskend task="NSE" time="1795393208"/>
+<taskbegin task="NSE" time="1795393208"/>
+<taskend task="NSE" time="1795393208"/>
+<runstats><finished time="1795393208" timestr="Sun Nov 22 19:20:08 2026" summary="Nmap done at Sun Nov 22 19:20:08 2026; 1 IP address (1 host up) scanned in 16.47 seconds" elapsed="16.47" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

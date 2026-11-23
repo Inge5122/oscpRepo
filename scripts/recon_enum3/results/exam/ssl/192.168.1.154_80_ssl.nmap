@@ -1,0 +1,12 @@
+# Nmap 7.98 scan initiated Sun Nov 22 19:19:52 2026 as: nmap -n -sV -Pn -vv -p 80 --script banner,ssl-cert-intaddr,ssl-cert,ssl-heartbleed,ssl-poodle,sslv2-drown,tls-nextprotoneg,tls-alpn -oA /home/diego-romero/Documents/oscpRepo/scripts/recon_enum3/results/exam/ssl/192.168.1.154_80_ssl 192.168.1.154
+Nmap scan report for 192.168.1.154
+Host is up, received user-set (0.0051s latency).
+Scanned at 2026-11-22 19:19:52 -05 for 16s
+
+PORT   STATE SERVICE REASON  VERSION
+80/tcp open  http    syn-ack Apache httpd 2.2.8 ((Ubuntu) DAV/2)
+|_http-server-header: Apache/2.2.8 (Ubuntu) DAV/2
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Nov 22 19:20:08 2026 -- 1 IP address (1 host up) scanned in 16.47 seconds

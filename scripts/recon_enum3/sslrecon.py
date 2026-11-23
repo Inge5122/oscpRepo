@@ -48,10 +48,10 @@ def doSslyze():
     print("INFO: Iniciando sslyze para %s:%s" % (ip_address, port))
     sslyze_outfile = "%s/%s_%s_sslyze" % (BASE,ip_address,port)
     try:
-        subprocess.run(['sslyze','--regular','--certinfo','%s:%s' % (ip_address,port)],encoding='utf8',stdout=sslyze_outfile)
+        with open(sslyze_outfile, 'w') as f:
+            subprocess.run(['sslyze','--regular','--certinfo','%s:%s' % (ip_address,port)],encoding='utf8',stdout=f)
     except Exception as e:
-        print(type(e))
-        print("Error inesperado en doSslyze en SSLrecon")
+        print("Aviso en doSslyze: %s" % e)
     print("INFO: Finalizado sslyze para %s:%s" % (ip_address, port))
     return
 
@@ -61,10 +61,10 @@ def doSslscan():
     print("INFO: Iniciando sslscan para %s:%s" % (ip_address, port))
     sslscan_outfile = "%s/%s_%s_sslscan" % (BASE,ip_address,port)
     try:
-        subprocess.run(['sslscan','--show-certificate','--no-color','%s:%s' % (ip_address,port)],encoding='utf8',stdout=sslscan_outfile)
+        with open(sslscan_outfile, 'w') as f:
+            subprocess.run(['sslscan','--show-certificate','--no-color','%s:%s' % (ip_address,port)],encoding='utf8',stdout=f)
     except Exception as e:
-        print(type(e))
-        print("Error inesperado en doSslscan en SSLRecon")
+        print("Aviso en doSslscan: %s" % e)
     print("INFO: Finalizado sslscan para %s:%s" % (ip_address, port))
     return
 
@@ -83,7 +83,8 @@ if __name__=='__main__':
     ip_address = args.ip_address
     port = args.port
 
-    BASE = "/root/scripts/recon_enum/results/exam/ssl"
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE = os.path.join(SCRIPT_DIR, "results", "exam", "ssl")
 
     # Asegurar que la ruta esté creada
     mkdir_p(BASE)

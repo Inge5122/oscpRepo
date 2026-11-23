@@ -21,10 +21,10 @@ def doNmap(ip_address, port):
     print("INFO: Iniciando nfs con nmap en %s:%s" % (ip_address, port))
     if len(port.split(",")) > 1:
         for ports in port.split(","):
-            outfileNmap = "/root/scripts/recon_enum/results/exam/nfs/%s_%s_nfsnmap" % (ip_address, ports)  
+            outfileNmap = "%s/%s_%s_nfsnmap" % (BASE, ip_address, ports)  
             subprocess.check_output(['nmap','-n','-sV','-Pn','-vv','-p',ports,'--script','nfs-ls,nfs-showmount,nfs-statfs,vulners',"-oA",outfileNmap,ip_address],encoding='utf8')
     else:
-        outfileNmap = "/root/scripts/recon_enum/results/exam/nfs/%s_%s_nfsnmap" % (ip_address, port)
+        outfileNmap = "%s/%s_%s_nfsnmap" % (BASE, ip_address, port)
         subprocess.check_output(['nmap','-n','-sV','-Pn','-vv','-p',port,'--script','nfs-ls,nfs-showmount,nfs-statfs,vulners',"-oA",outfileNmap,ip_address],encoding='utf8')
     print("INFO: Nfs con nmap completado en %s:%s" % (ip_address, port))
     return
@@ -97,9 +97,10 @@ if __name__=='__main__':
     else:
         port = '111,2049'
 
-    BASE = "/root/scripts/recon_enum/results/exam/nfs"
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE = os.path.join(SCRIPT_DIR, "results", "exam", "nfs")
     mkdir_p(BASE)
-    outfile = "/root/scripts/recon_enum/results/exam/nfs/%s_%s_nfsrecon.txt" % (ip_address, port)
+    outfile = "%s/%s_%s_nfsrecon.txt" % (BASE, ip_address, port)
       
 
     doNmap(ip_address, port)

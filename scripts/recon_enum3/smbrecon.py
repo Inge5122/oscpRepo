@@ -98,8 +98,12 @@ def doEnum4Linux():
                 if "\n" not in res:
                     f.write("\n")
             f.close()
+    except FileNotFoundError:
+        print("INFO: 'enum4linux' no está instalado en el sistema. Omitiendo.")
     except subprocess.CalledProcessError:
         print("ADVERTENCIA: enum4linux finalizó con código distinto de 0 para %s, pero la salida se registrará" % (ip_address))
+    except Exception as e:
+        print("Aviso en doEnum4Linux: %s" % e)
 
 # Opciones de nbtscan-unixwiz:
 # -V        mostrar información de versión
@@ -148,12 +152,13 @@ def doNullLinux():
 def doSMBVer():
     # Relevante para ciertas versiones de SMB en Linux
     print("INFO: Comprobando versión de SMB para %s" % (ip_address))
-    results = subprocess.check_output(['./smbver.sh',ip_address],encoding='utf8')
-    f = open(smbver_outfile,'w')
-    for res in results:
-        f.write(res)
-        f.write("\n")
-    f.close()
+    try:
+        smbver_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "smbver.sh")
+        results = subprocess.check_output([smbver_script, ip_address], timeout=15, encoding='utf8')
+        with open(smbver_outfile, 'w') as f:
+            f.write(results)
+    except Exception as e:
+        print("Aviso en doSMBVer: %s" % e)
 
 
 if __name__=='__main__':
@@ -162,7 +167,8 @@ if __name__=='__main__':
     parser.add_argument('port', help="Puerto específico a enumerar")
     args = parser.parse_args()
 
-    BASE = "/root/scripts/recon_enum/results/exam/smb"
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE = os.path.join(SCRIPT_DIR, "results", "exam", "smb")
     mkdir_p(BASE)
 
     ip_address = args.ip_address 

@@ -27,9 +27,13 @@ def doSSHNmap():
     return
 
 def doSSLRecon():
-    print("INFO: Iniciando sslrecon con nmap para %s:%s" % (ip_address, port))
-    subprocess.check_output(['./sslrecon.py', ip_address, port],encoding='utf8')
-    print("INFO: Finalizado sslrecon con nmap para %s:%s" % (ip_address, port))
+    print("INFO: Iniciando sslrecon para %s:%s" % (ip_address, port))
+    try:
+        sslrecon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sslrecon.py")
+        subprocess.check_output([sys.executable, sslrecon_path, ip_address, port], encoding='utf8', timeout=60)
+    except Exception as e:
+        print("Aviso: sslrecon no aplicable o finalizado con error para %s:%s" % (ip_address, port))
+    print("INFO: Finalizado sslrecon para %s:%s" % (ip_address, port))
     return
 
 def doOpenSSLConnect():
@@ -37,10 +41,10 @@ def doOpenSSLConnect():
     outPath = "%s/%s_%s_openssl_connect" % (BASE, ip_address,port)
     errPath = "%s/%s_%s_openssl_connect_err" % (BASE, ip_address,port)
     try:
-        subprocess.run(['openssl','s_client','-connect','%s:%s' % (ip_address,port)],encoding='utf8',check=True,stdout=outPath,stderr=errPath).stdout
-    except subprocess.CalledProcessError as e:
-        print(type(e))
-        print("Error inesperado en doOpenSSLConnect en sshrecon")
+        with open(outPath, 'w') as out_f, open(errPath, 'w') as err_f:
+            subprocess.run(['openssl','s_client','-connect','%s:%s' % (ip_address,port)],
+                           encoding='utf8', stdout=out_f, stderr=err_f, timeout=10)
+    except Exception as e:
         pass
     print("TTP: Recuerda, en OpenSSH 2.3<7.4 es posible enumerar usuarios con la PoC (https://www.exploit-db.com/exploits/45210/)")
 
@@ -83,7 +87,8 @@ if __name__=='__main__':
     ip_address = args.target
     port = args.port
 
-    BASE = '/root/scripts/recon_enum/results/exam/ssh'
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE = os.path.join(SCRIPT_DIR, "results", "exam", "ssh")
     mkdir_p(BASE)
 
     doSSHNmap()

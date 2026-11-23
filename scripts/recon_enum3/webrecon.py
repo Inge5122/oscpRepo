@@ -113,20 +113,19 @@ def doNmap():
 def doSSLRecon():
     print("INFO: Iniciando sslrecon con nmap para %s:%s" % (ip_address, port))
     try:
-        subprocess.check_output(['./sslrecon.py', ip_address, port],encoding='utf8')
+        sslrecon_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sslrecon.py")
+        subprocess.check_output([sys.executable, sslrecon_script, ip_address, str(port)], encoding='utf8')
     except Exception as e:
-        print(type(e))
-        print("Error inesperado en doSslRecon en webrecon")
+        print("Aviso en doSslRecon en webrecon: %s" % e)
     print("INFO: Finalizado sslrecon con nmap para %s:%s" % (ip_address, port))
     return
 
 def doNikto():
     print("INFO: Iniciando nikto webRecon para %s:%s" % (ip_address, port))
     try:
-        subprocess.check_output(['nikto','-host',ip_address,'-port',port,'-nolookup','-ask','auto','-output'," %s/%s_%s_nikto.xml" % (NIKTO_BASE,ip_address,port)],encoding='utf8')
+        subprocess.check_output(['nikto','-host',ip_address,'-port',str(port),'-nolookup','-ask','auto','-output',"%s/%s_%s_nikto.xml" % (NIKTO_BASE,ip_address,port)],encoding='utf8')
     except Exception as e:
-        print(type(e))
-        print("Error inesperado en doNikto en webrecon")
+        print("Aviso en doNikto en webrecon: %s" % e)
     print("INFO: Finalizado nikto webRecon para %s:%s" % (ip_address, port))
     return
 
@@ -144,10 +143,11 @@ def doVHostScan():
     # https://github.com/codingo/VHostScan
     print("INFO: Iniciando VHostScan webRecon para %s:%s" % (ip_address, port))
     try:
-        subprocess.check_output(['VHostScan','-v','-t',ip_address,'-p',port,'-w','/root/lists/Web/virtual_host_scanning.txt','--no-lookups','--user-agent',userAgent,'-oN',VHOST_OUT],encoding='utf8')
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        vhost_wordlist = os.path.join(repo_root, "lists", "Web", "virtual_host_scanning.txt")
+        subprocess.check_output(['VHostScan','-v','-t',ip_address,'-p',str(port),'-w',vhost_wordlist,'--no-lookups','--user-agent',userAgent,'-oN',VHOST_OUT],encoding='utf8')
     except Exception as e:
-        print(type(e))
-        print("Error inesperado en doVHostScan en webrecon")
+        print("Aviso en doVHostScan en webrecon: %s" % e)
     print("INFO: Finalizado VHostScan webRecon para %s:%s" % (ip_address, port))
     return
 
@@ -181,16 +181,19 @@ if __name__=='__main__':
             print("ERROR: [webrecon] esquema desconocido")
             sys.exit(1)
     else:
-        port = parsed_url.port
+        port = str(parsed_url.port)
 
-    if ":" in parsed_url.scheme:
-        ip_address = parsed_url.scheme.split(':')[0]
+    if parsed_url.hostname:
+        ip_address = parsed_url.hostname
+    elif ":" in parsed_url.netloc:
+        ip_address = parsed_url.netloc.split(':')[0]
     else:
-        ip_address = parsed_url.scheme
+        ip_address = parsed_url.netloc or parsed_url.path
 
-    BASE = "/root/scripts/recon_enum/results/exam/http/%s/%s" % (ip_address,port)
-    NIKTO_BASE = "/root/scripts/recon_enum/results/exam/nikto/%s/%s" % (ip_address,port)
-    VHOST_OUT = "%s/%s_%s_vhost" % (BASE, ip_address, port)
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE = os.path.join(SCRIPT_DIR, "results", "exam", "http", ip_address, str(port))
+    NIKTO_BASE = os.path.join(SCRIPT_DIR, "results", "exam", "nikto", ip_address, str(port))
+    VHOST_OUT = os.path.join(BASE, "%s_%s_vhost" % (ip_address, port))
 
     # Asegurar que las rutas existan
     mkdir_p(BASE)
